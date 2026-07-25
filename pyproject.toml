@@ -1,0 +1,25 @@
+[project]
+name = "catechismmanagementsystem"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "alembic>=1.18.5",
+    "dependency-injector>=4.49.1",
+    "fastapi[standard]>=0.139.2",
+    "psycopg[binary,pool]>=3.3.4",
+    "sqlalchemy>=2.0.51",
+]
+
+[tool.uv.workspace]
+members = [
+    "apps/cms_admin_dashboard_api",
+    "apps/cms_alembic",
+    "libs/cms_db_models",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.22",
+]

@@ -1,0 +1,13 @@
+[project]
+name = "cms-alembic"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "cms-db-models",
+    "psycopg[binary,pool]>=3.3.4",
+]
+
+[tool.uv.sources]
+cms-db-models = { workspace = true }

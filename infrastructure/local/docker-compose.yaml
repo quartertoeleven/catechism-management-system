@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: cms-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: catechism_management_system
+      POSTGRES_USER: cms
+      POSTGRES_PASSWORD: cms
+    volumes:
+      - cms_db_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cms -d catechism_management_system"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  cms_db_data:

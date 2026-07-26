@@ -24,6 +24,84 @@
                     ]
                 }
             }
+        },
+        {
+            "label": "Infrastructure - Local - Docker compose up",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "compose",
+                "-f",
+                "infrastructure/local/docker-compose.yaml",
+                "up",
+                "-d"
+            ],
+            "options": {
+                "shell": {
+                    "args": [
+                        "-l",
+                        "-ic"
+                    ]
+                }
+            }
+        },
+        {
+            "label": "Infrastructure - Local - Docker compose restart",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "compose",
+                "-f",
+                "infrastructure/local/docker-compose.yaml",
+                "restart"
+            ],
+            "options": {
+                "shell": {
+                    "args": [
+                        "-l",
+                        "-ic"
+                    ]
+                }
+            }
+        },
+        {
+            "label": "Infrastructure - Local - Docker compose down",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "compose",
+                "-f",
+                "infrastructure/local/docker-compose.yaml",
+                "down"
+            ],
+            "options": {
+                "shell": {
+                    "args": [
+                        "-l",
+                        "-ic"
+                    ]
+                }
+            }
+        },
+        {
+            "label": "Infrastructure - Local - Docker compose down (remove volume)",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "compose",
+                "-f",
+                "infrastructure/local/docker-compose.yaml",
+                "down",
+                "-v"
+            ],
+            "options": {
+                "shell": {
+                    "args": [
+                        "-l",
+                        "-ic"
+                    ]
+                }
+            }
         }
     ]
 }

@@ -14,6 +14,5 @@ def create_app() -> FastAPI:
         version="0.1.0",
         description="REST API for Admin Dashboard",
     )
-    application.container = container
     application.include_router(health_router)
     return application

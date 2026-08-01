@@ -1,7 +1,7 @@
 services:
-  postgres:
+  cms-db:
     image: postgres:18
-    container_name: cms-postgres
+    container_name: cms-db
     restart: unless-stopped
     ports:
       - "5432:5432"
@@ -10,12 +10,26 @@ services:
       POSTGRES_USER: cms
       POSTGRES_PASSWORD: cms
     volumes:
+      - ./db_init.sql:/docker-entrypoint-initdb.d/init-schemas.sql:ro
       - cms_db_data:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U cms -d catechism_management_system"]
       interval: 5s
       timeout: 5s
       retries: 5
+
+  logto:
+    depends_on:
+      cms-db:
+        condition: service_healthy
+    image: svhd/logto:latest
+    entrypoint: ["sh", "-c", "npm run cli db seed -- --swe && npm start"]
+    ports:
+      - 3001:3001
+      - 3002:3002
+    environment:
+      - TRUST_PROXY_HEADER=1
+      - DB_URL=postgres://cms:cms@cms-db:5432/logto
 
 volumes:
   cms_db_data:

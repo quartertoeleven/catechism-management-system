@@ -1,3 +1,3 @@
-from cms_db_models.people.catechist import Catechist
+from cms_db_models.directory.catechist import Catechist
 
 __all__ = ["Catechist"]

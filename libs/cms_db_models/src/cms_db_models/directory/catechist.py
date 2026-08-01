@@ -8,7 +8,7 @@ from cms_db_models.base import Base
 
 class Catechist(Base):
     __tablename__ = "catechists"
-    __table_args__ = {"schema": "people"}
+    __table_args__ = {"schema": "directory"}
 
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
     code: Mapped[str] = mapped_column(String(20), nullable=False)

@@ -7,22 +7,28 @@ defineProps<{
 
 const colorMode = useColorMode()
 const appConfig = useAppConfig()
+const { user, checkAuth } = useAuth()
+
+const displayName = computed(
+  () => user.value?.name || user.value?.username || user.value?.sub || ''
+)
+
+const avatar = computed(() => ({
+  src: user.value?.picture ?? '',
+  alt: displayName.value
+}))
+
+onMounted(() => {
+  checkAuth()
+})
 
 const colors = ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose']
 const neutrals = ['slate', 'gray', 'zinc', 'neutral', 'stone', 'taupe', 'mauve', 'mist', 'olive']
 
-const user = ref({
-  name: 'Benjamin Canac',
-  avatar: {
-    src: 'https://github.com/benjamincanac.png',
-    alt: 'Benjamin Canac'
-  }
-})
-
 const items = computed<DropdownMenuItem[][]>(() => ([[{
   type: 'label',
-  label: user.value.name,
-  avatar: user.value.avatar
+  label: displayName.value,
+  avatar: avatar.value
 }], [{
   label: 'Profile',
   icon: 'i-lucide-user'
@@ -147,7 +153,10 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
   target: '_blank'
 }, {
   label: 'Log out',
-  icon: 'i-lucide-log-out'
+  icon: 'i-lucide-log-out',
+  onSelect: () => {
+    window.location.href = `${getApiBase()}/dashboard-api/auth/logout`
+  }
 }]]))
 </script>
 
@@ -158,11 +167,9 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
     :ui="{ content: collapsed ? 'w-48' : 'w-(--reka-dropdown-menu-trigger-width)' }"
   >
     <UButton
-      v-bind="{
-        ...user,
-        label: collapsed ? undefined : user?.name,
-        trailingIcon: collapsed ? undefined : 'i-lucide-chevrons-up-down'
-      }"
+      :label="collapsed ? undefined : displayName"
+      :avatar="avatar"
+      :trailing-icon="collapsed ? undefined : 'i-lucide-chevrons-up-down'"
       color="neutral"
       variant="ghost"
       block

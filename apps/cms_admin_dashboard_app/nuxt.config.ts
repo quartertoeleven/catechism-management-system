@@ -14,6 +14,12 @@ export default defineNuxtConfig({
 
   css: ['~/assets/scss/custom.scss', '~/assets/css/main.css'],
 
+  runtimeConfig: {
+    public: {
+      apiBase: ''
+    }
+  },
+
   compatibilityDate: '2026-06-30',
 
   eslint: {

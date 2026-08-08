@@ -9,6 +9,8 @@
             "command": "uv",
             "args": [
                 "run",
+                "--env-file",
+                "../../infrastructure/local/.env",
                 "--directory",
                 "apps/cms_admin_dashboard_api",
                 "uvicorn",

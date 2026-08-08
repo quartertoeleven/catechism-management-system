@@ -152,6 +152,7 @@ dependencies = [
     { name = "fastapi", extra = ["standard"] },
     { name = "logto" },
     { name = "psycopg", extra = ["binary", "pool"] },
+    { name = "pyjwt", extra = ["crypto"] },
     { name = "sqlalchemy" },
 ]
 
@@ -167,6 +168,7 @@ requires-dist = [
     { name = "fastapi", extras = ["standard"], specifier = ">=0.139.2" },
     { name = "logto", specifier = ">=0.2.1" },
     { name = "psycopg", extras = ["binary", "pool"], specifier = ">=3.3.4" },
+    { name = "pyjwt", extras = ["crypto"], specifier = ">=2.13.0" },
     { name = "sqlalchemy", specifier = ">=2.0.51" },
 ]
 
@@ -259,10 +261,16 @@ version = "0.1.0"
 source = { virtual = "apps/cms_admin_dashboard_api" }
 dependencies = [
     { name = "fastapi", extra = ["standard"] },
+    { name = "logto" },
+    { name = "pyjwt", extra = ["crypto"] },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "fastapi", extras = ["standard"] }]
+requires-dist = [
+    { name = "fastapi", extras = ["standard"] },
+    { name = "logto" },
+    { name = "pyjwt", extras = ["crypto"] },
+]
 
 [[package]]
 name = "cms-alembic"

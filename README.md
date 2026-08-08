@@ -15,7 +15,7 @@ _Note: The Catechism Management System (CMS) is being developed primarily for Ta
 | ORM | SQLAlchemy 2.0 |
 | Migrations | Alembic 1.18 |
 | Driver | psycopg 3 |
-| Frontend | Vue 3 (planned) |
+| Frontend | Vue 3, Nuxt 4, NuxtUI 4 |
 | Package mgmt | uv (workspace) |
 | Lint / Format | ruff |
 | Infrastructure | Docker Compose |

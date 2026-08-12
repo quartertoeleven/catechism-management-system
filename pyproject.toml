@@ -19,6 +19,7 @@ members = [
     "apps/cms_admin_dashboard_api",
     "apps/cms_alembic",
     "libs/cms_db_models",
+    "libs/cms_common",
 ]
 
 [dependency-groups]

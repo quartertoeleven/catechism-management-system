@@ -7,6 +7,7 @@ members = [
     "catechismmanagementsystem",
     "cms-admin-dashboard-api",
     "cms-alembic",
+    "cms-common",
     "cms-db-models",
 ]
 
@@ -260,6 +261,7 @@ name = "cms-admin-dashboard-api"
 version = "0.1.0"
 source = { virtual = "apps/cms_admin_dashboard_api" }
 dependencies = [
+    { name = "cms-common" },
     { name = "fastapi", extra = ["standard"] },
     { name = "logto" },
     { name = "pyjwt", extra = ["crypto"] },
@@ -267,6 +269,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "cms-common", editable = "libs/cms_common" },
     { name = "fastapi", extras = ["standard"] },
     { name = "logto" },
     { name = "pyjwt", extras = ["crypto"] },
@@ -285,6 +288,23 @@ dependencies = [
 requires-dist = [
     { name = "cms-db-models", editable = "libs/cms_db_models" },
     { name = "psycopg", extras = ["binary", "pool"], specifier = ">=3.3.4" },
+]
+
+[[package]]
+name = "cms-common"
+version = "0.1.0"
+source = { editable = "libs/cms_common" }
+dependencies = [
+    { name = "logto" },
+    { name = "pydantic" },
+    { name = "pyjwt", extra = ["crypto"] },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "logto", specifier = ">=0.2.1" },
+    { name = "pydantic", specifier = ">=2" },
+    { name = "pyjwt", extras = ["crypto"] },
 ]
 
 [[package]]

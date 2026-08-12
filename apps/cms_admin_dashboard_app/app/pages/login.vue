@@ -1,7 +1,16 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
 definePageMeta({ layout: 'auth' })
 
 const loginUrl = `${getApiBase()}/dashboard-api/auth/login`
+
+const loginLoading = ref(false)
+
+const onLoginButtonClick = () => {
+  loginLoading.value = true
+  navigation.navigate(loginUrl)
+}
 </script>
 
 <template>
@@ -35,12 +44,13 @@ const loginUrl = `${getApiBase()}/dashboard-api/auth/login`
           </p>
 
           <UButton
-            :to="loginUrl"
             label="Đăng nhập"
             icon="i-lucide-log-in"
             block
             size="lg"
             class="mt-8"
+            @click="onLoginButtonClick"
+            :loading="loginLoading"
           />
         </div>
       </div>

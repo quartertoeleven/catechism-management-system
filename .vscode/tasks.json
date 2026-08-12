@@ -18,6 +18,9 @@
                 "--factory",
                 "--reload"
             ],
+            "presentation": {
+                "group": "cms-admin-dashboard"
+            },
             "options": {
                 "shell": {
                     "args": [
@@ -26,6 +29,34 @@
                     ]
                 }
             }
+        },
+        {
+            "label": "Start CMS Admin Dashboard App - Dev",
+            "type": "shell",
+            "command": "pnpm",
+            "args": [
+                "run",
+                "dev"
+            ],
+            "presentation": {
+                "group": "cms-admin-dashboard"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/apps/cms_admin_dashboard_app",
+                "shell": {
+                    "args": [
+                        "-l",
+                        "-ic"
+                    ]
+                }
+            }
+        },
+        {
+            "label": "Start CMS Admin Dashboard (Fullstack) - Dev",
+            "dependsOn": [
+                "Start CMS Admin Dashboard API - Dev",
+                "Start CMS Admin Dashboard App - Dev"
+            ]
         },
         {
             "label": "Infrastructure - Local - Docker compose up",

@@ -1,19 +1,18 @@
-import time
 from typing import Optional, Tuple
 
 from fastapi import Request
 from fastapi.responses import RedirectResponse
-from logto import IdTokenClaims, LogtoClient, LogtoConfig
+from logto import IdTokenClaims, LogtoClient
 
-from services.session_storage import SessionCookieStorage
+from cms_common.integrations.logto import SIGN_IN_SESSION_KEY, LogtoAuthClient
+
+from services.session_storage import FastAPISessionCookieStorage
 
 
 class AuthService:
     def __init__(
         self,
-        logto_endpoint: str,
-        logto_app_id: str,
-        logto_app_secret: str,
+        logto_auth_client: LogtoAuthClient,
         logto_redirect_uri: str,
         frontend_url: str,
         session_secret: str,
@@ -22,11 +21,7 @@ class AuthService:
         cookie_samesite: str,
         cookie_max_age: int,
     ) -> None:
-        self._logto_config = LogtoConfig(
-            endpoint=logto_endpoint,
-            appId=logto_app_id,
-            appSecret=logto_app_secret,
-        )
+        self._logto_auth_client = logto_auth_client
         self._logto_redirect_uri = logto_redirect_uri
         self._frontend_url = frontend_url
         self._cookie_params = (
@@ -39,13 +34,21 @@ class AuthService:
 
     def _client_with_storage(
         self, request: Request
-    ) -> Tuple[LogtoClient, SessionCookieStorage]:
-        storage = SessionCookieStorage.from_request(request, *self._cookie_params)
-        return LogtoClient(self._logto_config, storage), storage
+    ) -> Tuple[LogtoClient, FastAPISessionCookieStorage]:
+        storage = FastAPISessionCookieStorage.from_request(request, *self._cookie_params)
+        return self._logto_auth_client.create_client(storage), storage
 
-    async def build_sign_in_url(self, request: Request) -> RedirectResponse:
+    def create_client(self, request: Request) -> LogtoClient:
+        client, _ = self._client_with_storage(request)
+        return client
+
+    async def build_sign_in_url(
+        self, request: Request
+    ) -> RedirectResponse:
         client, storage = self._client_with_storage(request)
-        sign_in_url = await client.signIn(self._logto_redirect_uri)
+        sign_in_url = await self._logto_auth_client.build_sign_in_url(
+            client, self._logto_redirect_uri
+        )
         response = RedirectResponse(sign_in_url, status_code=302)
         storage.write_to(response)
         return response
@@ -54,24 +57,23 @@ class AuthService:
         self, request: Request, callback_url: str
     ) -> RedirectResponse:
         client, storage = self._client_with_storage(request)
-        await client.handleSignInCallback(callback_url)
+        await self._logto_auth_client.handle_sign_in_callback(client, callback_url)
         response = RedirectResponse(self._frontend_url, status_code=302)
         storage.write_to(response)
         return response
 
-    async def build_sign_out_url(self, request: Request) -> RedirectResponse:
+    async def build_sign_out_url(
+        self, request: Request
+    ) -> RedirectResponse:
         client, storage = self._client_with_storage(request)
-        storage.delete("signInSession")
-        sign_out_url = await client.signOut(self._frontend_url)
+        storage.delete(SIGN_IN_SESSION_KEY)
+        sign_out_url = await self._logto_auth_client.build_sign_out_url(
+            client, self._frontend_url
+        )
         response = RedirectResponse(sign_out_url, status_code=302)
         storage.write_to(response)
         return response
 
     def get_current_user(self, request: Request) -> Optional[IdTokenClaims]:
         client, _ = self._client_with_storage(request)
-        if not client.isAuthenticated():
-            return None
-        claims = client.getIdTokenClaims()
-        if claims.exp < int(time.time()):
-            return None
-        return claims
+        return self._logto_auth_client.get_claims(client)

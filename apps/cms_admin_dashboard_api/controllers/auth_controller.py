@@ -41,10 +41,15 @@ async def logout(
 
 
 @router.get("/me")
+@inject
 async def me(
+    request: Request,
     claims: IdTokenClaims = Depends(get_current_user),
-) -> dict:
-    return claims.model_dump(exclude_none=True)
+    auth_service: AuthService = Depends(Provide[ApplicationContainer.auth_service]),
+    profile_handler=Depends(Provide[ApplicationContainer.common.profile_handler]),
+):
+    client = auth_service.create_client(request)
+    return await profile_handler.get_user_profile(client)
 
 
 @router.get("/check")

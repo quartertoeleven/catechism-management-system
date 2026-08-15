@@ -9,6 +9,7 @@ members = [
     "cms-alembic",
     "cms-common",
     "cms-db-models",
+    "cms-integrations",
 ]
 
 [[package]]
@@ -262,6 +263,8 @@ version = "0.1.0"
 source = { virtual = "apps/cms_admin_dashboard_api" }
 dependencies = [
     { name = "cms-common" },
+    { name = "cms-integrations" },
+    { name = "dependency-injector" },
     { name = "fastapi", extra = ["standard"] },
     { name = "logto" },
     { name = "pyjwt", extra = ["crypto"] },
@@ -270,6 +273,8 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "cms-common", editable = "libs/cms_common" },
+    { name = "cms-integrations", editable = "libs/cms_integrations" },
+    { name = "dependency-injector" },
     { name = "fastapi", extras = ["standard"] },
     { name = "logto" },
     { name = "pyjwt", extras = ["crypto"] },
@@ -316,14 +321,25 @@ name = "cms-db-models"
 version = "0.1.0"
 source = { editable = "libs/cms_db_models" }
 dependencies = [
-    { name = "dependency-injector" },
     { name = "sqlalchemy" },
 ]
 
 [package.metadata]
+requires-dist = [{ name = "sqlalchemy" }]
+
+[[package]]
+name = "cms-integrations"
+version = "0.1.0"
+source = { editable = "libs/cms_integrations" }
+dependencies = [
+    { name = "logto" },
+    { name = "pyjwt", extra = ["crypto"] },
+]
+
+[package.metadata]
 requires-dist = [
-    { name = "dependency-injector" },
-    { name = "sqlalchemy" },
+    { name = "logto" },
+    { name = "pyjwt", extras = ["crypto"] },
 ]
 
 [[package]]

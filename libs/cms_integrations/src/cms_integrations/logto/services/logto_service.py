@@ -1,41 +1,10 @@
 import time
 from typing import Optional
 
-from logto import (
-    IdTokenClaims,
-    LogtoClient,
-    LogtoConfig,
-    Scope,
-    UserInfoResponse,
-    UserInfoScope,
-)
-from logto.Storage import Storage
-
-DEFAULT_SCOPES: list[Scope] = [
-    UserInfoScope.openid,
-    UserInfoScope.email,
-    UserInfoScope.custom_data,
-]
+from logto import IdTokenClaims, LogtoClient, UserInfoResponse
 
 
-class LogtoAuthClient:
-    def __init__(
-        self,
-        endpoint: str,
-        app_id: str,
-        app_secret: str,
-        scopes: Optional[list[Scope]] = None,
-    ) -> None:
-        self._config = LogtoConfig(
-            endpoint=endpoint,
-            appId=app_id,
-            appSecret=app_secret,
-            scopes=list(scopes if scopes is not None else DEFAULT_SCOPES),
-        )
-
-    def create_client(self, storage: Storage) -> LogtoClient:
-        return LogtoClient(self._config, storage)
-
+class LogtoService:
     async def build_sign_in_url(
         self, client: LogtoClient, redirect_uri: str
     ) -> str:

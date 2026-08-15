@@ -1,7 +1,7 @@
 from fastapi import Request
 from fastapi.responses import Response
 
-from cms_common.integrations.logto import LogtoSessionCookieStorage
+from cms_integrations.logto import LogtoSessionCookieStorage
 
 
 class FastAPISessionCookieStorage(LogtoSessionCookieStorage):

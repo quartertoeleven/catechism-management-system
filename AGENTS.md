@@ -24,6 +24,7 @@ All subprojects / libraries / collections in the monorepo will always have their
 - List of libraries:
     - `cms_db_models`: all SQLAlchemy models that map to the corresponding tables in the database
     - `cms_common`: common functions, services, helpers,... that utilized by other libs and apps within the whole stack
+    - `cms_integrations`: integration with external services
 
 ## Others
 

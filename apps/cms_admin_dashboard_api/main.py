@@ -14,7 +14,6 @@ def create_app() -> FastAPI:
         raise RuntimeError("AUTH_SESSION_SECRET is required")
 
     container = ApplicationContainer()
-    container.common().config.override(container.config)
     container.config.from_dict(
         {
             "version": os.getenv("CMS_VERSION", "0.1.0"),

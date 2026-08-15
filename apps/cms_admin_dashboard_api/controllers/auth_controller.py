@@ -48,7 +48,7 @@ async def my_profile(
     request: Request,
     auth_service: AuthService = Depends(Provide[ApplicationContainer.auth_service]),
     profile_handler: ProfileHandler = Depends(
-        Provide[ApplicationContainer.common.profile_handler]
+        Provide[ApplicationContainer.profile_handler]
     ),
 ) -> UserProfileResponse:
     client = auth_service.create_client(request)

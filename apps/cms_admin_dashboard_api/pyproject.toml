@@ -4,4 +4,15 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = ["fastapi[standard]", "logto", "pyjwt[crypto]"]
+dependencies = [
+    "cms-common",
+    "cms-integrations",
+    "dependency-injector",
+    "fastapi[standard]",
+    "logto",
+    "pyjwt[crypto]",
+]
+
+[tool.uv.sources]
+cms-common = { workspace = true }
+cms-integrations = { workspace = true }

@@ -7,7 +7,9 @@ members = [
     "catechismmanagementsystem",
     "cms-admin-dashboard-api",
     "cms-alembic",
+    "cms-common",
     "cms-db-models",
+    "cms-integrations",
 ]
 
 [[package]]
@@ -260,6 +262,9 @@ name = "cms-admin-dashboard-api"
 version = "0.1.0"
 source = { virtual = "apps/cms_admin_dashboard_api" }
 dependencies = [
+    { name = "cms-common" },
+    { name = "cms-integrations" },
+    { name = "dependency-injector" },
     { name = "fastapi", extra = ["standard"] },
     { name = "logto" },
     { name = "pyjwt", extra = ["crypto"] },
@@ -267,6 +272,9 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "cms-common", editable = "libs/cms_common" },
+    { name = "cms-integrations", editable = "libs/cms_integrations" },
+    { name = "dependency-injector" },
     { name = "fastapi", extras = ["standard"] },
     { name = "logto" },
     { name = "pyjwt", extras = ["crypto"] },
@@ -284,7 +292,28 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "cms-db-models", editable = "libs/cms_db_models" },
-    { name = "psycopg", extras = ["binary", "pool"], specifier = ">=3.3.4" },
+    { name = "psycopg", extras = ["binary", "pool"] },
+]
+
+[[package]]
+name = "cms-common"
+version = "0.1.0"
+source = { editable = "libs/cms_common" }
+dependencies = [
+    { name = "cms-db-models" },
+    { name = "logto" },
+    { name = "pydantic" },
+    { name = "pyjwt", extra = ["crypto"] },
+    { name = "sqlalchemy" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "cms-db-models", editable = "libs/cms_db_models" },
+    { name = "logto" },
+    { name = "pydantic" },
+    { name = "pyjwt", extras = ["crypto"] },
+    { name = "sqlalchemy" },
 ]
 
 [[package]]
@@ -296,7 +325,22 @@ dependencies = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "sqlalchemy", specifier = ">=2.0.51" }]
+requires-dist = [{ name = "sqlalchemy" }]
+
+[[package]]
+name = "cms-integrations"
+version = "0.1.0"
+source = { editable = "libs/cms_integrations" }
+dependencies = [
+    { name = "logto" },
+    { name = "pyjwt", extra = ["crypto"] },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "logto" },
+    { name = "pyjwt", extras = ["crypto"] },
+]
 
 [[package]]
 name = "colorama"

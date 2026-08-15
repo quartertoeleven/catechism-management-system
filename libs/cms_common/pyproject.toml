@@ -1,12 +1,22 @@
 [project]
-name = "cms-db-models"
+name = "cms-common"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
+authors = [
+    { name = "Quarter To Eleven", email = "quartertoeleven2024@outlook.com" }
+]
 requires-python = ">=3.14"
 dependencies = [
+    "cms-db-models",
+    "logto",
+    "pydantic",
+    "pyjwt[crypto]",
     "sqlalchemy",
 ]
+
+[tool.uv.sources]
+cms-db-models = { workspace = true }
 
 [build-system]
 requires = ["uv_build>=0.11.29,<0.12.0"]

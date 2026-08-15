@@ -1,8 +1,8 @@
 from dependency_injector import containers, providers
-from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from cms_common.integrations.logto import LogtoAuthClient
-from cms_common.profile import ProfileHandler
+from cms_common.profile import ProfileHandler, ProfileService
+from cms_db_models.containers import DBContainer
 
 
 class CommonContainer(containers.DeclarativeContainer):
@@ -15,19 +15,18 @@ class CommonContainer(containers.DeclarativeContainer):
         app_secret=config.logto.app_secret,
     )
 
-    database_engine = providers.Singleton(
-        create_async_engine,
-        config.database.url,
+    db = providers.Container(
+        DBContainer,
+        config=config,
     )
 
-    session_factory = providers.Singleton(
-        async_sessionmaker,
-        database_engine,
-        expire_on_commit=False,
+    profile_service = providers.Singleton(
+        ProfileService,
+        logto_auth_client=logto_auth_client,
+        session_factory=db.session_factory,
     )
 
     profile_handler = providers.Singleton(
         ProfileHandler,
-        logto_auth_client=logto_auth_client,
-        session_factory=session_factory,
+        profile_service=profile_service,
     )

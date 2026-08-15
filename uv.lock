@@ -316,11 +316,15 @@ name = "cms-db-models"
 version = "0.1.0"
 source = { editable = "libs/cms_db_models" }
 dependencies = [
+    { name = "dependency-injector" },
     { name = "sqlalchemy" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "sqlalchemy", specifier = ">=2.0.51" }]
+requires-dist = [
+    { name = "dependency-injector", specifier = ">=4.49.1" },
+    { name = "sqlalchemy", specifier = ">=2.0.51" },
+]
 
 [[package]]
 name = "colorama"

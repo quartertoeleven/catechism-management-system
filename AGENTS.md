@@ -14,6 +14,7 @@ All subprojects / libraries / collections in the monorepo will always have their
 - The applications and their modules should not depend or being reused within each others.
 - List of applications:
     - `cms_admin_dashboard_api`: REST API for Admin Dashboard
+    - `cms_admin_dashboard_api`: The Admin Dashboard front end
     - `cms_alembic`: database migration and operations using `alembic`
 
 ## Libraries
@@ -61,6 +62,20 @@ Those directories below are placed at the root folder of the workspace:
 - Always consider the dependency injection pattern when implementing code, unless being told otherwise.
 - Do not hard-code strings / values; extract them to constants.
 - Always use type hints.
+
+### FastAPI code convention
+- Each endpoints in a controller should have its own handlers.
+- The handlers, services, request model and response model should be put in `cms_common` by default (unless there are a good reason)
+- Naming convention for file name and class name:
+    
+    |                | File name               | File name example     | Class name           | Class name example |
+    |----------------|-------------------------|-----------------------|----------------------|--------------------|
+    | Controllers    | ends with `_controller` | example_controller.py | (none)               | (none)             |
+    | Handlers       | ends with `_handler`    | example_handler.py    | ends with `Handler`  | ExampleHandler     |
+    | Services       | ends with `_service`    | example_service.py    | ends with `Service`  | ExampleService     |
+    | Request model  | ends with `_request`    | example_request.py    | ends with `Request`  | ExampleRequest     |
+    | Response model | ends with `_response`   | example_response.py   | ends with `Response` | ExampleResponse    |
+    | Pydantic model | ends with `pd_schema`   | example_pd_schema.py  | ends with `PdSchema` | ExamplePdSchema    |
 
 ## For frontend
 (will update later)

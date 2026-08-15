@@ -9,7 +9,7 @@ class UserCustomData(BaseModel):
     catechist_code: Optional[str] = None
 
 
-class UserProfile(BaseModel):
+class UserProfileResponse(BaseModel):
     name: Optional[str] = None
     email: Optional[str] = None
     catechist: Optional[CatechistSchema] = None

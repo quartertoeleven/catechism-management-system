@@ -44,7 +44,6 @@ async def logout(
 @inject
 async def me(
     request: Request,
-    claims: IdTokenClaims = Depends(get_current_user),
     auth_service: AuthService = Depends(Provide[ApplicationContainer.auth_service]),
     profile_handler=Depends(Provide[ApplicationContainer.common.profile_handler]),
 ):

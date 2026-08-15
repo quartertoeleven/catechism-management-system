@@ -295,16 +295,20 @@ name = "cms-common"
 version = "0.1.0"
 source = { editable = "libs/cms_common" }
 dependencies = [
+    { name = "cms-db-models" },
     { name = "logto" },
     { name = "pydantic" },
     { name = "pyjwt", extra = ["crypto"] },
+    { name = "sqlalchemy" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "cms-db-models", editable = "libs/cms_db_models" },
     { name = "logto", specifier = ">=0.2.1" },
     { name = "pydantic", specifier = ">=2" },
     { name = "pyjwt", extras = ["crypto"] },
+    { name = "sqlalchemy", specifier = ">=2.0.51" },
 ]
 
 [[package]]

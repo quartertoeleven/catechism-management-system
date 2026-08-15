@@ -31,6 +31,12 @@ def create_app() -> FastAPI:
                 "CMS_ADMIN_DASHBOARD_FRONTEND_URL", "http://localhost:3000"
             ),
             "session_secret": session_secret,
+            "database": {
+                "url": os.getenv(
+                    "DATABASE_URL",
+                    "postgresql+psycopg://postgres:postgres@localhost:5432/catechism_management_system",
+                ),
+            },
             "cookie": {
                 "name": os.getenv(
                     "CMS_ADMIN_DASHBOARD_SESSION_COOKIE_NAME", "cms_session"

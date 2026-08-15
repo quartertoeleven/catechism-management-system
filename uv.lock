@@ -287,7 +287,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "cms-db-models", editable = "libs/cms_db_models" },
-    { name = "psycopg", extras = ["binary", "pool"], specifier = ">=3.3.4" },
+    { name = "psycopg", extras = ["binary", "pool"] },
 ]
 
 [[package]]
@@ -305,10 +305,10 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "cms-db-models", editable = "libs/cms_db_models" },
-    { name = "logto", specifier = ">=0.2.1" },
-    { name = "pydantic", specifier = ">=2" },
+    { name = "logto" },
+    { name = "pydantic" },
     { name = "pyjwt", extras = ["crypto"] },
-    { name = "sqlalchemy", specifier = ">=2.0.51" },
+    { name = "sqlalchemy" },
 ]
 
 [[package]]
@@ -322,8 +322,8 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "dependency-injector", specifier = ">=4.49.1" },
-    { name = "sqlalchemy", specifier = ">=2.0.51" },
+    { name = "dependency-injector" },
+    { name = "sqlalchemy" },
 ]
 
 [[package]]

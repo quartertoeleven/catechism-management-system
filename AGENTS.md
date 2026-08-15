@@ -59,11 +59,9 @@ Those directories below are placed at the root folder of the workspace:
 ## For Python
 
 - Use **PEP 8** as the style guide for Python code (utilize `ruff` whenever possible).
-- Always consider the dependency injection pattern when implementing code, unless being told otherwise.
+- Always consider the dependency injection pattern when implementing code in Applications, unless being told otherwise.
 - Do not hard-code strings / values; extract them to constants.
 - Always use type hints.
-
-### FastAPI code convention
 - Each endpoints in a controller should have its own handlers.
 - The handlers, services, request model and response model should be put in `cms_common` by default (unless there are a good reason)
 - Naming convention for file name and class name:
@@ -75,7 +73,6 @@ Those directories below are placed at the root folder of the workspace:
     | Services       | ends with `_service`    | example_service.py    | ends with `Service`  | ExampleService     |
     | Request model  | ends with `_request`    | example_request.py    | ends with `Request`  | ExampleRequest     |
     | Response model | ends with `_response`   | example_response.py   | ends with `Response` | ExampleResponse    |
-    | Pydantic model | ends with `pd_schema`   | example_pd_schema.py  | ends with `PdSchema` | ExamplePdSchema    |
 
 ## For frontend
 (will update later)

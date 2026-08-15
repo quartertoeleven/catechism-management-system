@@ -9,10 +9,10 @@ authors = [
 requires-python = ">=3.14"
 dependencies = [
     "cms-db-models",
-    "logto>=0.2.1",
-    "pydantic>=2",
+    "logto",
+    "pydantic",
     "pyjwt[crypto]",
-    "sqlalchemy>=2.0.51",
+    "sqlalchemy",
 ]
 
 [tool.uv.sources]

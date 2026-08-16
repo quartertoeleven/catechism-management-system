@@ -1,0 +1,17 @@
+[project]
+name = "cms-locale"
+version = "0.1.0"
+description = "i18n and l10n for the CMS (python only), based on gettext and Babel"
+readme = "README.md"
+authors = [
+    { name = "Quarter To Eleven", email = "quartertoeleven2024@outlook.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "Babel",
+    "pydantic",
+]
+
+[build-system]
+requires = ["uv_build>=0.11.29,<0.12.0"]
+build-backend = "uv_build"

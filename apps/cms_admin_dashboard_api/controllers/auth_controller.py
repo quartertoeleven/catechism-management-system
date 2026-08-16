@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, Request
 from dependency_injector.wiring import Provide, inject
 from fastapi.responses import RedirectResponse
+from cms_locale import Translator
 
 from containers import ApplicationContainer
+from dependencies.locale_dependency import get_locale_translator
 from handlers.login_handler import LoginHandler
 from handlers.callback_handler import CallbackHandler
 from handlers.logout_handler import LogoutHandler
@@ -29,8 +31,9 @@ async def callback(
     callback_handler: CallbackHandler = Depends(
         Provide[ApplicationContainer.callback_handler]
     ),
+    translator: Translator = Depends(get_locale_translator),
 ) -> RedirectResponse:
-    return await callback_handler.handle_sign_in_callback(request)
+    return await callback_handler.handle_sign_in_callback(request, translator)
 
 
 @router.get("/logout")
@@ -60,6 +63,7 @@ async def my_profile(
 async def check(
     request: Request,
     check_handler: CheckHandler = Depends(Provide[ApplicationContainer.check_handler]),
+    translator: Translator = Depends(get_locale_translator),
 ) -> dict:
-    claims = check_handler.get_current_user(request)
+    claims = check_handler.get_current_user(request, translator)
     return {"authenticated": True, "sub": claims.sub}

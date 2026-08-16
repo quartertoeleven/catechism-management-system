@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -46,6 +47,14 @@ def create_app() -> FastAPI:
                 == "true",
                 "samesite": os.getenv("AUTH_SESSION_COOKIE_SAMESITE", "lax"),
                 "max_age": int(os.getenv("AUTH_SESSION_COOKIE_MAX_AGE", "2592000")),
+            },
+            "locale": {
+                "catalogs_dir": str(
+                    Path(__file__).resolve().parent / "translations"
+                ),
+                "default_locale": "vi",
+                "supported_locales": ["en", "vi"],
+                "fallback_locale": "vi",
             },
         }
     )

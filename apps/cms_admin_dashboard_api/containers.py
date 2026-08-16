@@ -5,6 +5,7 @@ from cms_common.health_check.handlers.health_check_handler import HealthCheckHan
 from cms_common.health_check.services.health_service import HealthService
 from cms_common.profile import ProfileHandler, ProfileService
 from cms_integrations.logto import LogtoClientFactory, LogtoService
+from cms_locale import LocaleConfig, LocaleService 
 
 from handlers.login_handler import LoginHandler
 from handlers.callback_handler import CallbackHandler
@@ -15,6 +16,19 @@ from services.auth_service import AuthService
 
 class ApplicationContainer(containers.DeclarativeContainer):
     config = providers.Configuration()
+
+    locale_config = providers.Singleton(
+        LocaleConfig,
+        catalogs_dir=config.locale.catalogs_dir,
+        default_locale=config.locale.default_locale,
+        supported_locales=config.locale.supported_locales,
+        fallback_locale=config.locale.fallback_locale,
+    )
+
+    locale_service = providers.Singleton(
+        LocaleService,
+        config=locale_config,
+    )
 
     database_engine = providers.Singleton(
         create_async_engine,
@@ -94,5 +108,6 @@ class ApplicationContainer(containers.DeclarativeContainer):
         modules=[
             "controllers.health_controller",
             "controllers.auth_controller",
+            "dependencies.locale_dependency",
         ],
     )

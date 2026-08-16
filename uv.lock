@@ -10,6 +10,7 @@ members = [
     "cms-common",
     "cms-db-models",
     "cms-integrations",
+    "cms-locale",
 ]
 
 [[package]]
@@ -145,6 +146,15 @@ wheels = [
 ]
 
 [[package]]
+name = "babel"
+version = "2.18.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/7d/b2/51899539b6ceeeb420d40ed3cd4b7a40519404f9baf3d4ac99dc413a834b/babel-2.18.0.tar.gz", hash = "sha256:b80b99a14bd085fcacfa15c9165f651fbb3406e66cc603abf11c5750937c992d", size = 9959554, upload-time = "2026-02-01T12:30:56.078Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/77/f5/21d2de20e8b8b0408f0681956ca2c69f1320a3848ac50e6e7f39c6159675/babel-2.18.0-py3-none-any.whl", hash = "sha256:e2b422b277c2b9a9630c1d7903c2a00d0830c409c59ac8cae9081c92f1aeba35", size = 10196845, upload-time = "2026-02-01T12:30:53.445Z" },
+]
+
+[[package]]
 name = "catechismmanagementsystem"
 version = "0.1.0"
 source = { virtual = "." }
@@ -264,6 +274,7 @@ source = { virtual = "apps/cms_admin_dashboard_api" }
 dependencies = [
     { name = "cms-common" },
     { name = "cms-integrations" },
+    { name = "cms-locale" },
     { name = "dependency-injector" },
     { name = "fastapi", extra = ["standard"] },
     { name = "logto" },
@@ -274,6 +285,7 @@ dependencies = [
 requires-dist = [
     { name = "cms-common", editable = "libs/cms_common" },
     { name = "cms-integrations", editable = "libs/cms_integrations" },
+    { name = "cms-locale", editable = "libs/cms_locale" },
     { name = "dependency-injector" },
     { name = "fastapi", extras = ["standard"] },
     { name = "logto" },
@@ -340,6 +352,21 @@ dependencies = [
 requires-dist = [
     { name = "logto" },
     { name = "pyjwt", extras = ["crypto"] },
+]
+
+[[package]]
+name = "cms-locale"
+version = "0.1.0"
+source = { editable = "libs/cms_locale" }
+dependencies = [
+    { name = "babel" },
+    { name = "pydantic" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "babel" },
+    { name = "pydantic" },
 ]
 
 [[package]]

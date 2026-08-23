@@ -23,12 +23,7 @@ class LocaleService:
         return self._config
 
     def _catalog_path(self, domain: str, locale: str) -> Path:
-        return (
-            self._config.catalogs_dir
-            / locale
-            / "LC_MESSAGES"
-            / f"{domain}.mo"
-        )
+        return self._config.catalogs_dir / locale / "LC_MESSAGES" / f"{domain}.mo"
 
     def _validate_locale(self, locale: str) -> None:
         if locale not in self._config.supported_locales:
@@ -69,9 +64,7 @@ class LocaleService:
             if self._catalog_path(domain, locale).exists()
         )
 
-    def get_translator(
-        self, domain: str, locale: str | None = None
-    ) -> Translator:
+    def get_translator(self, domain: str, locale: str | None = None) -> Translator:
         return Translator(self, domain, locale or self._config.default_locale)
 
     def resolve_locale(self, accept_language: str | None) -> str:

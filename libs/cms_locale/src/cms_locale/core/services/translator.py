@@ -39,6 +39,4 @@ class Translator:
         return self._service.gettext(self._domain, self._locale, msgid)
 
     def ngettext(self, msgid: str, plural: str, n: int) -> str:
-        return self._service.ngettext(
-            self._domain, self._locale, msgid, plural, n
-        )
+        return self._service.ngettext(self._domain, self._locale, msgid, plural, n)

@@ -1,8 +1,8 @@
+from cms_db_models.directory.catechist import Catechist
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from cms_common.catechist.models.catechist_schema import CatechistSchema
-from cms_db_models.directory.catechist import Catechist
+from cms_common.models.catechist_schema import CatechistSchema
 
 
 class CatechistService:

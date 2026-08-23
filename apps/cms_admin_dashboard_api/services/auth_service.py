@@ -1,10 +1,9 @@
 from typing import Optional, Tuple
 
+from cms_integrations.logto import SIGN_IN_SESSION_KEY, LogtoClientFactory, LogtoService
 from fastapi import Request
 from fastapi.responses import RedirectResponse
 from logto import IdTokenClaims, LogtoClient
-
-from cms_integrations.logto import SIGN_IN_SESSION_KEY, LogtoClientFactory, LogtoService
 
 from services.session_storage import FastAPISessionCookieStorage
 
@@ -37,16 +36,16 @@ class AuthService:
     def _client_with_storage(
         self, request: Request
     ) -> Tuple[LogtoClient, FastAPISessionCookieStorage]:
-        storage = FastAPISessionCookieStorage.from_request(request, *self._cookie_params)
+        storage = FastAPISessionCookieStorage.from_request(
+            request, *self._cookie_params
+        )
         return self._logto_client_factory.create_client(storage), storage
 
     def create_client(self, request: Request) -> LogtoClient:
         client, _ = self._client_with_storage(request)
         return client
 
-    async def build_sign_in_url(
-        self, request: Request
-    ) -> RedirectResponse:
+    async def build_sign_in_url(self, request: Request) -> RedirectResponse:
         client, storage = self._client_with_storage(request)
         sign_in_url = await self._logto_service.build_sign_in_url(
             client, self._logto_redirect_uri
@@ -64,9 +63,7 @@ class AuthService:
         storage.write_to(response)
         return response
 
-    async def build_sign_out_url(
-        self, request: Request
-    ) -> RedirectResponse:
+    async def build_sign_out_url(self, request: Request) -> RedirectResponse:
         client, storage = self._client_with_storage(request)
         storage.delete(SIGN_IN_SESSION_KEY)
         sign_out_url = await self._logto_service.build_sign_out_url(

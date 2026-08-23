@@ -17,10 +17,7 @@ from pathlib import Path
 from babel.messages.frontend import CommandLineInterface
 
 DEFAULT_CATALOGS_DIR = (
-    Path(__file__).resolve().parents[1]
-    / "src"
-    / "cms_locale"
-    / "translations"
+    Path(__file__).resolve().parents[1] / "src" / "cms_locale" / "translations"
 )
 
 

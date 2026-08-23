@@ -1,8 +1,7 @@
 from uuid import UUID
 
-from pydantic import BaseModel
-
 from cms_db_models.enums import CatechistTitle, Gender
+from pydantic import BaseModel
 
 
 class CatechistSchema(BaseModel):

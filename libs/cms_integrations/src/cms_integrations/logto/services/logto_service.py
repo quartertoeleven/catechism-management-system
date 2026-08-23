@@ -5,9 +5,7 @@ from logto import IdTokenClaims, LogtoClient, UserInfoResponse
 
 
 class LogtoService:
-    async def build_sign_in_url(
-        self, client: LogtoClient, redirect_uri: str
-    ) -> str:
+    async def build_sign_in_url(self, client: LogtoClient, redirect_uri: str) -> str:
         return await client.signIn(redirect_uri)
 
     async def handle_sign_in_callback(

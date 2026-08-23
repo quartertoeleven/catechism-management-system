@@ -1,12 +1,11 @@
 import os
 from pathlib import Path
 
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-
 from containers import ApplicationContainer
 from controllers.auth_controller import router as auth_router
 from controllers.health_controller import router as health_router
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 
 def create_app() -> FastAPI:
@@ -41,17 +40,13 @@ def create_app() -> FastAPI:
                 "name": os.getenv(
                     "CMS_ADMIN_DASHBOARD_SESSION_COOKIE_NAME", "cms_session"
                 ),
-                "secure": os.getenv(
-                    "AUTH_SESSION_COOKIE_SECURE", "false"
-                ).lower()
+                "secure": os.getenv("AUTH_SESSION_COOKIE_SECURE", "false").lower()
                 == "true",
                 "samesite": os.getenv("AUTH_SESSION_COOKIE_SAMESITE", "lax"),
                 "max_age": int(os.getenv("AUTH_SESSION_COOKIE_MAX_AGE", "2592000")),
             },
             "locale": {
-                "catalogs_dir": str(
-                    Path(__file__).resolve().parent / "translations"
-                ),
+                "catalogs_dir": str(Path(__file__).resolve().parent / "translations"),
                 "default_locale": "vi",
                 "supported_locales": ["en", "vi"],
                 "fallback_locale": "vi",

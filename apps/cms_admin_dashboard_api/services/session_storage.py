@@ -1,7 +1,6 @@
+from cms_integrations.logto import LogtoSessionCookieStorage
 from fastapi import Request
 from fastapi.responses import Response
-
-from cms_integrations.logto import LogtoSessionCookieStorage
 
 
 class FastAPISessionCookieStorage(LogtoSessionCookieStorage):
@@ -12,7 +11,7 @@ class FastAPISessionCookieStorage(LogtoSessionCookieStorage):
         secret: str,
         cookie_name: str,
         cookie_secure: bool,
-        cookie_samesite: str ,
+        cookie_samesite: str,
         cookie_max_age: int,
     ) -> "LogtoSessionCookieStorage":
         return cls.from_cookies(

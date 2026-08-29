@@ -1,19 +1,15 @@
-from uuid import UUID, uuid7
-
-from sqlalchemy import Enum, String, func
+from sqlalchemy import Enum, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from cms_db_models.base import Base
+from cms_db_models.mixins import AuditMixin, Uuid7PrimaryKeyMixin
 from cms_db_models.enums import CatechistTitle, Gender
 
 
-class Catechist(Base):
+class Catechist(Uuid7PrimaryKeyMixin, AuditMixin, Base):
     __tablename__ = "catechists"
     __table_args__ = {"schema": "directory"}
 
-    id: Mapped[UUID] = mapped_column(
-        primary_key=True, default=uuid7, server_default=func.uuidv7()
-    )
     code: Mapped[str] = mapped_column(
         String(20), nullable=False, unique=True
     )  # should be GLV-INITIAL (for example: GLV-NQM)

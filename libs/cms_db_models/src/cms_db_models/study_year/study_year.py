@@ -4,12 +4,11 @@ from sqlalchemy.orm import Mapped, mapped_column
 from cms_db_models.base import Base
 from cms_db_models.mixins import (
     AuditMixin,
-    SoftDeleteMixin,
     Uuid7PrimaryKeyMixin,
 )
 
 
-class StudyYear(Uuid7PrimaryKeyMixin, SoftDeleteMixin, AuditMixin, Base):
+class StudyYear(Uuid7PrimaryKeyMixin, AuditMixin, Base):
     __tablename__ = "study_years"
     __table_args__ = {"schema": "study_year"}
 

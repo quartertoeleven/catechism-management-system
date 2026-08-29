@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 from uuid import UUID
 
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, declared_attr, mapped_column, relationship
 
 if TYPE_CHECKING:
     from cms_db_models.study_year import StudyYear
@@ -17,4 +17,7 @@ class StudyYearFk:
         nullable=False,
         index=True,
     )
-    study_year: Mapped["StudyYear"] = relationship("StudyYear")
+
+    @declared_attr
+    def study_year(cls) -> Mapped["StudyYear"]:
+        return relationship("StudyYear")

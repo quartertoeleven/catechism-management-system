@@ -1,5 +1,5 @@
 def main():
-    print("Hello from cms-alembic!")
+    print("Hello from cms-db-ops!")
 
 
 if __name__ == "__main__":

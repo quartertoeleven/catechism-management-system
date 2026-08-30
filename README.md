@@ -39,7 +39,7 @@ uv sync
 
 # Run database migrations
 uv run --env-file infrastructure/local/.env \
-  --directory apps/cms_alembic alembic upgrade head
+  --directory apps/cms_db_ops alembic upgrade head
 
 # Start the API server (hot-reload)
 uv run --directory apps/cms_admin_dashboard_api \

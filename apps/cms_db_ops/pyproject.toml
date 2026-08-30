@@ -1,5 +1,5 @@
 [project]
-name = "cms-alembic"
+name = "cms-db-ops"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"

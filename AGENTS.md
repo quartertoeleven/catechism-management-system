@@ -15,7 +15,7 @@ All subprojects / libraries / collections in the monorepo will always have their
 - List of applications:
     - `cms_admin_dashboard_api`: REST API for Admin Dashboard
     - `cms_admin_dashboard_api`: The Admin Dashboard front end
-    - `cms_alembic`: database migration and operations using `alembic`
+    - `cms_db_ops`: database migration and operations
 
 ## Libraries
 

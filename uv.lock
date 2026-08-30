@@ -6,9 +6,9 @@ requires-python = ">=3.14"
 members = [
     "catechismmanagementsystem",
     "cms-admin-dashboard-api",
-    "cms-alembic",
     "cms-common",
     "cms-db-models",
+    "cms-db-ops",
     "cms-integrations",
     "cms-locale",
 ]
@@ -293,21 +293,6 @@ requires-dist = [
 ]
 
 [[package]]
-name = "cms-alembic"
-version = "0.1.0"
-source = { virtual = "apps/cms_alembic" }
-dependencies = [
-    { name = "cms-db-models" },
-    { name = "psycopg", extra = ["binary", "pool"] },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "cms-db-models", editable = "libs/cms_db_models" },
-    { name = "psycopg", extras = ["binary", "pool"] },
-]
-
-[[package]]
 name = "cms-common"
 version = "0.1.0"
 source = { editable = "libs/cms_common" }
@@ -338,6 +323,21 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [{ name = "sqlalchemy" }]
+
+[[package]]
+name = "cms-db-ops"
+version = "0.1.0"
+source = { virtual = "apps/cms_db_ops" }
+dependencies = [
+    { name = "cms-db-models" },
+    { name = "psycopg", extra = ["binary", "pool"] },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "cms-db-models", editable = "libs/cms_db_models" },
+    { name = "psycopg", extras = ["binary", "pool"] },
+]
 
 [[package]]
 name = "cms-integrations"

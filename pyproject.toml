@@ -17,7 +17,7 @@ dependencies = [
 [tool.uv.workspace]
 members = [
     "apps/cms_admin_dashboard_api",
-    "apps/cms_alembic",
+    "apps/cms_db_ops",
     "libs/cms_db_models",
     "libs/cms_common",
     "libs/cms_integrations",

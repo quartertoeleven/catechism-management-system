@@ -23,7 +23,9 @@ class UnitStudent(Base):
         ForeignKey("directory.students.id", ondelete="CASCADE"), primary_key=True
     )
 
-    unit: Mapped["Unit"] = relationship("Unit", foreign_keys=[unit_id])
+    unit: Mapped["Unit"] = relationship(
+        "Unit", foreign_keys=[unit_id], overlaps="students"
+    )
     student: Mapped["Student"] = relationship(
-        "Student", foreign_keys=[student_id]
+        "Student", foreign_keys=[student_id], overlaps="students"
     )

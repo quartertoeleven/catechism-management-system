@@ -25,7 +25,9 @@ class UnitCatechist(Base):
         primary_key=True,
     )
 
-    unit: Mapped["Unit"] = relationship("Unit", foreign_keys=[unit_id])
+    unit: Mapped["Unit"] = relationship(
+        "Unit", foreign_keys=[unit_id], overlaps="catechists,units"
+    )
     catechist: Mapped["Catechist"] = relationship(
-        "Catechist", foreign_keys=[catechist_id]
+        "Catechist", foreign_keys=[catechist_id], overlaps="catechists,units"
     )

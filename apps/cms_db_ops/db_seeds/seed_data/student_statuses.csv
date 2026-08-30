@@ -1,0 +1,4 @@
+id,code,name,is_default
+1,DANGHOC,Đang học,true
+2,BAOLUU,Bảo lưu,false
+99,THOIHOC,Đã thôi học,false

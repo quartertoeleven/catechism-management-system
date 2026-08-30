@@ -34,8 +34,8 @@ class Unit(Uuid7PrimaryKeyMixin, StudyYearFk, AuditMixin, Base):
     # relationship
     grade: Mapped["Grade"] = relationship("Grade", foreign_keys=[grade_id])
     catechists: Mapped[list["Catechist"]] = relationship(
-        "Catechist", secondary="UnitCatechist", back_populates="units"
+        "Catechist", secondary="study_year.unit_catechists", back_populates="units"
     )
     students: Mapped[list["Student"]] = relationship(
-        "Student", secondary="UnitStudent"
+        "Student", secondary="study_year.unit_students"
     )

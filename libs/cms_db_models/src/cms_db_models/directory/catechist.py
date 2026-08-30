@@ -27,5 +27,5 @@ class Catechist(Uuid7PrimaryKeyMixin, AuditMixin, Base):
 
     # relationship
     units: Mapped[list["Unit"]] = relationship(
-        "Unit", secondary="UnitCatechist", back_populates="catechists"
+        "Unit", secondary="study_year.unit_catechists", back_populates="catechists"
     )

@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Start CMS Admin Dashboard API - Dev",
+            "label": "CMS Admin Dashboard - Start API (Dev mode)",
             "type": "shell",
             "command": "uv",
             "args": [
@@ -31,7 +31,7 @@
             }
         },
         {
-            "label": "Start CMS Admin Dashboard App - Dev",
+            "label": "CMS Admin Dashboard - Start App (Dev mode)",
             "type": "shell",
             "command": "pnpm",
             "args": [
@@ -54,8 +54,8 @@
         {
             "label": "Start CMS Admin Dashboard (Fullstack) - Dev",
             "dependsOn": [
-                "Start CMS Admin Dashboard API - Dev",
-                "Start CMS Admin Dashboard App - Dev"
+                "CMS Admin Dashboard - Start API (Dev mode)",
+                "CMS Admin Dashboard - Start App (Dev mode)"
             ]
         },
         {
@@ -135,6 +135,94 @@
                     ]
                 }
             }
+        },
+        {
+            "label": "Alembic - Auto generate migration",
+            "type": "shell",
+            "command": "raw=\"${input:alembicRevisionMessage}\"; stripped=\"$(printf '%s' \"$raw\" | tr -d '[:space:]')\"; if [ -z \"$stripped\" ]; then echo \"ERROR: Migration message (-m) is required. Aborting.\"; exit 1; fi; uv run --env-file ../../infrastructure/local/.env --directory apps/cms_db_ops alembic revision --autogenerate -m \"$raw\"",
+            "options": {
+                "shell": {
+                    "args": [
+                        "-l",
+                        "-ic"
+                    ]
+                }
+            }
+        },
+        {
+            "label": "Alembic - Run upgrade",
+            "type": "shell",
+            "command": "raw=\"${input:alembicUpgradeTarget}\"; if [ -z \"$(printf '%s' \"$raw\" | tr -d '[:space:]')\" ]; then target=\"head\"; else target=\"$raw\"; fi; uv run --env-file ../../infrastructure/local/.env --directory apps/cms_db_ops alembic upgrade \"$target\"",
+            "options": {
+                "shell": {
+                    "args": ["-l", "-ic"]
+                }
+            }
+        },
+        {
+            "label": "Alembic - Run downgrade",
+            "type": "shell",
+            "command": "raw=\"${input:alembicDowngradeTarget}\"; if [ -z \"$(printf '%s' \"$raw\" | tr -d '[:space:]')\" ]; then target=\"-1\"; else target=\"$raw\"; fi; uv run --env-file ../../infrastructure/local/.env --directory apps/cms_db_ops alembic downgrade \"$target\"",
+            "options": {
+                "shell": {
+                    "args": ["-l", "-ic"]
+                }
+            }
+        },
+        {
+            "label": "Alembic - Check for migration",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "--env-file",
+                "../../infrastructure/local/.env",
+                "--directory",
+                "apps/cms_db_ops",
+                "alembic",
+                "check"
+            ],
+            "options": {
+                "shell": {
+                    "args": ["-l", "-ic"]
+                }
+            }
+        },
+        {
+            "label": "Ruff - Format whole project",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "ruff",
+                "format",
+                "."
+            ],
+            "options": {
+                "shell": {
+                    "args": ["-l", "-ic"]
+                }
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "id": "alembicRevisionMessage",
+            "type": "promptString",
+            "description": "Migration message for -m",
+            "default": ""
+        },
+        {
+            "id": "alembicUpgradeTarget",
+            "type": "promptString",
+            "description": "Upgrade target (revision id, +1, etc.). Empty = head",
+            "default": ""
+        },
+        {
+            "id": "alembicDowngradeTarget",
+            "type": "promptString",
+            "description": "Downgrade target (revision id, -1, base). Empty = -1",
+            "default": ""
         }
     ]
 }

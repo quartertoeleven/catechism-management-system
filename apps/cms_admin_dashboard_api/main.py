@@ -4,6 +4,7 @@ from pathlib import Path
 from containers import ApplicationContainer
 from controllers.auth_controller import router as auth_router
 from controllers.health_controller import router as health_router
+from controllers.study_year_controller import router as study_year_router
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -25,6 +26,13 @@ def create_app() -> FastAPI:
                     "CMS_ADMIN_DASHBOARD_LOGTO_REDIRECT_URI",
                     "http://localhost:8000/dashboard-api/auth/callback",
                 ),
+                "resources": [
+                    resource.strip()
+                    for resource in os.getenv(
+                        "CMS_ADMIN_DASHBOARD_LOGTO_RESOURCES", ""
+                    ).split(",")
+                    if resource.strip()
+                ],
             },
             "frontend_url": os.getenv(
                 "CMS_ADMIN_DASHBOARD_FRONTEND_URL", "http://localhost:3000"
@@ -74,4 +82,5 @@ def create_app() -> FastAPI:
     )
     application.include_router(health_router, prefix="/dashboard-api")
     application.include_router(auth_router, prefix="/dashboard-api")
+    application.include_router(study_year_router, prefix="/dashboard-api")
     return application

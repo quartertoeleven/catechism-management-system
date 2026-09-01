@@ -1,4 +1,3 @@
-import time
 from typing import Optional
 
 from logto import IdTokenClaims, LogtoClient, UserInfoResponse
@@ -21,10 +20,21 @@ class LogtoService:
     async def get_user_info(self, client: LogtoClient) -> UserInfoResponse:
         return await client.fetchUserInfo()
 
-    def get_claims(self, client: LogtoClient) -> Optional[IdTokenClaims]:
+    def get_raw_id_token(self, client: LogtoClient) -> Optional[str]:
+        return client._storage.get("idToken")
+
+    async def verify_id_token(self, client: LogtoClient, raw_token: str) -> None:
+        oidc_core = await client.getOidcCore()
+        oidc_core.verifyIdToken(raw_token, client.config.appId)
+
+    async def get_claims(self, client: LogtoClient) -> Optional[IdTokenClaims]:
         if not client.isAuthenticated():
             return None
-        claims = client.getIdTokenClaims()
-        if claims.exp < int(time.time()):
+        raw_token = self.get_raw_id_token(client)
+        if raw_token is None:
             return None
-        return claims
+        try:
+            await self.verify_id_token(client, raw_token)
+        except Exception:
+            return None
+        return client.getIdTokenClaims()

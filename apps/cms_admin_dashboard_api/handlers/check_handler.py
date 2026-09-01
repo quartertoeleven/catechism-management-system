@@ -10,7 +10,7 @@ class CheckHandler(BaseAsyncHandler):
         self._auth_service = auth_service
 
     async def handle(self, request: Request, translator: Translator) -> CheckResponse:
-        claims = self._auth_service.get_current_user(request)
+        claims = await self._auth_service.get_current_user(request)
         if claims is None:
             raise HTTPException(
                 status_code=401,

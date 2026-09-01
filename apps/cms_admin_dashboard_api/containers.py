@@ -1,4 +1,4 @@
-from cms_common.services import ProfileService
+from cms_common.services import ProfileService, StudyYearService
 from cms_integrations.logto import LogtoClientFactory, LogtoService
 from cms_locale import LocaleConfig, LocaleService
 from dependency_injector import containers, providers
@@ -7,6 +7,7 @@ from handlers.check_handler import CheckHandler
 from handlers.health_check_handler import HealthCheckHandler
 from handlers.login_handler import LoginHandler
 from handlers.logout_handler import LogoutHandler
+from handlers.create_study_year_handler import CreateStudyYearHandler
 from handlers.profile_handler import ProfileHandler
 from services.auth_service import AuthService
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
@@ -44,6 +45,7 @@ class ApplicationContainer(containers.DeclarativeContainer):
         endpoint=config.logto.endpoint,
         app_id=config.logto.app_id,
         app_secret=config.logto.app_secret,
+        resources=config.logto.resources,
     )
 
     logto_service = providers.Singleton(LogtoService)
@@ -78,6 +80,14 @@ class ApplicationContainer(containers.DeclarativeContainer):
         profile_service=profile_service,
     )
 
+    study_year_service = providers.Singleton(StudyYearService)
+
+    create_study_year_handler = providers.Singleton(
+        CreateStudyYearHandler,
+        study_year_service=study_year_service,
+        session_factory=session_factory,
+    )
+
     login_handler = providers.Singleton(
         LoginHandler,
         auth_service=auth_service,
@@ -102,6 +112,8 @@ class ApplicationContainer(containers.DeclarativeContainer):
         modules=[
             "controllers.health_controller",
             "controllers.auth_controller",
+            "controllers.study_year_controller",
+            "dependencies.auth_dependency",
             "dependencies.locale_dependency",
         ],
     )

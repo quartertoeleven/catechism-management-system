@@ -73,6 +73,6 @@ class AuthService:
         storage.write_to(response)
         return response
 
-    def get_current_user(self, request: Request) -> Optional[IdTokenClaims]:
+    async def get_current_user(self, request: Request) -> Optional[IdTokenClaims]:
         client, _ = self._client_with_storage(request)
-        return self._logto_service.get_claims(client)
+        return await self._logto_service.get_claims(client)

@@ -2,8 +2,15 @@ from typing import Optional
 
 from logto import IdTokenClaims, LogtoClient, UserInfoResponse
 
+from cms_integrations.logto.services.jwt_verification_service import (
+    JwtVerificationService,
+)
+
 
 class LogtoService:
+    def __init__(self, jwt_verification_service: JwtVerificationService) -> None:
+        self._jwt_verification_service = jwt_verification_service
+
     async def build_sign_in_url(self, client: LogtoClient, redirect_uri: str) -> str:
         return await client.signIn(redirect_uri)
 
@@ -23,18 +30,10 @@ class LogtoService:
     def get_raw_id_token(self, client: LogtoClient) -> Optional[str]:
         return client._storage.get("idToken")
 
-    async def verify_id_token(self, client: LogtoClient, raw_token: str) -> None:
-        oidc_core = await client.getOidcCore()
-        oidc_core.verifyIdToken(raw_token, client.config.appId)
-
     async def get_claims(self, client: LogtoClient) -> Optional[IdTokenClaims]:
         if not client.isAuthenticated():
             return None
         raw_token = self.get_raw_id_token(client)
         if raw_token is None:
             return None
-        try:
-            await self.verify_id_token(client, raw_token)
-        except Exception:
-            return None
-        return client.getIdTokenClaims()
+        return await self._jwt_verification_service.verify(raw_token)

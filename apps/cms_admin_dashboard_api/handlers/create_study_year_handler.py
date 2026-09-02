@@ -1,5 +1,5 @@
 from cms_common.services.study_year_service_interface import StudyYearServiceInterface
-from fastapi import HTTPException, Request
+from fastapi import HTTPException
 from handlers.base_handler import BaseAsyncHandler
 from models.create_study_year_request import CreateStudyYearRequest
 from models.create_study_year_response import CreateStudyYearResponse
@@ -15,9 +15,7 @@ class CreateStudyYearHandler(BaseAsyncHandler):
         self._study_year_service = study_year_service
         self._session_factory = session_factory
 
-    async def handle(self, request: Request) -> CreateStudyYearResponse:
-        body = CreateStudyYearRequest.model_validate(await request.json())
-
+    async def handle(self, body: CreateStudyYearRequest) -> CreateStudyYearResponse:
         async with self._session_factory() as session:
             existing = await self._study_year_service.get_by_code(session, body.code)
             if existing is not None:

@@ -1,5 +1,9 @@
 from cms_common.services import ProfileService, StudyYearService
-from cms_integrations.logto import LogtoClientFactory, LogtoService
+from cms_integrations.logto import (
+    JwtVerificationService,
+    LogtoClientFactory,
+    LogtoService,
+)
 from cms_locale import LocaleConfig, LocaleService
 from dependency_injector import containers, providers
 from handlers.callback_handler import CallbackHandler
@@ -48,7 +52,16 @@ class ApplicationContainer(containers.DeclarativeContainer):
         resources=config.logto.resources,
     )
 
-    logto_service = providers.Singleton(LogtoService)
+    jwt_verification_service = providers.Singleton(
+        JwtVerificationService,
+        endpoint=config.logto.endpoint,
+        app_id=config.logto.app_id,
+    )
+
+    logto_service = providers.Singleton(
+        LogtoService,
+        jwt_verification_service=jwt_verification_service,
+    )
 
     auth_service = providers.Singleton(
         AuthService,

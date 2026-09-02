@@ -10,6 +10,7 @@ requires-python = ">=3.14"
 dependencies = [
     "cms-db-models",
     "logto",
+    "pydantic-settings",
     "pydantic",
     "pyjwt[crypto]",
     "sqlalchemy",

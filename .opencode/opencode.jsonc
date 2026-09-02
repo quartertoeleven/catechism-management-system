@@ -5,6 +5,20 @@
       "git *": "deny",
       "rm *": "deny",
       "mv *": "deny"
+    },
+    "read": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.*": "deny",
+      "*.env.example": "allow"
+    },
+    "grep": {
+      "**/.env*": "deny",
+      "**/.env.example": "allow"
+    },
+    "glob": {
+      "**/.env*": "deny",
+      "**/.env.example": "allow"
     }
   }
 }

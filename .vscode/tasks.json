@@ -4,7 +4,30 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "CMS Admin Dashboard - Compile Locale",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "--project",
+                "libs/cms_locale",
+                "libs/cms_locale/scripts/compile_catalogs.py",
+                "apps/cms_admin_dashboard_api/translations"
+            ],
+            "options": {
+                "shell": {
+                    "args": [
+                        "-l",
+                        "-ic"
+                    ]
+                }
+            }
+        },
+        {
             "label": "CMS Admin Dashboard - Start API (Dev mode)",
+            "dependsOn": [
+                "CMS Admin Dashboard - Compile Locale"
+            ],
             "type": "shell",
             "command": "uv",
             "args": [
@@ -155,7 +178,10 @@
             "command": "raw=\"${input:alembicUpgradeTarget}\"; if [ -z \"$(printf '%s' \"$raw\" | tr -d '[:space:]')\" ]; then target=\"head\"; else target=\"$raw\"; fi; uv run --env-file ../../infrastructure/local/.env --directory apps/cms_db_ops alembic upgrade \"$target\"",
             "options": {
                 "shell": {
-                    "args": ["-l", "-ic"]
+                    "args": [
+                        "-l",
+                        "-ic"
+                    ]
                 }
             }
         },
@@ -165,7 +191,10 @@
             "command": "raw=\"${input:alembicDowngradeTarget}\"; if [ -z \"$(printf '%s' \"$raw\" | tr -d '[:space:]')\" ]; then target=\"-1\"; else target=\"$raw\"; fi; uv run --env-file ../../infrastructure/local/.env --directory apps/cms_db_ops alembic downgrade \"$target\"",
             "options": {
                 "shell": {
-                    "args": ["-l", "-ic"]
+                    "args": [
+                        "-l",
+                        "-ic"
+                    ]
                 }
             }
         },
@@ -185,7 +214,10 @@
             ],
             "options": {
                 "shell": {
-                    "args": ["-l", "-ic"]
+                    "args": [
+                        "-l",
+                        "-ic"
+                    ]
                 }
             }
         },
@@ -204,7 +236,10 @@
             ],
             "options": {
                 "shell": {
-                    "args": ["-l", "-ic"]
+                    "args": [
+                        "-l",
+                        "-ic"
+                    ]
                 }
             }
         },
@@ -220,7 +255,10 @@
             ],
             "options": {
                 "shell": {
-                    "args": ["-l", "-ic"]
+                    "args": [
+                        "-l",
+                        "-ic"
+                    ]
                 }
             }
         }

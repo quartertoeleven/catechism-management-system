@@ -13,7 +13,7 @@ class JwtVerificationService:
         self._endpoint = endpoint.rstrip("/") + "/oidc"
         self._app_id = app_id
         self._jwks_client = PyJWKClient(
-            f"{self._endpoint}/oidc/jwks",
+            f"{self._endpoint}/jwks",
             cache_jwk_set=True,
             cache_keys=False,
         )

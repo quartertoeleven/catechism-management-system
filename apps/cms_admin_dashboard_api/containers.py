@@ -1,3 +1,4 @@
+from cms_common.models import CmsAdminDashboardSettings
 from cms_common.services import ProfileService, StudyYearService
 from cms_integrations.logto import (
     JwtVerificationService,
@@ -22,10 +23,10 @@ class ApplicationContainer(containers.DeclarativeContainer):
 
     locale_config = providers.Singleton(
         LocaleConfig,
-        catalogs_dir=config.locale.catalogs_dir,
-        default_locale=config.locale.default_locale,
-        supported_locales=config.locale.supported_locales,
-        fallback_locale=config.locale.fallback_locale,
+        catalogs_dir=config.locale_catalogs_dir,
+        default_locale=config.locale_default_locale,
+        supported_locales=config.locale_supported_locales,
+        fallback_locale=config.locale_fallback_locale,
     )
 
     locale_service = providers.Singleton(
@@ -35,7 +36,7 @@ class ApplicationContainer(containers.DeclarativeContainer):
 
     database_engine = providers.Singleton(
         create_async_engine,
-        config.database.url,
+        config.common.database_url,
     )
 
     session_factory = providers.Singleton(
@@ -46,16 +47,16 @@ class ApplicationContainer(containers.DeclarativeContainer):
 
     logto_client_factory = providers.Singleton(
         LogtoClientFactory,
-        endpoint=config.logto.endpoint,
-        app_id=config.logto.app_id,
-        app_secret=config.logto.app_secret,
-        resources=config.logto.resources,
+        endpoint=config.logto_endpoint,
+        app_id=config.logto_app_id,
+        app_secret=config.logto_app_secret,
+        resources=config.logto_resources,
     )
 
     jwt_verification_service = providers.Singleton(
         JwtVerificationService,
-        endpoint=config.logto.endpoint,
-        app_id=config.logto.app_id,
+        endpoint=config.logto_endpoint,
+        app_id=config.logto_app_id,
     )
 
     logto_service = providers.Singleton(
@@ -67,13 +68,13 @@ class ApplicationContainer(containers.DeclarativeContainer):
         AuthService,
         logto_client_factory=logto_client_factory,
         logto_service=logto_service,
-        logto_redirect_uri=config.logto.redirect_uri,
+        logto_redirect_uri=config.logto_redirect_uri,
         frontend_url=config.frontend_url,
-        session_secret=config.session_secret,
-        cookie_name=config.cookie.name,
-        cookie_secure=config.cookie.secure,
-        cookie_samesite=config.cookie.samesite,
-        cookie_max_age=config.cookie.max_age,
+        session_secret=config.common.session_secret,
+        cookie_name=config.common.cookie_name,
+        cookie_secure=config.common.cookie_secure,
+        cookie_samesite=config.common.cookie_samesite,
+        cookie_max_age=config.common.cookie_max_age,
     )
 
     health_check_handler = providers.Singleton(

@@ -14,8 +14,8 @@ router = APIRouter(prefix="/study-years", tags=["study-years"])
 @router.post("/")
 @inject
 async def create_study_year(
-    claims: IdTokenClaims = Depends(get_authenticated_user),
     body: CreateStudyYearRequest = ...,
+    claims: IdTokenClaims = Depends(get_authenticated_user),
     create_study_year_handler: CreateStudyYearHandler = Depends(
         Provide[ApplicationContainer.create_study_year_handler]
     ),

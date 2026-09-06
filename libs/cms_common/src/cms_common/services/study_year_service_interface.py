@@ -15,6 +15,9 @@ class StudyYearServiceInterface(ABC):
     async def get_current_active(self, session: AsyncSession) -> StudyYear | None: ...
 
     @abstractmethod
+    async def list_all(self, session: AsyncSession) -> list[StudyYear]: ...
+
+    @abstractmethod
     async def create(
         self,
         session: AsyncSession,

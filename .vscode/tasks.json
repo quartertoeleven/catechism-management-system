@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "CMS Admin Dashboard - Compile Locale",
+            "label": "CMS Admin Dashboard - Compile API Locale",
             "type": "shell",
             "command": "uv",
             "args": [
@@ -26,7 +26,7 @@
         {
             "label": "CMS Admin Dashboard - Start API (Dev mode)",
             "dependsOn": [
-                "CMS Admin Dashboard - Compile Locale"
+                "CMS Admin Dashboard - Compile API Locale"
             ],
             "type": "shell",
             "command": "uv",
@@ -54,7 +54,27 @@
             }
         },
         {
+            "label": "CMS Admin Dashboard - Generate OpenAPI Client",
+            "type": "shell",
+            "command": "uv run python generate_openapi_spec.py && pnpx @hey-api/openapi-ts@next -i openapi.json -o ../cms_admin_dashboard_app/app/generated && rm openapi.json",
+            "presentation": {
+                "group": "cms-admin-dashboard"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/apps/cms_admin_dashboard_api",
+                "shell": {
+                    "args": [
+                        "-l",
+                        "-ic"
+                    ]
+                }
+            }
+        },
+        {
             "label": "CMS Admin Dashboard - Start App (Dev mode)",
+            "dependsOn": [
+                "CMS Admin Dashboard - Generate OpenAPI Client"
+            ],
             "type": "shell",
             "command": "pnpm",
             "args": [

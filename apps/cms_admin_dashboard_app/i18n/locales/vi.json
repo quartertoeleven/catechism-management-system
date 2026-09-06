@@ -1,0 +1,56 @@
+{
+  "menu": {
+    "studyYear": {
+      "label": "Năm học",
+      "info": "Thông tin",
+      "schedules": "Lịch sinh hoạt"
+    },
+    "grade": {
+      "label": "Khối",
+      "dashboard": "Tổng quan",
+      "schedules": "Lịch sinh hoạt khối",
+      "exams": "Bài kiểm tra",
+      "unitList": "Danh sách lớp"
+    },
+    "class": {
+      "label": "Lớp",
+      "dashboard": "Tổng quan",
+      "studentList": "Danh sách học sinh",
+      "attendances": "Điểm danh",
+      "examScores": "Điểm kiểm tra"
+    },
+    "adminArea": {
+      "label": "Khu vực quản trị",
+      "listsManagement": "Quản lý danh mục"
+    },
+    "willBeRemoved": {
+      "label": "(sẽ xóa)",
+      "home": "Trang chủ",
+      "inbox": "Hộp thư",
+      "customers": "Khách hàng",
+      "settings": {
+        "label": "Cài đặt",
+        "general": "Chung",
+        "members": "Thành viên",
+        "notifications": "Thông báo",
+        "security": "Bảo mật"
+      },
+      "feedback": "Phản hồi",
+      "helpAndSupport": "Hỗ trợ"
+    }
+  },
+  "search": {
+    "goTo": "Đến",
+    "code": "Mã nguồn",
+    "viewPageSource": "Xem mã trang"
+  },
+  "cookie": {
+    "message": "Chúng tôi sử dụng cookie để nâng cao trải nghiệm của bạn trên trang web.",
+    "accept": "Chấp nhận",
+    "optOut": "Từ chối"
+  },
+  "listManagement": {
+    "studyYears": "Năm học",
+    "scheduleActivityType": "Loại hoạt động"
+  }
+}

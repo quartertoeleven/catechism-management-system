@@ -16,6 +16,12 @@ class StudyYearService(StudyYearServiceInterface):
         )
         return result.scalar_one_or_none()
 
+    async def list_all(self, session: AsyncSession) -> list[StudyYear]:
+        result = await session.execute(
+            select(StudyYear).order_by(StudyYear.id.desc())
+        )
+        return list(result.scalars().all())
+
     async def create(
         self,
         session: AsyncSession,

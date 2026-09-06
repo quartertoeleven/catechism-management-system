@@ -13,6 +13,7 @@ from handlers.health_check_handler import HealthCheckHandler
 from handlers.login_handler import LoginHandler
 from handlers.logout_handler import LogoutHandler
 from handlers.create_study_year_handler import CreateStudyYearHandler
+from handlers.list_study_years_handler import ListStudyYearsHandler
 from handlers.profile_handler import ProfileHandler
 from services.auth_service import AuthService
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
@@ -98,6 +99,12 @@ class ApplicationContainer(containers.DeclarativeContainer):
 
     create_study_year_handler = providers.Singleton(
         CreateStudyYearHandler,
+        study_year_service=study_year_service,
+        session_factory=session_factory,
+    )
+
+    list_study_years_handler = providers.Singleton(
+        ListStudyYearsHandler,
         study_year_service=study_year_service,
         session_factory=session_factory,
     )

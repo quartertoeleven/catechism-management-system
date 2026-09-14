@@ -1,4 +1,4 @@
-id,code,name
-1,THANHLE,Thánh Lễ
-2,GIAOLY,Giáo Lý
-99,KHAC,Hoạt động khác
+id,code,name,color,is_system
+1,THANHLE,Thánh Lễ,2b7fff,true
+2,GIAOLY,Giáo Lý,00c16a,true
+99,KHAC,Hoạt động khác,d3d3d3,true

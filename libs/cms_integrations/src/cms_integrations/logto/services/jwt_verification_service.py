@@ -8,6 +8,10 @@ from logto import IdTokenClaims
 logger = logging.getLogger(__name__)
 
 
+class TokenExpiredError(Exception):
+    pass
+
+
 class JwtVerificationService:
     def __init__(self, endpoint: str, app_id: str) -> None:
         self._endpoint = endpoint.rstrip("/") + "/oidc"
@@ -33,6 +37,8 @@ class JwtVerificationService:
                 },
             )
             return IdTokenClaims(**payload)
+        except jwt.ExpiredSignatureError:
+            raise TokenExpiredError()
         except (jwt.InvalidTokenError, jwt.PyJWKClientError) as e:
             logger.exception("JWT verification failed: %s", e)
             return None

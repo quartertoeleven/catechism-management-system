@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, String
+from sqlalchemy import Boolean, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from cms_db_models.base import Base
@@ -12,3 +12,5 @@ class ScheduleActivityType(IsActiveMixin, AuditMixin, Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     code: Mapped[str] = mapped_column(String(20), nullable=False, unique=True)
     name: Mapped[str] = mapped_column(String(30), nullable=False)
+    color: Mapped[str | None] = mapped_column(String(7), nullable=True)
+    is_system: Mapped[bool] = mapped_column(Boolean, server_default="false", nullable=False)

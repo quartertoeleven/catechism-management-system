@@ -15,8 +15,9 @@ This directory contains the source code for the Admin Dashboard of the Catechism
 
 # Coding guidelines
 - Do not hard code display strings, always use 18n.
+- The folder app/generated-client contains the client and SDK for interacting with the backend api (generated using hey-api cli from the backend).
 
 # References
 The following can be referred to when needed
-- Nuxt: https://nuxt.com/llms.txt
-- Nuxt UI: https://ui.nuxt.com/llms.txt
+- [Nuxt documentation](https://nuxt.com/llms.txt)
+- [NuxtUI Documentation](https://ui.nuxt.com/llms.txt)

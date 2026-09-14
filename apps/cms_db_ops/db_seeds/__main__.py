@@ -13,16 +13,20 @@ def _run_all() -> None:
         raise RuntimeError("DATABASE_URL environment variable is required")
 
     engine = create_engine(database_url)
+    failed: list[str] = []
     with Session(engine) as session:
         for name, seed_fn in SEEDERS:
-            result = seed_fn(session)
-            if isinstance(result, tuple) and len(result) == 2:
-                inserted, skipped = result
-                print(f"{name}: inserted={inserted} skipped={skipped}")
-            else:
-                print(f"{name}: done")
+            try:
+                seed_fn(session)
+            except Exception:
+                failed.append(name)
         session.commit()
-    print(f"Ran {len(SEEDERS)} seeder(s)")
+
+    total = len(SEEDERS)
+    succeeded = total - len(failed)
+    print(f"Ran {total} seeder(s): {succeeded} succeeded, {len(failed)} failed")
+    if failed:
+        print(f"Failed: {', '.join(failed)}")
 
 
 def _list_seeders() -> None:

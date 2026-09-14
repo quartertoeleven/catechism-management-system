@@ -7,6 +7,7 @@ from cms_integrations.logto.logto_session_cookie_storage import (
 )
 from cms_integrations.logto.services.jwt_verification_service import (
     JwtVerificationService,
+    TokenExpiredError,
 )
 from cms_integrations.logto.services.logto_service import LogtoService
 
@@ -19,4 +20,5 @@ __all__ = [
     "LogtoService",
     "SIGN_IN_SESSION_KEY",
     "LogtoSessionCookieStorage",
+    "TokenExpiredError",
 ]

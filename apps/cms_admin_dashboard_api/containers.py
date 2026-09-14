@@ -1,5 +1,5 @@
 from cms_common.models import CmsAdminDashboardSettings
-from cms_common.services import ProfileService, StudyYearService
+from cms_common.services import ProfileService, StudyYearService, ScheduleActivityTypeService
 from cms_integrations.logto import (
     JwtVerificationService,
     LogtoClientFactory,
@@ -14,6 +14,7 @@ from handlers.login_handler import LoginHandler
 from handlers.logout_handler import LogoutHandler
 from handlers.create_study_year_handler import CreateStudyYearHandler
 from handlers.list_study_years_handler import ListStudyYearsHandler
+from handlers.list_schedule_activity_types_handler import ListScheduleActivityTypesHandler
 from handlers.profile_handler import ProfileHandler
 from services.auth_service import AuthService
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
@@ -97,6 +98,8 @@ class ApplicationContainer(containers.DeclarativeContainer):
 
     study_year_service = providers.Singleton(StudyYearService)
 
+    schedule_activity_type_service = providers.Singleton(ScheduleActivityTypeService)
+
     create_study_year_handler = providers.Singleton(
         CreateStudyYearHandler,
         study_year_service=study_year_service,
@@ -106,6 +109,12 @@ class ApplicationContainer(containers.DeclarativeContainer):
     list_study_years_handler = providers.Singleton(
         ListStudyYearsHandler,
         study_year_service=study_year_service,
+        session_factory=session_factory,
+    )
+
+    list_schedule_activity_types_handler = providers.Singleton(
+        ListScheduleActivityTypesHandler,
+        schedule_activity_type_service=schedule_activity_type_service,
         session_factory=session_factory,
     )
 
@@ -134,6 +143,7 @@ class ApplicationContainer(containers.DeclarativeContainer):
             "controllers.health_controller",
             "controllers.auth_controller",
             "controllers.study_year_controller",
+            "controllers.schedule_activity_type_controller",
             "dependencies.auth_dependency",
             "dependencies.locale_dependency",
         ],

@@ -56,7 +56,7 @@
         {
             "label": "CMS Admin Dashboard - Generate OpenAPI Client",
             "type": "shell",
-            "command": "uv run python generate_openapi_spec.py && pnpx @hey-api/openapi-ts@next -i openapi.json -o ../cms_admin_dashboard_app/app/generated && rm openapi.json",
+            "command": "uv run python generate_openapi_spec.py && pnpx @hey-api/openapi-ts@next -c @hey-api/client-nuxt -i openapi.json -o ../cms_admin_dashboard_app/app/generated-client && rm openapi.json",
             "presentation": {
                 "group": "cms-admin-dashboard"
             },

@@ -51,6 +51,40 @@
   },
   "listManagement": {
     "studyYears": "Năm học",
-    "scheduleActivityType": "Loại hoạt động"
+    "scheduleActivityTypes": "Loại hoạt động",
+    "addStudyYear": "Thêm năm học",
+    "addScheduleActivityType": "Thêm loại hoạt động",
+    "loadingStudyYears": "Đang tải danh sách năm học...",
+    "loadingScheduleActivityTypes": "Đang tải danh sách loại hoạt động...",
+    "searchStudyYears": "Tìm kiếm năm học...",
+    "searchScheduleActivityTypes": "Tìm kiếm loại hoạt động...",
+    "display": "Hiển thị",
+    "emptyStudyYears": {
+      "title": "Chưa có năm học",
+      "description": "Nhấn nút \"Thêm năm học\" ở trên để tạo năm học mới."
+    },
+    "emptyScheduleActivityTypes": {
+      "title": "Chưa có loại hoạt động",
+      "description": "Nhấn nút \"Thêm loại hoạt động\" ở trên để tạo loại hoạt động mới."
+    },
+    "studyYear": {
+      "code": "Mã",
+      "name": "Tên",
+      "isCurrent": "Năm hiện tại",
+      "isReadonly": "Chỉ đọc",
+      "setCurrent": "Đặt làm năm hiện tại",
+      "setReadOnly": "Đặt ở chế độ chỉ đọc",
+      "setWritable": "Đặt ở chế độ chỉnh sửa"
+    },
+    "scheduleActivityType": {
+      "code": "Mã",
+      "name": "Tên",
+      "color": "Màu",
+      "isSystem": "Hệ thống"
+    }
+  },
+  "common": {
+    "yes": "Có",
+    "no": "Không"
   }
 }

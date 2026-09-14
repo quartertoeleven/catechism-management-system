@@ -1,18 +1,12 @@
-export interface CurrentUser {
-  sub: string
-  name?: string
-  username?: string
-  email?: string
-  picture?: string
-}
+import { myProfile, type UserProfileResponse } from '~/generated-client'
 
-const user = ref<CurrentUser | null>(null)
+const user = ref<UserProfileResponse | null>(null)
 const pending = ref(false)
 const checked = ref(false)
-let checkAuthPromise: Promise<CurrentUser | null> | null = null
+let checkAuthPromise: Promise<UserProfileResponse | null> | null = null
 
 export function useAuth() {
-  function checkAuth(): Promise<CurrentUser | null> {
+  function checkAuth(): Promise<UserProfileResponse | null> {
     if (checked.value) {
       return Promise.resolve(user.value)
     }
@@ -22,10 +16,8 @@ export function useAuth() {
     checkAuthPromise = (async () => {
       pending.value = true
       try {
-        user.value = await $fetch<CurrentUser>(
-          `${getApiBase()}/dashboard-api/auth/me`,
-          { credentials: 'include' }
-        )
+        const result = await myProfile({})
+        user.value = result
       } catch {
         user.value = null
       } finally {
@@ -38,5 +30,11 @@ export function useAuth() {
     return checkAuthPromise
   }
 
-  return { user, pending, checkAuth }
+  function resetAuth() {
+    user.value = null
+    checked.value = false
+    checkAuthPromise = null
+  }
+
+  return { user, pending, checkAuth, resetAuth }
 }

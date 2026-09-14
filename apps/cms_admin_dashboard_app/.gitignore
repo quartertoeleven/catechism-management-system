@@ -27,4 +27,4 @@ logs
 .history
 
 # generated
-app/generated
+app/generated-client

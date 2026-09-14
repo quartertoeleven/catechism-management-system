@@ -17,24 +17,43 @@ def _read_rows(csv_path: Path) -> list[dict]:
         return list(csv.DictReader(f))
 
 
+def _parse_bool(value: str) -> bool:
+    return value.strip().lower() in ("true", "1", "t")
+
+
 def seed(session: Session) -> tuple[int, int]:
     rows = _read_rows(CSV_PATH)
-    existing_ids = set(session.scalars(select(ScheduleActivityType.id)).all())
-    new_rows = [r for r in rows if int(r["id"]) not in existing_ids]
+    existing_map = {
+        row.id: row
+        for row in session.scalars(select(ScheduleActivityType)).all()
+    }
 
     inserted = 0
-    skipped = len(rows) - len(new_rows)
-    if new_rows:
-        session.add_all(
-            ScheduleActivityType(
-                id=int(r["id"]),
-                code=r["code"],
-                name=r["name"],
+    updated = 0
+    for r in rows:
+        row_id = int(r["id"])
+        if row_id in existing_map:
+            existing = existing_map[row_id]
+            existing.color = r["color"]
+            existing.is_system = _parse_bool(r["is_system"])
+            updated += 1
+        else:
+            session.add(
+                ScheduleActivityType(
+                    id=row_id,
+                    code=r["code"],
+                    name=r["name"],
+                    color=r["color"],
+                    is_system=_parse_bool(r["is_system"]),
+                )
             )
-            for r in new_rows
-        )
-        inserted = len(new_rows)
-    return inserted, skipped
+            inserted += 1
+    __print_result(inserted, updated)
+    return inserted, updated
+
+
+def __print_result(inserted: int, updated: int) -> None:
+    print(f"ScheduleActivityType seed: inserted={inserted} updated={updated}")
 
 
 def main() -> None:
@@ -44,9 +63,8 @@ def main() -> None:
 
     engine = create_engine(database_url)
     with Session(engine) as session:
-        inserted, skipped = seed(session)
+        seed(session)
         session.commit()
-    print(f"ScheduleActivityType seed: inserted={inserted} skipped={skipped}")
 
 
 if __name__ == "__main__":

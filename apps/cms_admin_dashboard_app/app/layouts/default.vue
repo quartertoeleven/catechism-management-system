@@ -100,7 +100,6 @@ const links = {
   }, {
     label: t('menu.adminArea.listsManagement'),
     icon: 'i-lucide-list',
-    to: '/admin/list-management',
     defaultOpen: true,
     type: 'trigger',
     children: [{
@@ -110,7 +109,7 @@ const links = {
         open.value = false
       }
     }, {
-      label: t('listManagement.scheduleActivityType'),
+      label: t('listManagement.scheduleActivityTypes'),
       to: '/admin/list-management/schedule-activity-type',
       onSelect: () => {
         open.value = false

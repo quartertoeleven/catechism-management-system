@@ -2,7 +2,7 @@ from typing import Optional, Tuple
 
 from cms_integrations.logto import SIGN_IN_SESSION_KEY, LogtoClientFactory, LogtoService
 from fastapi import Request
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, Response
 from logto import IdTokenClaims, LogtoClient
 
 from services.session_storage import FastAPISessionCookieStorage
@@ -73,6 +73,9 @@ class AuthService:
         storage.write_to(response)
         return response
 
-    async def get_current_user(self, request: Request) -> Optional[IdTokenClaims]:
-        client, _ = self._client_with_storage(request)
-        return await self._logto_service.get_claims(client)
+    async def get_current_user(self, request: Request, response: Response) -> Optional[IdTokenClaims]:
+        client, storage = self._client_with_storage(request)
+        claims, refreshed = await self._logto_service.get_claims(client)
+        if refreshed:
+            storage.write_to(response)
+        return claims

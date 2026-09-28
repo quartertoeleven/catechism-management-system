@@ -8,13 +8,21 @@ const search = ref('')
 
 const UButton = resolveComponent('UButton')
 
-function expandAll() {
-  table.value?.tableApi?.setExpanded(true)
+const expandToggle = ref(0)
+
+function toggleExpandAll() {
+  const allExpanded = table.value?.tableApi?.getIsAllRowsExpanded()
+  table.value?.tableApi?.toggleAllRowsExpanded(!allExpanded)
+  expandToggle.value++
 }
 
-function collapseAll() {
-  table.value?.tableApi?.setExpanded(false)
-}
+const isAllExpanded = computed(() => {
+  void expandToggle.value
+  return table.value?.tableApi?.getIsAllRowsExpanded() ?? false
+})
+
+const expandLabel = computed(() => (isAllExpanded.value ? 'Thu gọn' : 'Mở rộng'))
+const expandIcon = computed(() => (isAllExpanded.value ? 'i-lucide-chevrons-up' : 'i-lucide-chevrons-down'))
 
 const filteredSchedules = computed(() => {
   if (!search.value.trim()) return schedules
@@ -311,18 +319,11 @@ const columns: TableColumn<ScheduleRow>[] = [
 
         <div class="flex items-center gap-1.5">
           <UButton
-            label="Mở rộng"
+            :label="expandLabel"
             color="neutral"
             variant="outline"
-            icon="i-lucide-chevrons-down"
-            @click="expandAll"
-          />
-          <UButton
-            label="Thu gọn"
-            color="neutral"
-            variant="outline"
-            icon="i-lucide-chevrons-up"
-            @click="collapseAll"
+            :icon="expandIcon"
+            @click="toggleExpandAll"
           />
         </div>
       </div>

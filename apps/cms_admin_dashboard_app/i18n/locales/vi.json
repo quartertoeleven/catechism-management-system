@@ -86,5 +86,41 @@
   "common": {
     "yes": "Có",
     "no": "Không"
+  },
+  "studyYearSchedules": {
+    "addDay": {
+      "title": "Thêm ngày sinh hoạt",
+      "activityType": "Loại hoạt động",
+      "activityTypePlaceholder": "Chọn loại hoạt động",
+      "activityTypeLoadError": "Không tải được danh sách loại hoạt động",
+      "retry": "Thử lại",
+      "name": "Tên hoạt động",
+      "namePlaceholder": "Nhập tên hoạt động",
+      "date": "Ngày",
+      "datePlaceholder": "dd/mm/yyyy",
+      "timePlaceholder": "hh:mm",
+      "hoursColumn": "Giờ",
+      "minutesColumn": "Phút",
+      "clearTime": "Xóa giờ",
+      "startTime": "Giờ bắt đầu",
+      "endTime": "Giờ kết thúc",
+      "create": "Tạo",
+      "cancel": "Hủy",
+      "createSuccess": "Đã thêm ngày sinh hoạt thành công",
+      "validation": {
+        "activityTypeRequired": "Vui lòng chọn loại hoạt động",
+        "nameRequired": "Vui lòng nhập tên hoạt động",
+        "nameMax": "Tên hoạt động không được vượt quá 100 ký tự",
+        "dateRequired": "Vui lòng chọn ngày",
+        "startTimeRequired": "Vui lòng chọn giờ bắt đầu",
+        "endTimeAfterStartTime": "Giờ kết thúc phải sau giờ bắt đầu"
+      }
+    },
+    "activityTime": {
+      "from": "Từ {time}"
+    },
+    "columns": {
+      "time": "Thời gian"
+    }
   }
 }

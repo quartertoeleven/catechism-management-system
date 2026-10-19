@@ -64,3 +64,22 @@ export interface Range {
   start: Date
   end: Date
 }
+
+export interface ScheduleActivity {
+  /** Color indicator of the schedule activity type (e.g. `#10b981`) */
+  color: string
+  name: string
+  /** `yyyy-MM-ddTHH:mm` */
+  startAt: string
+  /** `yyyy-MM-ddTHH:mm` */
+  endAt?: string
+}
+
+export interface ScheduleRow {
+  /** `yyyy-MM` — used for month grouping */
+  monthKey: string
+  dayName: string
+  /** `dd-MM-yyyy` */
+  date: string
+  activities: ScheduleActivity[]
+}

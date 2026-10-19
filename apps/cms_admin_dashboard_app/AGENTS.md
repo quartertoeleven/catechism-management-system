@@ -21,3 +21,4 @@ This directory contains the source code for the Admin Dashboard of the Catechism
 The following can be referred to when needed
 - [Nuxt documentation](https://nuxt.com/llms.txt)
 - [NuxtUI Documentation](https://ui.nuxt.com/llms.txt)
+- [TanStack Table](https://tanstack.com/table/latest/llms.txt)

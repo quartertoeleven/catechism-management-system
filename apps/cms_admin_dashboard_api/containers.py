@@ -1,5 +1,10 @@
 from cms_common.models import CmsAdminDashboardSettings
-from cms_common.services import ProfileService, StudyYearService, ScheduleActivityTypeService
+from cms_common.services import (
+    ProfileService,
+    StudyYearService,
+    ScheduleActivityTypeService,
+    GeneralScheduleService,
+)
 from cms_integrations.logto import (
     JwtVerificationService,
     LogtoClientFactory,
@@ -14,7 +19,12 @@ from handlers.login_handler import LoginHandler
 from handlers.logout_handler import LogoutHandler
 from handlers.create_study_year_handler import CreateStudyYearHandler
 from handlers.list_study_years_handler import ListStudyYearsHandler
-from handlers.list_schedule_activity_types_handler import ListScheduleActivityTypesHandler
+from handlers.list_schedule_activity_types_handler import (
+    ListScheduleActivityTypesHandler,
+)
+from handlers.list_general_schedules_handler import ListGeneralSchedulesHandler
+from handlers.get_general_schedule_handler import GetGeneralScheduleHandler
+from handlers.upsert_general_schedule_handler import UpsertGeneralScheduleHandler
 from handlers.profile_handler import ProfileHandler
 from services.auth_service import AuthService
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
@@ -100,6 +110,29 @@ class ApplicationContainer(containers.DeclarativeContainer):
 
     schedule_activity_type_service = providers.Singleton(ScheduleActivityTypeService)
 
+    general_schedule_service = providers.Singleton(GeneralScheduleService)
+
+    upsert_general_schedule_handler = providers.Singleton(
+        UpsertGeneralScheduleHandler,
+        general_schedule_service=general_schedule_service,
+        study_year_service=study_year_service,
+        schedule_activity_type_service=schedule_activity_type_service,
+        session_factory=session_factory,
+    )
+
+    get_general_schedule_handler = providers.Singleton(
+        GetGeneralScheduleHandler,
+        general_schedule_service=general_schedule_service,
+        session_factory=session_factory,
+    )
+
+    list_general_schedules_handler = providers.Singleton(
+        ListGeneralSchedulesHandler,
+        general_schedule_service=general_schedule_service,
+        study_year_service=study_year_service,
+        session_factory=session_factory,
+    )
+
     create_study_year_handler = providers.Singleton(
         CreateStudyYearHandler,
         study_year_service=study_year_service,
@@ -144,6 +177,7 @@ class ApplicationContainer(containers.DeclarativeContainer):
             "controllers.auth_controller",
             "controllers.study_year_controller",
             "controllers.schedule_activity_type_controller",
+            "controllers.general_schedule_controller",
             "dependencies.auth_dependency",
             "dependencies.locale_dependency",
         ],

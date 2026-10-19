@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { TableColumn } from '@nuxt/ui'
 import { getGroupedRowModel, type GroupingOptions } from '@tanstack/vue-table'
+import { listGeneralSchedules, type GeneralScheduleListItem } from '~/generated-client'
 import type { ScheduleActivity, ScheduleRow } from '~/types'
 
 const { t } = useI18n()
@@ -90,197 +91,55 @@ function formatTimeRange(activity: ScheduleActivity) {
   return `${formatDate(activity.startAt)} ${formatTime(activity.startAt)} - ${formatDate(activity.endAt)} ${formatTime(activity.endAt)}`
 }
 
-const schedules = reactive<ScheduleRow[]>([
-  // --- Tháng 10/2026 (existing) ---
-  {
-    monthKey: buildMonthKey('04-10-2026'),
-    dayName: 'Chủ Nhật',
-    date: '04-10-2026',
-    activities: [
-      { color: '#10b981', name: 'Chầu Thánh Thể', startAt: '2026-10-04T08:00', endAt: '2026-10-04T09:00' },
-      { color: '#f59e0b', name: 'Luyện tập phụng vụ', startAt: '2026-10-04T09:15', endAt: '2026-10-04T10:30' }
-    ]
-  },
-  {
-    monthKey: buildMonthKey('11-10-2026'),
-    dayName: 'Chủ Nhật',
-    date: '11-10-2026',
-    activities: [
-      { color: '#ef4444', name: 'Giáo lý lớp 5 - Bí tích', startAt: '2026-10-11T08:00', endAt: '2026-10-11T09:00' },
-      { color: '#3b82f6', name: 'Thánh lễ thiếu nhi', startAt: '2026-10-11T09:30', endAt: '2026-10-11T10:30' }
-    ]
-  },
-  {
-    monthKey: buildMonthKey('18-10-2026'),
-    dayName: 'Chủ Nhật',
-    date: '18-10-2026',
-    activities: []
-  },
-  {
-    monthKey: buildMonthKey('25-10-2026'),
-    dayName: 'Chủ Nhật',
-    date: '25-10-2026',
-    activities: [
-      { color: '#8b5cf6', name: 'Giáo lý sau Thánh lễ', startAt: '2026-10-25T10:45', endAt: '2026-10-25T11:30' },
-      { color: '#10b981', name: 'Bài hát phụng vụ', startAt: '2026-10-25T13:00' }
-    ]
-  },
-  // --- Tháng 11/2026: 4 Sundays ---
-  {
-    monthKey: buildMonthKey('01-11-2026'),
-    dayName: 'Chủ Nhật',
-    date: '01-11-2026',
-    activities: [
-      { color: '#f59e0b', name: 'Huấn luyện đội ngũ giáo lý viên', startAt: '2026-11-01T08:00', endAt: '2026-11-01T10:00' },
-      { color: '#ef4444', name: 'Giáo lý lớp 2 - Bí tích Thánh Thể', startAt: '2026-11-01T10:15', endAt: '2026-11-01T11:15' }
-    ]
-  },
-  {
-    monthKey: buildMonthKey('08-11-2026'),
-    dayName: 'Chủ Nhật',
-    date: '08-11-2026',
-    activities: [
-      { color: '#3b82f6', name: 'Kinh Thánh - Giáo lý lớp 1', startAt: '2026-11-08T09:00' }
-    ]
-  },
-  {
-    monthKey: buildMonthKey('15-11-2026'),
-    dayName: 'Chủ Nhật',
-    date: '15-11-2026',
-    activities: [
-      { color: '#10b981', name: 'Chầu Thánh Thể', startAt: '2026-11-15T08:00', endAt: '2026-11-15T09:00' },
-      { color: '#8b5cf6', name: 'Giáo lý lớp 3 - Kinh Mân Côi', startAt: '2026-11-15T09:15', endAt: '2026-11-15T10:15' }
-    ]
-  },
-  {
-    monthKey: buildMonthKey('22-11-2026'),
-    dayName: 'Chủ Nhật',
-    date: '22-11-2026',
-    activities: [
-      { color: '#3b82f6', name: 'Thánh lễ thiếu nhi', startAt: '2026-11-22T09:30', endAt: '2026-11-22T10:30' },
-      { color: '#f59e0b', name: 'Luyện tập phụng vụ', startAt: '2026-11-22T10:45', endAt: '2026-11-22T12:00' },
-      { color: '#ef4444', name: 'Giáo lý lớp 4 - Thánh Kinh', startAt: '2026-11-22T13:00', endAt: '2026-11-22T14:00' }
-    ]
-  },
-  // --- Tháng 12/2026: NO DATA ---
-  // --- Tháng 01/2027: 2 of 5 Sundays ---
-  {
-    monthKey: buildMonthKey('03-01-2027'),
-    dayName: 'Chủ Nhật',
-    date: '03-01-2027',
-    activities: [
-      { color: '#3b82f6', name: 'Thánh lễ thiếu nhi', startAt: '2027-01-03T09:30', endAt: '2027-01-03T10:30' },
-      { color: '#8b5cf6', name: 'Giáo lý sau Thánh lễ', startAt: '2027-01-03T10:45', endAt: '2027-01-03T11:30' }
-    ]
-  },
-  {
-    monthKey: buildMonthKey('17-01-2027'),
-    dayName: 'Chủ Nhật',
-    date: '17-01-2027',
-    activities: [
-      { color: '#10b981', name: 'Bài hát phụng vụ', startAt: '2027-01-17T13:00', endAt: '2027-01-17T14:00' }
-    ]
-  },
-  // --- Tháng 02/2027: 2 of 4 Sundays ---
-  {
-    monthKey: buildMonthKey('07-02-2027'),
-    dayName: 'Chủ Nhật',
-    date: '07-02-2027',
-    activities: [
-      { color: '#ef4444', name: 'Giáo lý lớp 2 - Bí tích Thánh Thể', startAt: '2027-02-07T08:00', endAt: '2027-02-07T09:00' },
-      { color: '#3b82f6', name: 'Kinh Thánh - Giáo lý lớp 1', startAt: '2027-02-07T09:15', endAt: '2027-02-07T10:15' }
-    ]
-  },
-  {
-    monthKey: buildMonthKey('21-02-2027'),
-    dayName: 'Chủ Nhật',
-    date: '21-02-2027',
-    activities: [
-      { color: '#f59e0b', name: 'Huấn luyện đội ngũ giáo lý viên', startAt: '2027-02-21T08:00' }
-    ]
-  },
-  // --- Tháng 03/2027: all 4 Sundays ---
-  {
-    monthKey: buildMonthKey('07-03-2027'),
-    dayName: 'Chủ Nhật',
-    date: '07-03-2027',
-    activities: [
-      { color: '#10b981', name: 'Chầu Thánh Thể', startAt: '2027-03-07T08:00', endAt: '2027-03-07T09:00' },
-      { color: '#f59e0b', name: 'Luyện tập phụng vụ', startAt: '2027-03-07T09:15', endAt: '2027-03-07T10:30' }
-    ]
-  },
-  {
-    monthKey: buildMonthKey('14-03-2027'),
-    dayName: 'Chủ Nhật',
-    date: '14-03-2027',
-    activities: [
-      { color: '#8b5cf6', name: 'Giáo lý lớp 3 - Kinh Mân Côi', startAt: '2027-03-14T08:00', endAt: '2027-03-14T09:00' },
-      { color: '#ef4444', name: 'Giáo lý lớp 5 - Bí tích', startAt: '2027-03-14T09:15', endAt: '2027-03-14T10:15' }
-    ]
-  },
-  {
-    monthKey: buildMonthKey('21-03-2027'),
-    dayName: 'Chủ Nhật',
-    date: '21-03-2027',
-    activities: [
-      { color: '#3b82f6', name: 'Thánh lễ thiếu nhi', startAt: '2027-03-21T09:30', endAt: '2027-03-21T10:30' },
-      { color: '#10b981', name: 'Bài hát phụng vụ', startAt: '2027-03-21T10:45', endAt: '2027-03-21T11:30' },
-      { color: '#8b5cf6', name: 'Giáo lý sau Thánh lễ', startAt: '2027-03-21T11:30', endAt: '2027-03-21T12:00' }
-    ]
-  },
-  {
-    monthKey: buildMonthKey('28-03-2027'),
-    dayName: 'Chủ Nhật',
-    date: '28-03-2027',
-    activities: []
-  },
-  // --- Tháng 04/2027: 2 of 4 Sundays ---
-  {
-    monthKey: buildMonthKey('04-04-2027'),
-    dayName: 'Chủ Nhật',
-    date: '04-04-2027',
-    activities: [
-      { color: '#3b82f6', name: 'Kinh Thánh - Giáo lý lớp 1', startAt: '2027-04-04T09:15', endAt: '2027-04-04T10:15' }
-    ]
-  },
-  {
-    monthKey: buildMonthKey('25-04-2027'),
-    dayName: 'Chủ Nhật',
-    date: '25-04-2027',
-    activities: [
-      { color: '#ef4444', name: 'Giáo lý lớp 4 - Thánh Kinh', startAt: '2027-04-25T13:00', endAt: '2027-04-25T14:00' },
-      { color: '#f59e0b', name: 'Luyện tập phụng vụ', startAt: '2027-04-25T14:15', endAt: '2027-04-25T15:30' }
-    ]
-  },
-  // --- Tháng 05/2027: 3 of 5 Sundays ---
-  {
-    monthKey: buildMonthKey('02-05-2027'),
-    dayName: 'Chủ Nhật',
-    date: '02-05-2027',
-    activities: [
-      { color: '#10b981', name: 'Chầu Thánh Thể', startAt: '2027-05-02T08:00' }
-    ]
-  },
-  {
-    monthKey: buildMonthKey('16-05-2027'),
-    dayName: 'Chủ Nhật',
-    date: '16-05-2027',
-    activities: [
-      { color: '#3b82f6', name: 'Thánh lễ thiếu nhi', startAt: '2027-05-16T09:30', endAt: '2027-05-16T10:30' },
-      { color: '#8b5cf6', name: 'Giáo lý sau Thánh lễ', startAt: '2027-05-16T10:45', endAt: '2027-05-16T11:30' }
-    ]
-  },
-  {
-    monthKey: buildMonthKey('30-05-2027'),
-    dayName: 'Chủ Nhật',
-    date: '30-05-2027',
-    activities: [
-      { color: '#ef4444', name: 'Giáo lý lớp 2 - Bí tích Thánh Thể', startAt: '2027-05-30T08:00', endAt: '2027-05-30T09:00' },
-      { color: '#f59e0b', name: 'Huấn luyện đội ngũ giáo lý viên', startAt: '2027-05-30T09:15', endAt: '2027-05-30T10:15' },
-      { color: '#10b981', name: 'Bài hát phụng vụ', startAt: '2027-05-30T13:00', endAt: '2027-05-30T14:00' }
-    ]
+const schedules = reactive<ScheduleRow[]>([])
+const loadStatus = ref<'pending' | 'success' | 'error'>('pending')
+const dialogOpen = ref(false)
+const editingActivityId = ref<string | null>(null)
+
+function mapApiRows(items: GeneralScheduleListItem[]): ScheduleRow[] {
+  const byDate = new Map<string, ScheduleActivity[]>()
+
+  for (const item of items) {
+    const isoDate = item.start_at.slice(0, 10)
+    const activities = byDate.get(isoDate) ?? []
+    activities.push({
+      id: item.id,
+      color: toCssColor(item.schedule_activity_type_color),
+      name: item.name,
+      startAt: item.start_at,
+      endAt: item.end_at ?? undefined,
+      isAttendenceCheck: item.is_attendence_check
+    })
+    byDate.set(isoDate, activities)
   }
-])
+
+  const rows: ScheduleRow[] = []
+  for (const [isoDate, activities] of byDate) {
+    activities.sort((a, b) => a.startAt.localeCompare(b.startAt))
+    const rowDate = toRowDate(isoDate)
+    rows.push({
+      monthKey: buildMonthKey(rowDate),
+      dayName: parseDayName(rowDate),
+      date: rowDate,
+      activities
+    })
+  }
+
+  rows.sort((a, b) => toSortableDate(a.date).localeCompare(toSortableDate(b.date)))
+  return rows
+}
+
+async function loadSchedules() {
+  loadStatus.value = 'pending'
+  try {
+    const result = await listGeneralSchedules({})
+    schedules.splice(0, schedules.length, ...mapApiRows(result.data ?? []))
+    loadStatus.value = 'success'
+    await nextTick(expandCurrentMonthGroup)
+  } catch {
+    loadStatus.value = 'error'
+  }
+}
 
 function onCreateActivity(activity: ScheduleActivity) {
   const rowDate = toRowDate(activity.startAt.slice(0, 10))
@@ -305,6 +164,34 @@ function onCreateActivity(activity: ScheduleActivity) {
   } else {
     schedules.splice(insertIndex, 0, newRow)
   }
+}
+
+function onEditActivity(activity: ScheduleActivity) {
+  editingActivityId.value = activity.id
+  dialogOpen.value = true
+}
+
+// Create-mode trigger lives inside the dialog; clear the edit target on
+// close so reopening via the dialog's own "+" button starts a fresh create.
+watch(dialogOpen, (isOpen) => {
+  if (!isOpen) editingActivityId.value = null
+})
+
+function onDeleteActivity() {
+  // TODO: wire up once DELETE /dashboard-api/general-schedules/{id} exists.
+}
+
+function onUpdateActivity(activity: ScheduleActivity) {
+  for (const row of schedules) {
+    const index = row.activities.findIndex(item => item.id === activity.id)
+    if (index !== -1) {
+      row.activities.splice(index, 1)
+      break
+    }
+  }
+  const emptyIndex = schedules.findIndex(row => row.activities.length === 0)
+  if (emptyIndex !== -1) schedules.splice(emptyIndex, 1)
+  onCreateActivity(activity)
 }
 
 const groupingOptions = ref<GroupingOptions>({
@@ -337,7 +224,7 @@ function expandCurrentMonthGroup() {
 }
 
 onMounted(() => {
-  nextTick(expandCurrentMonthGroup)
+  loadSchedules()
 })
 
 const columns: TableColumn<ScheduleRow>[] = [
@@ -359,22 +246,19 @@ const columns: TableColumn<ScheduleRow>[] = [
   },
   {
     id: 'time',
-    header: t('studyYearSchedules.columns.time'),
-    meta: {
-      class: {
-        th: 'w-40',
-        td: 'w-40'
-      }
-    }
+    header: t('studyYearSchedules.columns.time')
   },
   {
     accessorKey: 'activities',
-    header: 'Hoạt động',
-    meta: {
-      class: {
-        td: 'w-full'
-      }
-    }
+    header: 'Hoạt động'
+  },
+  {
+    id: 'attendance',
+    header: t('studyYearSchedules.columns.attendance')
+  },
+  {
+    id: 'actions',
+    header: ''
   }
 ]
 </script>
@@ -388,7 +272,12 @@ const columns: TableColumn<ScheduleRow>[] = [
         </template>
 
         <template #right>
-          <StudyYearAddScheduleDayDialog @create="onCreateActivity" />
+          <StudyYearAddScheduleDayDialog
+            v-model:open="dialogOpen"
+            :activity-id="editingActivityId"
+            @create="onCreateActivity"
+            @update="onUpdateActivity"
+          />
         </template>
       </UDashboardNavbar>
 
@@ -413,6 +302,20 @@ const columns: TableColumn<ScheduleRow>[] = [
             @click="toggleExpandAll"
           />
         </div>
+      </div>
+
+      <div
+        v-if="loadStatus === 'error'"
+        class="flex items-center gap-2 text-sm text-error"
+      >
+        <span>{{ t('studyYearSchedules.loadError') }}</span>
+        <UButton
+          :label="t('studyYearSchedules.retry')"
+          color="error"
+          variant="soft"
+          size="xs"
+          @click="loadSchedules"
+        />
       </div>
 
       <UTable
@@ -480,7 +383,7 @@ const columns: TableColumn<ScheduleRow>[] = [
             <div
               v-for="(activity, i) in row.original.activities"
               :key="i"
-              class="text-sm text-muted"
+              class="flex h-6 items-center text-sm text-muted"
             >
               {{ formatTimeRange(activity) }}
             </div>
@@ -496,15 +399,66 @@ const columns: TableColumn<ScheduleRow>[] = [
               —
             </div>
             <div
-              v-for="(activity, i) in row.original.activities"
-              :key="i"
-              class="flex items-start gap-2"
+              v-for="activity in row.original.activities"
+              :key="activity.id"
+              class="flex h-6 items-center gap-2"
             >
               <span
-                class="mt-1.5 h-2 w-2 shrink-0 rounded-full"
+                class="h-2 w-2 shrink-0 rounded-full"
                 :style="{ backgroundColor: activity.color }"
               />
-              <span class="text-sm">{{ activity.name }}</span>
+              <span class="min-w-0 truncate text-sm">{{ activity.name }}</span>
+            </div>
+          </div>
+        </template>
+
+        <template #attendance-cell="{ row }">
+          <div v-if="!row.getIsGrouped()">
+            <div
+              v-if="row.original.activities.length === 0"
+              class="text-sm text-dimmed"
+            >
+              —
+            </div>
+            <div
+              v-for="activity in row.original.activities"
+              :key="activity.id"
+              class="flex h-6 items-center"
+            >
+              <UBadge
+                :color="activity.isAttendenceCheck ? 'success' : 'neutral'"
+                variant="subtle"
+                size="sm"
+              >
+                {{ activity.isAttendenceCheck ? t('common.yes') : t('common.no') }}
+              </UBadge>
+            </div>
+          </div>
+        </template>
+
+        <template #actions-cell="{ row }">
+          <div v-if="!row.getIsGrouped()">
+            <div
+              v-for="activity in row.original.activities"
+              :key="activity.id"
+              class="flex h-6 items-center justify-end gap-1"
+            >
+              <UButton
+                icon="i-lucide-pencil"
+                color="neutral"
+                variant="ghost"
+                size="xs"
+                :aria-label="t('studyYearSchedules.actions.edit')"
+                @click="onEditActivity(activity)"
+              />
+              <UButton
+                icon="i-lucide-trash-2"
+                color="error"
+                variant="ghost"
+                size="xs"
+                :aria-label="t('studyYearSchedules.actions.delete')"
+                @click="onDeleteActivity()"
+              />
             </div>
           </div>
         </template>

@@ -66,6 +66,8 @@ export interface Range {
 }
 
 export interface ScheduleActivity {
+  /** General schedule id (`study_year.general_schedules.id`) */
+  id: string
   /** Color indicator of the schedule activity type (e.g. `#10b981`) */
   color: string
   name: string
@@ -73,6 +75,8 @@ export interface ScheduleActivity {
   startAt: string
   /** `yyyy-MM-ddTHH:mm` */
   endAt?: string
+  /** Whether attendance is taken for this activity (backend: `is_attendence_check`) */
+  isAttendenceCheck: boolean
 }
 
 export interface ScheduleRow {

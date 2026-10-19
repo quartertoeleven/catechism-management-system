@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -6,6 +8,14 @@ from cms_common.services.study_year_service_interface import StudyYearServiceInt
 
 
 class StudyYearService(StudyYearServiceInterface):
+    async def get_by_id(
+        self, session: AsyncSession, study_year_id: UUID
+    ) -> StudyYear | None:
+        result = await session.execute(
+            select(StudyYear).where(StudyYear.id == study_year_id)
+        )
+        return result.scalar_one_or_none()
+
     async def get_by_code(self, session: AsyncSession, code: str) -> StudyYear | None:
         result = await session.execute(select(StudyYear).where(StudyYear.code == code))
         return result.scalar_one_or_none()
@@ -17,9 +27,7 @@ class StudyYearService(StudyYearServiceInterface):
         return result.scalar_one_or_none()
 
     async def list_all(self, session: AsyncSession) -> list[StudyYear]:
-        result = await session.execute(
-            select(StudyYear).order_by(StudyYear.id.desc())
-        )
+        result = await session.execute(select(StudyYear).order_by(StudyYear.id.desc()))
         return list(result.scalars().all())
 
     async def create(

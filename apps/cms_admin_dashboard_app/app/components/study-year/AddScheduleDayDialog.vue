@@ -2,17 +2,25 @@
 import * as z from 'zod'
 import { CalendarDate } from '@internationalized/date'
 import type { FormSubmitEvent } from '@nuxt/ui'
-import { listScheduleActivityTypes } from '~/generated-client'
+import { getGeneralSchedule, listScheduleActivityTypes, upsertGeneralSchedule } from '~/generated-client'
 import type { ScheduleActivity } from '~/types'
 
 const { t } = useI18n()
 const toast = useToast()
 
-const open = ref(false)
+const open = defineModel<boolean>('open', { default: false })
+
+const props = defineProps<{ activityId?: string | null }>()
 
 const emit = defineEmits<{
   create: [activity: ScheduleActivity]
+  update: [activity: ScheduleActivity]
 }>()
+
+// Frozen at open time — recomputing from `activityId` while the modal is
+// still fading out would flip the title/buttons back to create mode.
+const mode = ref<'create' | 'edit'>('create')
+const isEditMode = computed(() => mode.value === 'edit')
 
 interface ActivityTypeOption {
   id: number
@@ -30,7 +38,7 @@ async function loadActivityTypes() {
     activityTypes.value = (result.data ?? []).map(item => ({
       id: item.id,
       label: item.name,
-      color: item.color ?? '#6b7280'
+      color: toCssColor(item.color)
     }))
     activityTypesStatus.value = 'success'
   } catch {
@@ -45,6 +53,7 @@ const schema = z.object({
   name: z.string()
     .min(1, t('studyYearSchedules.addDay.validation.nameRequired'))
     .max(100, t('studyYearSchedules.addDay.validation.nameMax')),
+  isAttendenceCheck: z.boolean(),
   date: z.string().min(1, t('studyYearSchedules.addDay.validation.dateRequired')),
   startTime: z.string().min(1, t('studyYearSchedules.addDay.validation.startTimeRequired')),
   endTime: z.string().optional()
@@ -63,12 +72,17 @@ type Schema = z.output<typeof schema>
 const state = reactive<Partial<Schema>>({
   scheduleActivityTypeId: undefined,
   name: '',
+  isAttendenceCheck: true,
   date: '',
   startTime: '',
   endTime: undefined
 })
 
 const submitting = ref(false)
+
+// Edit mode: `detail` has no form input — preserved as fetched, never re-sent blank.
+const editDetail = ref<string | null>(null)
+const loadingDetail = ref(false)
 
 const activityTypeSelect = ref<{ triggerRef?: HTMLElement | null } | null>(null)
 
@@ -95,6 +109,33 @@ function reset() {
   state.date = ''
   state.startTime = ''
   state.endTime = undefined
+  state.isAttendenceCheck = true
+  editDetail.value = null
+}
+
+async function loadDetail() {
+  if (!props.activityId) return
+  loadingDetail.value = true
+  try {
+    const result = await getGeneralSchedule({
+      path: { schedule_id: props.activityId }
+    })
+    state.scheduleActivityTypeId = result.schedule_activity_type_id
+    state.name = result.name
+    state.date = result.start_at.slice(0, 10)
+    state.startTime = result.start_at.slice(11, 16)
+    state.endTime = result.end_at ? result.end_at.slice(11, 16) : undefined
+    state.isAttendenceCheck = result.is_attendence_check
+    editDetail.value = result.detail
+  } catch {
+    toast.add({
+      title: t('studyYearSchedules.loadError'),
+      color: 'error'
+    })
+    open.value = false
+  } finally {
+    loadingDetail.value = false
+  }
 }
 
 function focusActivityType() {
@@ -109,7 +150,12 @@ function focusActivityType() {
 
 watch(open, async (isOpen) => {
   if (!isOpen) return
+  mode.value = props.activityId ? 'edit' : 'create'
   reset()
+  if (props.activityId) {
+    await loadDetail()
+    if (!open.value) return // fetch failed, dialog already closed
+  }
   await nextTick()
   focusActivityType()
 })
@@ -130,27 +176,49 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   if (submitting.value) return
   submitting.value = true
   try {
-    const payload = {
-      scheduleActivityTypeId: event.data.scheduleActivityTypeId,
-      name: event.data.name,
-      startAt: `${event.data.date}T${event.data.startTime}`,
-      endAt: event.data.endTime ? `${event.data.date}T${event.data.endTime}` : undefined
-    }
-    console.log('Create schedule day — payload for backend:', payload)
-
-    await new Promise(resolve => setTimeout(resolve, 3000))
-    const activityType = activityTypes.value.find(option => option.id === payload.scheduleActivityTypeId)
-    emit('create', {
-      color: activityType?.color ?? '#6b7280',
-      name: payload.name,
-      startAt: payload.startAt,
-      endAt: payload.endAt
+    const result = await upsertGeneralSchedule({
+      body: {
+        id: isEditMode.value ? props.activityId : null,
+        schedule_activity_type_id: event.data.scheduleActivityTypeId,
+        name: event.data.name,
+        start_at: `${event.data.date}T${event.data.startTime}`,
+        end_at: event.data.endTime ? `${event.data.date}T${event.data.endTime}` : null,
+        detail: isEditMode.value ? editDetail.value : null,
+        is_attendence_check: event.data.isAttendenceCheck
+      }
     })
+
+    const saved = result
+    const activityType = activityTypes.value.find(
+      option => option.id === saved.schedule_activity_type_id
+    )
+    const activity: ScheduleActivity = {
+      id: saved.id,
+      color: activityType?.color ?? '#6b7280',
+      name: saved.name,
+      startAt: saved.start_at,
+      endAt: saved.end_at ?? undefined,
+      isAttendenceCheck: saved.is_attendence_check
+    }
+    if (isEditMode.value) {
+      emit('update', activity)
+    } else {
+      emit('create', activity)
+    }
     toast.add({
-      title: t('studyYearSchedules.addDay.createSuccess'),
+      title: isEditMode.value
+        ? t('studyYearSchedules.addDay.updateSuccess')
+        : t('studyYearSchedules.addDay.createSuccess'),
       color: 'success'
     })
     open.value = false
+  } catch {
+    toast.add({
+      title: isEditMode.value
+        ? t('studyYearSchedules.addDay.updateFailed')
+        : t('studyYearSchedules.addDay.createFailed'),
+      color: 'error'
+    })
   } finally {
     submitting.value = false
   }
@@ -160,8 +228,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 <template>
   <UModal
     v-model:open="open"
-    :title="t('studyYearSchedules.addDay.title')"
-    :dismissible="!submitting"
+    :title="isEditMode ? t('studyYearSchedules.addDay.editTitle') : t('studyYearSchedules.addDay.title')"
+    :dismissible="!submitting && !loadingDetail"
   >
     <UButton
       :label="t('studyYearSchedules.addDay.title')"
@@ -169,10 +237,48 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     />
 
     <template #body>
+      <!-- Edit mode: detail fetched via API — placeholder the form layout while loading -->
+      <div
+        v-if="loadingDetail"
+        class="space-y-4"
+        aria-busy="true"
+      >
+        <div class="space-y-2">
+          <USkeleton class="h-4 w-28" />
+          <USkeleton class="h-9 w-full" />
+        </div>
+        <div class="flex items-end gap-4">
+          <div class="min-w-0 flex-1 space-y-2">
+            <USkeleton class="h-4 w-16" />
+            <USkeleton class="h-9 w-full" />
+          </div>
+          <USkeleton class="mb-1.5 h-6 w-24" />
+        </div>
+        <div class="space-y-2">
+          <USkeleton class="h-4 w-12" />
+          <USkeleton class="h-9 w-full" />
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <USkeleton class="h-4 w-24" />
+            <USkeleton class="h-9 w-full" />
+          </div>
+          <div class="space-y-2">
+            <USkeleton class="h-4 w-24" />
+            <USkeleton class="h-9 w-full" />
+          </div>
+        </div>
+        <div class="flex justify-end gap-2">
+          <USkeleton class="h-9 w-16" />
+          <USkeleton class="h-9 w-20" />
+        </div>
+      </div>
+
       <UForm
+        v-else
         :schema="schema"
         :state="state"
-        :disabled="submitting"
+        :disabled="submitting || loadingDetail"
         class="space-y-4"
         @submit="onSubmit"
       >
@@ -192,11 +298,13 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             class="w-full"
           >
             <template #item="{ item }">
-              <span
-                class="h-2 w-2 shrink-0 rounded-full"
-                :style="{ backgroundColor: item.color }"
-              />
-              <span>{{ item.label }}</span>
+              <div class="flex items-center gap-2">
+                <span
+                  class="block h-2 w-2 shrink-0 rounded-full"
+                  :style="{ backgroundColor: item.color }"
+                />
+                <span class="truncate">{{ item.label }}</span>
+              </div>
             </template>
           </USelectMenu>
         </UFormField>
@@ -215,18 +323,31 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           />
         </div>
 
-        <UFormField
-          :label="t('studyYearSchedules.addDay.name')"
-          name="name"
-          required
-        >
-          <UInput
-            v-model="state.name"
-            :placeholder="t('studyYearSchedules.addDay.namePlaceholder')"
-            maxlength="100"
-            class="w-full"
-          />
-        </UFormField>
+        <div class="flex items-end gap-4">
+          <UFormField
+            :label="t('studyYearSchedules.addDay.name')"
+            name="name"
+            required
+            class="min-w-0 flex-1"
+          >
+            <UInput
+              v-model="state.name"
+              :placeholder="t('studyYearSchedules.addDay.namePlaceholder')"
+              maxlength="100"
+              class="w-full"
+            />
+          </UFormField>
+          <UFormField
+            name="isAttendenceCheck"
+            class="pb-1.5"
+          >
+            <UCheckbox
+              v-model="state.isAttendenceCheck"
+              :label="t('studyYearSchedules.addDay.attendance')"
+              :disabled="submitting"
+            />
+          </UFormField>
+        </div>
 
         <UFormField
           :label="t('studyYearSchedules.addDay.date')"
@@ -286,7 +407,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             @click="cancel"
           />
           <UButton
-            :label="t('studyYearSchedules.addDay.create')"
+            :label="isEditMode ? t('studyYearSchedules.addDay.update') : t('studyYearSchedules.addDay.create')"
             type="submit"
             color="primary"
             :loading="submitting"

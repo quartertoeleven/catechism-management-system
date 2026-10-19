@@ -11,9 +11,7 @@ from models.list_schedule_activity_types_response import (
 
 from dependencies.auth_dependency import get_authenticated_user
 
-router = APIRouter(
-    prefix="/schedule-activity-types", tags=["schedule-activity-types"]
-)
+router = APIRouter(prefix="/schedule-activity-types", tags=["schedule-activity-types"])
 
 
 @router.get("/")

@@ -88,14 +88,22 @@
     "no": "Không"
   },
   "studyYearSchedules": {
+    "loadError": "Không tải được lịch sinh hoạt",
+    "retry": "Thử lại",
+    "actions": {
+      "edit": "Chỉnh sửa",
+      "delete": "Xóa"
+    },
     "addDay": {
       "title": "Thêm ngày sinh hoạt",
+      "editTitle": "Sửa ngày sinh hoạt",
       "activityType": "Loại hoạt động",
       "activityTypePlaceholder": "Chọn loại hoạt động",
       "activityTypeLoadError": "Không tải được danh sách loại hoạt động",
       "retry": "Thử lại",
       "name": "Tên hoạt động",
       "namePlaceholder": "Nhập tên hoạt động",
+      "attendance": "Điểm danh",
       "date": "Ngày",
       "datePlaceholder": "dd/mm/yyyy",
       "timePlaceholder": "hh:mm",
@@ -105,8 +113,12 @@
       "startTime": "Giờ bắt đầu",
       "endTime": "Giờ kết thúc",
       "create": "Tạo",
+      "update": "Cập nhật",
       "cancel": "Hủy",
       "createSuccess": "Đã thêm ngày sinh hoạt thành công",
+      "createFailed": "Không thể thêm ngày sinh hoạt",
+      "updateSuccess": "Đã cập nhật ngày sinh hoạt thành công",
+      "updateFailed": "Không thể cập nhật ngày sinh hoạt",
       "validation": {
         "activityTypeRequired": "Vui lòng chọn loại hoạt động",
         "nameRequired": "Vui lòng nhập tên hoạt động",
@@ -120,7 +132,8 @@
       "from": "Từ {time}"
     },
     "columns": {
-      "time": "Thời gian"
+      "time": "Thời gian",
+      "attendance": "Điểm danh"
     }
   }
 }

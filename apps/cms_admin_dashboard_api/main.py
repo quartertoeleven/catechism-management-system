@@ -2,7 +2,10 @@ from containers import ApplicationContainer
 from controllers.auth_controller import router as auth_router
 from controllers.health_controller import router as health_router
 from controllers.study_year_controller import router as study_year_router
-from controllers.schedule_activity_type_controller import router as schedule_activity_type_router
+from controllers.schedule_activity_type_controller import (
+    router as schedule_activity_type_router,
+)
+from controllers.general_schedule_controller import router as general_schedule_router
 from cms_common.models import CmsAdminDashboardSettings
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
@@ -24,7 +27,7 @@ def create_app() -> FastAPI:
         title="CMS Admin Dashboard API",
         version=settings.version,
         description="REST API for Admin Dashboard",
-        generate_unique_id_function=__custom_generate_unique_id
+        generate_unique_id_function=__custom_generate_unique_id,
     )
     application.add_middleware(
         CORSMiddleware,
@@ -37,4 +40,5 @@ def create_app() -> FastAPI:
     application.include_router(auth_router, prefix="/dashboard-api")
     application.include_router(study_year_router, prefix="/dashboard-api")
     application.include_router(schedule_activity_type_router, prefix="/dashboard-api")
+    application.include_router(general_schedule_router, prefix="/dashboard-api")
     return application

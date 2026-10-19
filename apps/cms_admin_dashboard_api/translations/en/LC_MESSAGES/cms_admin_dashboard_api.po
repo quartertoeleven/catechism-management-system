@@ -19,3 +19,15 @@ msgstr "Not authenticated"
 
 msgid "error.sign_in_callback_failed"
 msgstr "Sign-in callback failed: {error}"
+
+msgid "error.general_schedule_not_found"
+msgstr "General schedule not found"
+
+msgid "error.study_year_not_found"
+msgstr "Study year not found"
+
+msgid "error.no_current_study_year"
+msgstr "No current study year is set"
+
+msgid "error.schedule_activity_type_not_found"
+msgstr "Schedule activity type not found"

@@ -13,4 +13,6 @@ class ScheduleActivityType(IsActiveMixin, AuditMixin, Base):
     code: Mapped[str] = mapped_column(String(20), nullable=False, unique=True)
     name: Mapped[str] = mapped_column(String(30), nullable=False)
     color: Mapped[str | None] = mapped_column(String(7), nullable=True)
-    is_system: Mapped[bool] = mapped_column(Boolean, server_default="false", nullable=False)
+    is_system: Mapped[bool] = mapped_column(
+        Boolean, server_default="false", nullable=False
+    )

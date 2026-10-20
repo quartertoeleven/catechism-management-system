@@ -24,8 +24,7 @@ def _parse_bool(value: str) -> bool:
 def seed(session: Session) -> tuple[int, int]:
     rows = _read_rows(CSV_PATH)
     existing_map = {
-        row.id: row
-        for row in session.scalars(select(ScheduleActivityType)).all()
+        row.id: row for row in session.scalars(select(ScheduleActivityType)).all()
     }
 
     inserted = 0

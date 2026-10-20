@@ -34,7 +34,9 @@ class LogtoService:
     def get_raw_id_token(self, client: LogtoClient) -> Optional[str]:
         return client._storage.get("idToken")
 
-    async def get_claims(self, client: LogtoClient) -> Tuple[Optional[IdTokenClaims], bool]:
+    async def get_claims(
+        self, client: LogtoClient
+    ) -> Tuple[Optional[IdTokenClaims], bool]:
         if not client.isAuthenticated():
             return None, False
 

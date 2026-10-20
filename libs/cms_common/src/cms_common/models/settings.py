@@ -21,10 +21,16 @@ class CommonSettings(BaseSettings):
         default="postgresql+psycopg://postgres:postgres@localhost:5432/catechism_management_system",
         validation_alias="DATABASE_URL",
     )
-    cookie_name: str = Field(default="cms_session", validation_alias="AUTH_SESSION_NAME")
+    cookie_name: str = Field(
+        default="cms_session", validation_alias="AUTH_SESSION_NAME"
+    )
     cookie_secure: bool = Field(default=False, validation_alias="AUTH_SESSION_SECURE")
-    cookie_samesite: str = Field(default="lax", validation_alias="AUTH_SESSION_SAMESITE")
-    cookie_max_age: int = Field(default=2592000, validation_alias="AUTH_SESSION_MAX_AGE")
+    cookie_samesite: str = Field(
+        default="lax", validation_alias="AUTH_SESSION_SAMESITE"
+    )
+    cookie_max_age: int = Field(
+        default=2592000, validation_alias="AUTH_SESSION_MAX_AGE"
+    )
 
 
 class CmsAdminDashboardSettings(BaseSettings):

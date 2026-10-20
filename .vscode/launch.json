@@ -10,6 +10,7 @@
             "request": "launch",
             "python": "${workspaceFolder}/.venv/bin/python",
             "cwd": "${workspaceFolder}/apps/cms_admin_dashboard_api",
+            "envFile": "${workspaceFolder}/infrastructure/local/.env",
             "module": "uvicorn",
             "args": [
                 "main:create_app",

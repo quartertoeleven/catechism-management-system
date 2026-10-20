@@ -10,4 +10,21 @@ This directory contains the source code for the Admin Dashboard of the Catechism
 - Vue 3
 - Nuxt v4 (SPA mode - ssr: false)
 - NuxtUI v4 as the UI library
+- @nuxtjs/i18n for i18n
 - ESLint for linting
+
+# Coding guidelines
+- Do not hard code display strings, always use 18n.
+- The folder app/generated-client contains the client and SDK for interacting with the backend api (generated using hey-api cli from the backend).
+- For dialog:
+  - Use skeleton loading when opening dialog if there's a need to load data (from API for example). Skeleton structure should looks similar to the form structure in the dialog.
+  - When submitting the dialog: the primary button should show loading state, other buttons and the forms should be disabled (on the UForm level)
+  - If the operation failed, do not close the dialog automatically.
+- For main table on a page:
+  - Use skeleton loading when loading data. The skeleton should has the same number of columns as the table
+
+# References
+The following can be referred to when needed
+- [Nuxt documentation](https://nuxt.com/llms.txt)
+- [NuxtUI Documentation](https://ui.nuxt.com/llms.txt)
+- [TanStack Table](https://tanstack.com/table/latest/llms.txt)

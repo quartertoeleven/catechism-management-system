@@ -2,13 +2,15 @@ from cms_locale import Translator
 from containers import ApplicationContainer
 from dependencies.locale_dependency import get_locale_translator
 from dependency_injector.wiring import Provide, inject
-from fastapi import APIRouter, Depends, Request
+from dependencies.auth_dependency import get_authenticated_user
+from fastapi import APIRouter, Depends, Request, Response
 from fastapi.responses import RedirectResponse
 from handlers.callback_handler import CallbackHandler
 from handlers.check_handler import CheckHandler
 from handlers.login_handler import LoginHandler
 from handlers.logout_handler import LogoutHandler
 from handlers.profile_handler import ProfileHandler
+from logto import IdTokenClaims
 from models.check_response import CheckResponse
 from models.user_profile import UserProfileResponse
 
@@ -51,6 +53,7 @@ async def logout(
 @inject
 async def my_profile(
     request: Request,
+    claims: IdTokenClaims = Depends(get_authenticated_user),
     profile_handler: ProfileHandler = Depends(
         Provide[ApplicationContainer.profile_handler]
     ),
@@ -62,7 +65,8 @@ async def my_profile(
 @inject
 async def check(
     request: Request,
+    response: Response,
     check_handler: CheckHandler = Depends(Provide[ApplicationContainer.check_handler]),
     translator: Translator = Depends(get_locale_translator),
 ) -> CheckResponse:
-    return await check_handler(request, translator)
+    return await check_handler(request, response, translator)

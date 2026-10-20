@@ -1,5 +1,15 @@
-from cms_common.services import ProfileService
-from cms_integrations.logto import LogtoClientFactory, LogtoService
+from cms_common.models import CmsAdminDashboardSettings
+from cms_common.services import (
+    ProfileService,
+    StudyYearService,
+    ScheduleActivityTypeService,
+    GeneralScheduleService,
+)
+from cms_integrations.logto import (
+    JwtVerificationService,
+    LogtoClientFactory,
+    LogtoService,
+)
 from cms_locale import LocaleConfig, LocaleService
 from dependency_injector import containers, providers
 from handlers.callback_handler import CallbackHandler
@@ -7,6 +17,15 @@ from handlers.check_handler import CheckHandler
 from handlers.health_check_handler import HealthCheckHandler
 from handlers.login_handler import LoginHandler
 from handlers.logout_handler import LogoutHandler
+from handlers.create_study_year_handler import CreateStudyYearHandler
+from handlers.list_study_years_handler import ListStudyYearsHandler
+from handlers.list_schedule_activity_types_handler import (
+    ListScheduleActivityTypesHandler,
+)
+from handlers.list_general_schedules_handler import ListGeneralSchedulesHandler
+from handlers.delete_general_schedule_handler import DeleteGeneralScheduleHandler
+from handlers.get_general_schedule_handler import GetGeneralScheduleHandler
+from handlers.upsert_general_schedule_handler import UpsertGeneralScheduleHandler
 from handlers.profile_handler import ProfileHandler
 from services.auth_service import AuthService
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
@@ -17,10 +36,10 @@ class ApplicationContainer(containers.DeclarativeContainer):
 
     locale_config = providers.Singleton(
         LocaleConfig,
-        catalogs_dir=config.locale.catalogs_dir,
-        default_locale=config.locale.default_locale,
-        supported_locales=config.locale.supported_locales,
-        fallback_locale=config.locale.fallback_locale,
+        catalogs_dir=config.locale_catalogs_dir,
+        default_locale=config.locale_default_locale,
+        supported_locales=config.locale_supported_locales,
+        fallback_locale=config.locale_fallback_locale,
     )
 
     locale_service = providers.Singleton(
@@ -30,7 +49,7 @@ class ApplicationContainer(containers.DeclarativeContainer):
 
     database_engine = providers.Singleton(
         create_async_engine,
-        config.database.url,
+        config.common.database_url,
     )
 
     session_factory = providers.Singleton(
@@ -41,24 +60,34 @@ class ApplicationContainer(containers.DeclarativeContainer):
 
     logto_client_factory = providers.Singleton(
         LogtoClientFactory,
-        endpoint=config.logto.endpoint,
-        app_id=config.logto.app_id,
-        app_secret=config.logto.app_secret,
+        endpoint=config.logto_endpoint,
+        app_id=config.logto_app_id,
+        app_secret=config.logto_app_secret,
+        resources=config.logto_resources,
     )
 
-    logto_service = providers.Singleton(LogtoService)
+    jwt_verification_service = providers.Singleton(
+        JwtVerificationService,
+        endpoint=config.logto_endpoint,
+        app_id=config.logto_app_id,
+    )
+
+    logto_service = providers.Singleton(
+        LogtoService,
+        jwt_verification_service=jwt_verification_service,
+    )
 
     auth_service = providers.Singleton(
         AuthService,
         logto_client_factory=logto_client_factory,
         logto_service=logto_service,
-        logto_redirect_uri=config.logto.redirect_uri,
+        logto_redirect_uri=config.logto_redirect_uri,
         frontend_url=config.frontend_url,
-        session_secret=config.session_secret,
-        cookie_name=config.cookie.name,
-        cookie_secure=config.cookie.secure,
-        cookie_samesite=config.cookie.samesite,
-        cookie_max_age=config.cookie.max_age,
+        session_secret=config.common.session_secret,
+        cookie_name=config.common.cookie_name,
+        cookie_secure=config.common.cookie_secure,
+        cookie_samesite=config.common.cookie_samesite,
+        cookie_max_age=config.common.cookie_max_age,
     )
 
     health_check_handler = providers.Singleton(
@@ -76,6 +105,57 @@ class ApplicationContainer(containers.DeclarativeContainer):
         ProfileHandler,
         auth_service=auth_service,
         profile_service=profile_service,
+    )
+
+    study_year_service = providers.Singleton(StudyYearService)
+
+    schedule_activity_type_service = providers.Singleton(ScheduleActivityTypeService)
+
+    general_schedule_service = providers.Singleton(GeneralScheduleService)
+
+    upsert_general_schedule_handler = providers.Singleton(
+        UpsertGeneralScheduleHandler,
+        general_schedule_service=general_schedule_service,
+        study_year_service=study_year_service,
+        schedule_activity_type_service=schedule_activity_type_service,
+        session_factory=session_factory,
+    )
+
+    get_general_schedule_handler = providers.Singleton(
+        GetGeneralScheduleHandler,
+        general_schedule_service=general_schedule_service,
+        session_factory=session_factory,
+    )
+
+    delete_general_schedule_handler = providers.Singleton(
+        DeleteGeneralScheduleHandler,
+        general_schedule_service=general_schedule_service,
+        session_factory=session_factory,
+    )
+
+    list_general_schedules_handler = providers.Singleton(
+        ListGeneralSchedulesHandler,
+        general_schedule_service=general_schedule_service,
+        study_year_service=study_year_service,
+        session_factory=session_factory,
+    )
+
+    create_study_year_handler = providers.Singleton(
+        CreateStudyYearHandler,
+        study_year_service=study_year_service,
+        session_factory=session_factory,
+    )
+
+    list_study_years_handler = providers.Singleton(
+        ListStudyYearsHandler,
+        study_year_service=study_year_service,
+        session_factory=session_factory,
+    )
+
+    list_schedule_activity_types_handler = providers.Singleton(
+        ListScheduleActivityTypesHandler,
+        schedule_activity_type_service=schedule_activity_type_service,
+        session_factory=session_factory,
     )
 
     login_handler = providers.Singleton(
@@ -102,6 +182,10 @@ class ApplicationContainer(containers.DeclarativeContainer):
         modules=[
             "controllers.health_controller",
             "controllers.auth_controller",
+            "controllers.study_year_controller",
+            "controllers.schedule_activity_type_controller",
+            "controllers.general_schedule_controller",
+            "dependencies.auth_dependency",
             "dependencies.locale_dependency",
         ],
     )

@@ -5,6 +5,9 @@ This repo contains the REST API for CMS Admin Dashboard
 # Coding guidelines
 
 - Each endpoints in a controller should have its own handlers.
+- Database commit/rollback should only happens in the handlers.
+- HTTP response status should only be done in the handlers.
+- Do not hardcode any messages, use i18n for them. The only exception is the messages in logs.
 - Naming convention and location of the files
 
     |                    | Location Dir | File name               | File name example     | Class name             | Class name example |

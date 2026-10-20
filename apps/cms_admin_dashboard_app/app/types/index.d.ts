@@ -64,3 +64,28 @@ export interface Range {
   start: Date
   end: Date
 }
+
+export interface ScheduleActivity {
+  /** General schedule id (`study_year.general_schedules.id`) */
+  id: string
+  /** Color indicator of the schedule activity type (e.g. `#10b981`) */
+  color: string
+  /** Display name of the schedule activity type */
+  activityTypeName: string
+  name: string
+  /** `yyyy-MM-ddTHH:mm` */
+  startAt: string
+  /** `yyyy-MM-ddTHH:mm` */
+  endAt?: string
+  /** Whether attendance is taken for this activity (backend: `is_attendence_check`) */
+  isAttendenceCheck: boolean
+}
+
+export interface ScheduleRow {
+  /** `yyyy-MM` — used for month grouping */
+  monthKey: string
+  dayName: string
+  /** `dd-MM-yyyy` */
+  date: string
+  activities: ScheduleActivity[]
+}

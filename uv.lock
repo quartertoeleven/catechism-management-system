@@ -300,6 +300,7 @@ dependencies = [
     { name = "cms-db-models" },
     { name = "logto" },
     { name = "pydantic" },
+    { name = "pydantic-settings" },
     { name = "pyjwt", extra = ["crypto"] },
     { name = "sqlalchemy" },
 ]
@@ -309,6 +310,7 @@ requires-dist = [
     { name = "cms-db-models", editable = "libs/cms_db_models" },
     { name = "logto" },
     { name = "pydantic" },
+    { name = "pydantic-settings" },
     { name = "pyjwt", extras = ["crypto"] },
     { name = "sqlalchemy" },
 ]

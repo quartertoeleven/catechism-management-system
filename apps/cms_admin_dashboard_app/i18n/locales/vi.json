@@ -1,0 +1,152 @@
+{
+  "menu": {
+    "studyYear": {
+      "label": "Năm học",
+      "info": "Thông tin",
+      "schedules": "Lịch sinh hoạt"
+    },
+    "grade": {
+      "label": "Khối",
+      "dashboard": "Tổng quan",
+      "schedules": "Lịch sinh hoạt khối",
+      "exams": "Bài kiểm tra",
+      "unitList": "Danh sách lớp"
+    },
+    "class": {
+      "label": "Lớp",
+      "dashboard": "Tổng quan",
+      "studentList": "Danh sách học sinh",
+      "attendances": "Điểm danh",
+      "examScores": "Điểm kiểm tra"
+    },
+    "adminArea": {
+      "label": "Khu vực quản trị",
+      "listsManagement": "Quản lý danh mục"
+    },
+    "willBeRemoved": {
+      "label": "(sẽ xóa)",
+      "home": "Trang chủ",
+      "inbox": "Hộp thư",
+      "customers": "Khách hàng",
+      "settings": {
+        "label": "Cài đặt",
+        "general": "Chung",
+        "members": "Thành viên",
+        "notifications": "Thông báo",
+        "security": "Bảo mật"
+      },
+      "feedback": "Phản hồi",
+      "helpAndSupport": "Hỗ trợ"
+    }
+  },
+  "search": {
+    "goTo": "Đến",
+    "code": "Mã nguồn",
+    "viewPageSource": "Xem mã trang"
+  },
+  "cookie": {
+    "message": "Chúng tôi sử dụng cookie để nâng cao trải nghiệm của bạn trên trang web.",
+    "accept": "Chấp nhận",
+    "optOut": "Từ chối"
+  },
+  "listManagement": {
+    "studyYears": "Năm học",
+    "scheduleActivityTypes": "Loại hoạt động",
+    "addStudyYear": "Thêm năm học",
+    "addScheduleActivityType": "Thêm loại hoạt động",
+    "loadingStudyYears": "Đang tải danh sách năm học...",
+    "loadingScheduleActivityTypes": "Đang tải danh sách loại hoạt động...",
+    "searchStudyYears": "Tìm kiếm năm học...",
+    "searchScheduleActivityTypes": "Tìm kiếm loại hoạt động...",
+    "display": "Hiển thị",
+    "emptyStudyYears": {
+      "title": "Chưa có năm học",
+      "description": "Nhấn nút \"Thêm năm học\" ở trên để tạo năm học mới."
+    },
+    "emptyScheduleActivityTypes": {
+      "title": "Chưa có loại hoạt động",
+      "description": "Nhấn nút \"Thêm loại hoạt động\" ở trên để tạo loại hoạt động mới."
+    },
+    "studyYear": {
+      "code": "Mã",
+      "name": "Tên",
+      "isCurrent": "Năm hiện tại",
+      "isReadonly": "Chỉ đọc",
+      "setCurrent": "Đặt làm năm hiện tại",
+      "setReadOnly": "Đặt ở chế độ chỉ đọc",
+      "setWritable": "Đặt ở chế độ chỉnh sửa"
+    },
+    "scheduleActivityType": {
+      "code": "Mã",
+      "name": "Tên",
+      "color": "Màu",
+      "isSystem": "Hệ thống"
+    }
+  },
+  "common": {
+    "yes": "Có",
+    "no": "Không"
+  },
+  "studyYearSchedules": {
+    "loadError": "Không tải được lịch sinh hoạt",
+    "retry": "Thử lại",
+    "actions": {
+      "edit": "Chỉnh sửa",
+      "duplicate": "Sao chép",
+      "delete": "Xóa"
+    },
+    "addDay": {
+      "title": "Thêm ngày sinh hoạt",
+      "editTitle": "Sửa ngày sinh hoạt",
+      "duplicateTitle": "Sao chép ngày sinh hoạt",
+      "duplicateSuffix": "(bản sao)",
+      "activityType": "Loại hoạt động",
+      "activityTypePlaceholder": "Chọn loại hoạt động",
+      "activityTypeLoadError": "Không tải được danh sách loại hoạt động",
+      "retry": "Thử lại",
+      "name": "Tên hoạt động",
+      "namePlaceholder": "Nhập tên hoạt động",
+      "attendance": "Điểm danh",
+      "date": "Ngày",
+      "datePlaceholder": "dd/mm/yyyy",
+      "timePlaceholder": "hh:mm",
+      "hoursColumn": "Giờ",
+      "minutesColumn": "Phút",
+      "clearTime": "Xóa giờ",
+      "startTime": "Giờ bắt đầu",
+      "endTime": "Giờ kết thúc",
+      "create": "Tạo",
+      "update": "Cập nhật",
+      "cancel": "Hủy",
+      "createSuccess": "Đã thêm ngày sinh hoạt thành công",
+      "createFailed": "Không thể thêm ngày sinh hoạt",
+      "updateSuccess": "Đã cập nhật ngày sinh hoạt thành công",
+      "updateFailed": "Không thể cập nhật ngày sinh hoạt",
+      "validation": {
+        "activityTypeRequired": "Vui lòng chọn loại hoạt động",
+        "nameRequired": "Vui lòng nhập tên hoạt động",
+        "nameMax": "Tên hoạt động không được vượt quá 100 ký tự",
+        "dateRequired": "Vui lòng chọn ngày",
+        "startTimeRequired": "Vui lòng chọn giờ bắt đầu",
+        "endTimeAfterStartTime": "Giờ kết thúc phải sau giờ bắt đầu"
+      }
+    },
+    "activityTime": {
+      "from": "Từ {time}"
+    },
+    "dayNames": {
+      "sunday": "Chúa Nhật"
+    },
+    "deleteDay": {
+      "title": "Xóa ngày sinh hoạt",
+      "confirmText": "Bạn có chắc chắn muốn xóa sinh hoạt này không? Hành động này không thể hoàn tác.",
+      "confirm": "Xóa",
+      "deleteSuccess": "Đã xóa sinh hoạt thành công",
+      "deleteFailed": "Không thể xóa sinh hoạt"
+    },
+    "columns": {
+      "time": "Thời gian",
+      "attendance": "Điểm danh"
+    }
+  }
+}

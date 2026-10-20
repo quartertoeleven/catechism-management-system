@@ -17,12 +17,14 @@ class LogtoClientFactory:
         app_id: str,
         app_secret: str,
         scopes: Optional[list[Scope]] = None,
+        resources: Optional[list[str]] = None,
     ) -> None:
         self._config = LogtoConfig(
             endpoint=endpoint,
             appId=app_id,
             appSecret=app_secret,
             scopes=list(scopes if scopes is not None else DEFAULT_SCOPES),
+            resources=resources or [],
         )
 
     def create_client(self, storage: Storage) -> LogtoClient:

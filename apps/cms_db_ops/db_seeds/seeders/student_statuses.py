@@ -39,7 +39,12 @@ def seed(session: Session) -> tuple[int, int]:
             for r in new_rows
         )
         inserted = len(new_rows)
+    __print_result(inserted, skipped)
     return inserted, skipped
+
+
+def __print_result(inserted: int, skipped: int) -> None:
+    print(f"StudentStatus seed: inserted={inserted} skipped={skipped}")
 
 
 def main() -> None:
@@ -49,9 +54,8 @@ def main() -> None:
 
     engine = create_engine(database_url)
     with Session(engine) as session:
-        inserted, skipped = seed(session)
+        seed(session)
         session.commit()
-    print(f"StudentStatus seed: inserted={inserted} skipped={skipped}")
 
 
 if __name__ == "__main__":

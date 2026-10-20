@@ -10,11 +10,11 @@ const appConfig = useAppConfig()
 const { user, checkAuth } = useAuth()
 
 const displayName = computed(
-  () => user.value?.name || user.value?.username || user.value?.sub || ''
+  () => user.value?.name || user.value?.email || ''
 )
 
 const avatar = computed(() => ({
-  src: user.value?.picture ?? '',
+  src: '',
   alt: displayName.value
 }))
 

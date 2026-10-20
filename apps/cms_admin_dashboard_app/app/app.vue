@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vi } from '@nuxt/ui/locale'
+
 const colorMode = useColorMode()
 
 const color = computed(() => colorMode.value === 'dark' ? '#1b1718' : 'white')
@@ -19,7 +21,10 @@ useHead({
 </script>
 
 <template>
-  <UApp>
+  <UApp
+    :locale="vi"
+    :toaster="{ position: 'top-right' }"
+  >
     <NuxtLoadingIndicator />
 
     <NuxtLayout>

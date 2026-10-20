@@ -10,7 +10,7 @@ const toast = useToast()
 
 const open = defineModel<boolean>('open', { default: false })
 
-const props = defineProps<{ activityId?: string | null }>()
+const props = defineProps<{ activityId?: string | null, duplicate?: boolean }>()
 
 const emit = defineEmits<{
   create: [activity: ScheduleActivity]
@@ -19,8 +19,15 @@ const emit = defineEmits<{
 
 // Frozen at open time — recomputing from `activityId` while the modal is
 // still fading out would flip the title/buttons back to create mode.
-const mode = ref<'create' | 'edit'>('create')
+// `duplicate` fetches the source record like edit, but submits an insert.
+const mode = ref<'create' | 'edit' | 'duplicate'>('create')
 const isEditMode = computed(() => mode.value === 'edit')
+
+const dialogTitle = computed(() => {
+  if (mode.value === 'edit') return t('studyYearSchedules.addDay.editTitle')
+  if (mode.value === 'duplicate') return t('studyYearSchedules.addDay.duplicateTitle')
+  return t('studyYearSchedules.addDay.title')
+})
 
 interface ActivityTypeOption {
   id: number
@@ -138,6 +145,13 @@ async function loadDetail() {
   }
 }
 
+/** Append " (bản sao)" keeping the result within the 100-char name limit. */
+function withDuplicateSuffix(name: string) {
+  const suffix = ` ${t('studyYearSchedules.addDay.duplicateSuffix')}`
+  if (name.length + suffix.length <= 100) return name + suffix
+  return `${name.slice(0, 100 - suffix.length)}${suffix}`
+}
+
 function focusActivityType() {
   // The dialog moves focus to its first focusable element (the close button)
   // after opening — defer past it, then focus the first field's trigger.
@@ -150,11 +164,16 @@ function focusActivityType() {
 
 watch(open, async (isOpen) => {
   if (!isOpen) return
-  mode.value = props.activityId ? 'edit' : 'create'
+  mode.value = props.activityId
+    ? (props.duplicate ? 'duplicate' : 'edit')
+    : 'create'
   reset()
   if (props.activityId) {
     await loadDetail()
     if (!open.value) return // fetch failed, dialog already closed
+    if (mode.value === 'duplicate') {
+      state.name = withDuplicateSuffix(state.name ?? '')
+    }
   }
   await nextTick()
   focusActivityType()
@@ -178,12 +197,13 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   try {
     const result = await upsertGeneralSchedule({
       body: {
-        id: isEditMode.value ? props.activityId : null,
+        // Duplicate fetched the source record but must insert a new row.
+        id: mode.value === 'edit' ? props.activityId : null,
         schedule_activity_type_id: event.data.scheduleActivityTypeId,
         name: event.data.name,
         start_at: `${event.data.date}T${event.data.startTime}`,
         end_at: event.data.endTime ? `${event.data.date}T${event.data.endTime}` : null,
-        detail: isEditMode.value ? editDetail.value : null,
+        detail: mode.value === 'create' ? null : editDetail.value,
         is_attendence_check: event.data.isAttendenceCheck
       }
     })
@@ -195,6 +215,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     const activity: ScheduleActivity = {
       id: saved.id,
       color: activityType?.color ?? '#6b7280',
+      activityTypeName: activityType?.label ?? '',
       name: saved.name,
       startAt: saved.start_at,
       endAt: saved.end_at ?? undefined,
@@ -228,7 +249,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 <template>
   <UModal
     v-model:open="open"
-    :title="isEditMode ? t('studyYearSchedules.addDay.editTitle') : t('studyYearSchedules.addDay.title')"
+    :title="dialogTitle"
     :dismissible="!submitting && !loadingDetail"
   >
     <UButton

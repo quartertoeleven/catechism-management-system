@@ -92,11 +92,14 @@
     "retry": "Thử lại",
     "actions": {
       "edit": "Chỉnh sửa",
+      "duplicate": "Sao chép",
       "delete": "Xóa"
     },
     "addDay": {
       "title": "Thêm ngày sinh hoạt",
       "editTitle": "Sửa ngày sinh hoạt",
+      "duplicateTitle": "Sao chép ngày sinh hoạt",
+      "duplicateSuffix": "(bản sao)",
       "activityType": "Loại hoạt động",
       "activityTypePlaceholder": "Chọn loại hoạt động",
       "activityTypeLoadError": "Không tải được danh sách loại hoạt động",
@@ -130,6 +133,16 @@
     },
     "activityTime": {
       "from": "Từ {time}"
+    },
+    "dayNames": {
+      "sunday": "Chúa Nhật"
+    },
+    "deleteDay": {
+      "title": "Xóa ngày sinh hoạt",
+      "confirmText": "Bạn có chắc chắn muốn xóa sinh hoạt này không? Hành động này không thể hoàn tác.",
+      "confirm": "Xóa",
+      "deleteSuccess": "Đã xóa sinh hoạt thành công",
+      "deleteFailed": "Không thể xóa sinh hoạt"
     },
     "columns": {
       "time": "Thời gian",

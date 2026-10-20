@@ -45,3 +45,8 @@ class GeneralScheduleServiceInterface(ABC):
         detail: str | None,
         is_attendence_check: bool,
     ) -> GeneralSchedule: ...
+
+    @abstractmethod
+    async def delete(
+        self, session: AsyncSession, schedule: GeneralSchedule
+    ) -> None: ...

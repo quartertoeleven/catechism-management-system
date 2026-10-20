@@ -56,7 +56,15 @@ function formatMonthLabel(monthKey: string) {
 function parseDayName(dateStr: string) {
   const [dayStr, monthStr, yearStr] = dateStr.split('-')
   const formatted = new Intl.DateTimeFormat('vi-VN', { weekday: 'long' }).format(new Date(Number(yearStr), Number(monthStr) - 1, Number(dayStr)))
-  return formatted.charAt(0).toUpperCase() + formatted.slice(1)
+  // vi locale renders Sunday as "chủ nhật" — use the church terminology instead.
+  if (formatted.toLowerCase() === 'chủ nhật') {
+    return t('studyYearSchedules.dayNames.sunday')
+  }
+  // Title-case each word: "thứ hai" -> "Thứ Hai"
+  return formatted
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
 }
 
 /** `yyyy-MM-dd` -> `dd-MM-yyyy` (row date format) */
@@ -95,6 +103,9 @@ const schedules = reactive<ScheduleRow[]>([])
 const loadStatus = ref<'pending' | 'success' | 'error'>('pending')
 const dialogOpen = ref(false)
 const editingActivityId = ref<string | null>(null)
+const duplicateMode = ref(false)
+const deleteDialogOpen = ref(false)
+const deletingActivity = ref<ScheduleActivity | null>(null)
 
 function mapApiRows(items: GeneralScheduleListItem[]): ScheduleRow[] {
   const byDate = new Map<string, ScheduleActivity[]>()
@@ -105,6 +116,7 @@ function mapApiRows(items: GeneralScheduleListItem[]): ScheduleRow[] {
     activities.push({
       id: item.id,
       color: toCssColor(item.schedule_activity_type_color),
+      activityTypeName: item.schedule_activity_type_name,
       name: item.name,
       startAt: item.start_at,
       endAt: item.end_at ?? undefined,
@@ -167,6 +179,13 @@ function onCreateActivity(activity: ScheduleActivity) {
 }
 
 function onEditActivity(activity: ScheduleActivity) {
+  duplicateMode.value = false
+  editingActivityId.value = activity.id
+  dialogOpen.value = true
+}
+
+function onDuplicateActivity(activity: ScheduleActivity) {
+  duplicateMode.value = true
   editingActivityId.value = activity.id
   dialogOpen.value = true
 }
@@ -174,11 +193,28 @@ function onEditActivity(activity: ScheduleActivity) {
 // Create-mode trigger lives inside the dialog; clear the edit target on
 // close so reopening via the dialog's own "+" button starts a fresh create.
 watch(dialogOpen, (isOpen) => {
-  if (!isOpen) editingActivityId.value = null
+  if (!isOpen) {
+    editingActivityId.value = null
+    duplicateMode.value = false
+  }
 })
 
-function onDeleteActivity() {
-  // TODO: wire up once DELETE /dashboard-api/general-schedules/{id} exists.
+function onDeleteActivity(activity: ScheduleActivity) {
+  // Not cleared on close — the dialog fades out still showing this activity.
+  deletingActivity.value = activity
+  deleteDialogOpen.value = true
+}
+
+function onDeletedActivity(activity: ScheduleActivity) {
+  for (const row of schedules) {
+    const index = row.activities.findIndex(item => item.id === activity.id)
+    if (index !== -1) {
+      row.activities.splice(index, 1)
+      break
+    }
+  }
+  const emptyIndex = schedules.findIndex(row => row.activities.length === 0)
+  if (emptyIndex !== -1) schedules.splice(emptyIndex, 1)
 }
 
 function onUpdateActivity(activity: ScheduleActivity) {
@@ -230,7 +266,13 @@ onMounted(() => {
 const columns: TableColumn<ScheduleRow>[] = [
   {
     id: 'title',
-    header: 'Tháng'
+    header: 'Tháng',
+    meta: {
+      class: {
+        th: 'w-56',
+        td: 'w-56'
+      }
+    }
   },
   {
     accessorKey: 'monthKey',
@@ -238,27 +280,62 @@ const columns: TableColumn<ScheduleRow>[] = [
   },
   {
     accessorKey: 'dayName',
-    header: 'Ngày'
+    header: 'Ngày',
+    meta: {
+      class: {
+        th: 'w-24',
+        td: 'w-24'
+      }
+    }
   },
   {
     accessorKey: 'date',
-    header: ''
+    header: '',
+    meta: {
+      class: {
+        th: 'w-24',
+        td: 'w-24'
+      }
+    }
   },
   {
     id: 'time',
-    header: t('studyYearSchedules.columns.time')
+    header: t('studyYearSchedules.columns.time'),
+    meta: {
+      class: {
+        th: 'w-72',
+        td: 'w-72'
+      }
+    }
   },
   {
     accessorKey: 'activities',
-    header: 'Hoạt động'
+    header: 'Hoạt động',
+    meta: {
+      class: {
+        td: 'w-full'
+      }
+    }
   },
   {
     id: 'attendance',
-    header: t('studyYearSchedules.columns.attendance')
+    header: t('studyYearSchedules.columns.attendance'),
+    meta: {
+      class: {
+        th: 'w-40 text-xs whitespace-nowrap',
+        td: 'w-40 text-xs'
+      }
+    }
   },
   {
     id: 'actions',
-    header: ''
+    header: '',
+    meta: {
+      class: {
+        th: 'w-28',
+        td: 'w-28'
+      }
+    }
   }
 ]
 </script>
@@ -275,8 +352,15 @@ const columns: TableColumn<ScheduleRow>[] = [
           <StudyYearAddScheduleDayDialog
             v-model:open="dialogOpen"
             :activity-id="editingActivityId"
+            :duplicate="duplicateMode"
             @create="onCreateActivity"
             @update="onUpdateActivity"
+          />
+
+          <StudyYearDeleteScheduleDayDialog
+            v-model:open="deleteDialogOpen"
+            :activity="deletingActivity"
+            @delete="onDeletedActivity"
           />
         </template>
       </UDashboardNavbar>
@@ -318,7 +402,29 @@ const columns: TableColumn<ScheduleRow>[] = [
         />
       </div>
 
+      <div
+        v-if="loadStatus === 'pending'"
+        class="space-y-2"
+        aria-busy="true"
+      >
+        <!-- Same columns/widths as the table: Tháng | Ngày | date | Thời gian | Hoạt động | Điểm danh | actions -->
+        <div
+          v-for="n in 9"
+          :key="n"
+          class="flex items-center gap-4"
+        >
+          <USkeleton class="h-6 w-56 shrink-0" />
+          <USkeleton class="h-6 w-24 shrink-0" />
+          <USkeleton class="h-6 w-24 shrink-0" />
+          <USkeleton class="h-6 w-72 shrink-0" />
+          <USkeleton class="h-6 w-full grow" />
+          <USkeleton class="h-6 w-40 shrink-0" />
+          <USkeleton class="h-6 w-28 shrink-0" />
+        </div>
+      </div>
+
       <UTable
+        v-else
         ref="table"
         :data="filteredSchedules"
         :columns="columns"
@@ -329,8 +435,8 @@ const columns: TableColumn<ScheduleRow>[] = [
           base: 'table-fixed border-separate border-spacing-0',
           thead: '[&>tr]:bg-elevated/50 [&>tr]:after:content-none',
           tbody: '[&>tr]:last:[&>td]:border-b-0',
-          th: 'py-1.5 first:rounded-l-lg last:rounded-r-lg border-y border-default first:border-l last:border-r text-xs',
-          td: 'py-1.5 border-b border-default empty:p-0 empty:border-0 text-xs',
+          th: 'py-1.5 first:rounded-l-lg last:rounded-r-lg border-y border-default first:border-l last:border-r text-sm',
+          td: 'py-1.5 border-b border-default empty:p-0 empty:border-0 text-sm',
           separator: 'h-0'
         }"
       >
@@ -346,7 +452,7 @@ const columns: TableColumn<ScheduleRow>[] = [
             <span class="font-semibold text-highlighted">
               {{ formatMonthLabel(row.original.monthKey) }}
             </span>
-            <span class="text-xs text-muted">
+            <span class="text-sm text-muted">
               ({{ row.subRows?.length ?? 0 }} {{ (row.subRows?.length ?? 0) <= 1 ? 'ngày' : 'ngày' }})
             </span>
           </div>
@@ -367,7 +473,7 @@ const columns: TableColumn<ScheduleRow>[] = [
         </template>
 
         <template #date-cell="{ row }">
-          <span v-if="!row.getIsGrouped()" class="text-sm text-muted">
+          <span v-if="!row.getIsGrouped()" class="text-muted">
             {{ row.original.date }}
           </span>
         </template>
@@ -376,14 +482,14 @@ const columns: TableColumn<ScheduleRow>[] = [
           <div v-if="!row.getIsGrouped()">
             <div
               v-if="row.original.activities.length === 0"
-              class="text-sm text-dimmed"
+              class="text-dimmed"
             >
               —
             </div>
             <div
               v-for="(activity, i) in row.original.activities"
               :key="i"
-              class="flex h-6 items-center text-sm text-muted"
+              class="flex h-6 items-center text-muted"
             >
               {{ formatTimeRange(activity) }}
             </div>
@@ -394,7 +500,7 @@ const columns: TableColumn<ScheduleRow>[] = [
           <div v-if="!row.getIsGrouped()">
             <div
               v-if="row.original.activities.length === 0"
-              class="text-sm text-dimmed"
+              class="text-dimmed"
             >
               —
             </div>
@@ -407,7 +513,7 @@ const columns: TableColumn<ScheduleRow>[] = [
                 class="h-2 w-2 shrink-0 rounded-full"
                 :style="{ backgroundColor: activity.color }"
               />
-              <span class="min-w-0 truncate text-sm">{{ activity.name }}</span>
+              <span class="min-w-0 truncate">{{ activity.activityTypeName }} - {{ activity.name }}</span>
             </div>
           </div>
         </template>
@@ -416,7 +522,7 @@ const columns: TableColumn<ScheduleRow>[] = [
           <div v-if="!row.getIsGrouped()">
             <div
               v-if="row.original.activities.length === 0"
-              class="text-sm text-dimmed"
+              class="text-dimmed"
             >
               —
             </div>
@@ -443,22 +549,36 @@ const columns: TableColumn<ScheduleRow>[] = [
               :key="activity.id"
               class="flex h-6 items-center justify-end gap-1"
             >
-              <UButton
-                icon="i-lucide-pencil"
-                color="neutral"
-                variant="ghost"
-                size="xs"
-                :aria-label="t('studyYearSchedules.actions.edit')"
-                @click="onEditActivity(activity)"
-              />
-              <UButton
-                icon="i-lucide-trash-2"
-                color="error"
-                variant="ghost"
-                size="xs"
-                :aria-label="t('studyYearSchedules.actions.delete')"
-                @click="onDeleteActivity()"
-              />
+              <UTooltip :text="t('studyYearSchedules.actions.edit')">
+                <UButton
+                  icon="i-lucide-pencil"
+                  color="neutral"
+                  variant="ghost"
+                  size="xs"
+                  :aria-label="t('studyYearSchedules.actions.edit')"
+                  @click="onEditActivity(activity)"
+                />
+              </UTooltip>
+              <UTooltip :text="t('studyYearSchedules.actions.duplicate')">
+                <UButton
+                  icon="i-lucide-copy"
+                  color="neutral"
+                  variant="ghost"
+                  size="xs"
+                  :aria-label="t('studyYearSchedules.actions.duplicate')"
+                  @click="onDuplicateActivity(activity)"
+                />
+              </UTooltip>
+              <UTooltip :text="t('studyYearSchedules.actions.delete')">
+                <UButton
+                  icon="i-lucide-trash-2"
+                  color="error"
+                  variant="ghost"
+                  size="xs"
+                  :aria-label="t('studyYearSchedules.actions.delete')"
+                  @click="onDeleteActivity(activity)"
+                />
+              </UTooltip>
             </div>
           </div>
         </template>

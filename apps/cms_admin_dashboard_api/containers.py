@@ -23,6 +23,7 @@ from handlers.list_schedule_activity_types_handler import (
     ListScheduleActivityTypesHandler,
 )
 from handlers.list_general_schedules_handler import ListGeneralSchedulesHandler
+from handlers.delete_general_schedule_handler import DeleteGeneralScheduleHandler
 from handlers.get_general_schedule_handler import GetGeneralScheduleHandler
 from handlers.upsert_general_schedule_handler import UpsertGeneralScheduleHandler
 from handlers.profile_handler import ProfileHandler
@@ -122,6 +123,12 @@ class ApplicationContainer(containers.DeclarativeContainer):
 
     get_general_schedule_handler = providers.Singleton(
         GetGeneralScheduleHandler,
+        general_schedule_service=general_schedule_service,
+        session_factory=session_factory,
+    )
+
+    delete_general_schedule_handler = providers.Singleton(
+        DeleteGeneralScheduleHandler,
         general_schedule_service=general_schedule_service,
         session_factory=session_factory,
     )

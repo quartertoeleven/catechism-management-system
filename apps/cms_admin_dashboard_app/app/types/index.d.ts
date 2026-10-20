@@ -70,6 +70,8 @@ export interface ScheduleActivity {
   id: string
   /** Color indicator of the schedule activity type (e.g. `#10b981`) */
   color: string
+  /** Display name of the schedule activity type */
+  activityTypeName: string
   name: string
   /** `yyyy-MM-ddTHH:mm` */
   startAt: string

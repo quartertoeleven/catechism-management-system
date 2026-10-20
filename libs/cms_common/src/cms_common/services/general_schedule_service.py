@@ -74,3 +74,6 @@ class GeneralScheduleService(GeneralScheduleServiceInterface):
         schedule.detail = detail
         schedule.is_attendence_check = is_attendence_check
         return schedule
+
+    async def delete(self, session: AsyncSession, schedule: GeneralSchedule) -> None:
+        await session.delete(schedule)

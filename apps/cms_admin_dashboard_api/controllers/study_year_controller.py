@@ -13,7 +13,7 @@ from dependencies.auth_dependency import get_authenticated_user
 router = APIRouter(prefix="/study-years", tags=["study-years"])
 
 
-@router.get("/")
+@router.get("")
 @inject
 async def list_study_years(
     claims: IdTokenClaims = Depends(get_authenticated_user),
@@ -24,7 +24,7 @@ async def list_study_years(
     return await list_study_years_handler()
 
 
-@router.post("/")
+@router.post("")
 @inject
 async def create_study_year(
     body: CreateStudyYearRequest,

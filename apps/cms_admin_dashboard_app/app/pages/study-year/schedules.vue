@@ -413,13 +413,13 @@ const columns: TableColumn<ScheduleRow>[] = [
           :key="n"
           class="flex items-center gap-4"
         >
-          <USkeleton class="h-6 w-56 shrink-0" />
-          <USkeleton class="h-6 w-24 shrink-0" />
-          <USkeleton class="h-6 w-24 shrink-0" />
-          <USkeleton class="h-6 w-72 shrink-0" />
-          <USkeleton class="h-6 w-full grow" />
-          <USkeleton class="h-6 w-40 shrink-0" />
-          <USkeleton class="h-6 w-28 shrink-0" />
+          <USkeleton class="h-12 w-56 shrink-0" />
+          <USkeleton class="h-12 w-24 shrink-0" />
+          <USkeleton class="h-12 w-24 shrink-0" />
+          <USkeleton class="h-12 w-72 shrink-0" />
+          <USkeleton class="h-12 w-full grow" />
+          <USkeleton class="h-12 w-40 shrink-0" />
+          <USkeleton class="h-12 w-28 shrink-0" />
         </div>
       </div>
 
@@ -435,8 +435,8 @@ const columns: TableColumn<ScheduleRow>[] = [
           base: 'table-fixed border-separate border-spacing-0',
           thead: '[&>tr]:bg-elevated/50 [&>tr]:after:content-none',
           tbody: '[&>tr]:last:[&>td]:border-b-0',
-          th: 'py-1.5 first:rounded-l-lg last:rounded-r-lg border-y border-default first:border-l last:border-r text-sm',
-          td: 'py-1.5 border-b border-default empty:p-0 empty:border-0 text-sm',
+          th: 'py-2 first:rounded-l-lg last:rounded-r-lg border-y border-default first:border-l last:border-r text-sm',
+          td: ' border-b border-default empty:p-0 empty:border-0 text-sm',
           separator: 'h-0'
         }"
       >

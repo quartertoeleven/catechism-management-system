@@ -36,5 +36,9 @@ export function useAuth() {
     checkAuthPromise = null
   }
 
-  return { user, pending, checkAuth, resetAuth }
+  function isAuthCheckInProgress(): boolean {
+    return checkAuthPromise !== null
+  }
+
+  return { user, pending, checkAuth, resetAuth, isAuthCheckInProgress }
 }

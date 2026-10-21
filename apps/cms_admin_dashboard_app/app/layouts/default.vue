@@ -20,6 +20,13 @@ const links = {
       open.value = false
     }
   }, {
+    label: t('menu.studyYear.grades'),
+    icon: 'i-lucide-list',
+    to: '/study-year/grades',
+    onSelect: () => {
+      open.value = false
+    }
+  }, {
     label: t('menu.studyYear.schedules'),
     icon: 'i-lucide-calendar-days',
     to: '/study-year/schedules',
@@ -234,7 +241,7 @@ onMounted(async () => {
     <UDashboardSidebar id="default" v-model:open="open" collapsible resizable class="bg-elevated/25"
       :ui="{ footer: 'lg:border-t lg:border-default', header: 'lg:border-b lg:border-default' }">
       <template #header="{ collapsed }">
-        <TeamsMenu :collapsed="collapsed" />
+        <StudyYearSelector :collapsed="collapsed" />
       </template>
 
       <template #default="{ collapsed }">

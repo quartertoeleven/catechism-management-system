@@ -14,7 +14,7 @@ from dependencies.auth_dependency import get_authenticated_user
 router = APIRouter(prefix="/schedule-activity-types", tags=["schedule-activity-types"])
 
 
-@router.get("/")
+@router.get("")
 @inject
 async def list_schedule_activity_types(
     claims: IdTokenClaims = Depends(get_authenticated_user),

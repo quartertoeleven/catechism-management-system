@@ -3,6 +3,7 @@
     "studyYear": {
       "label": "Năm học",
       "info": "Thông tin",
+      "grades": "Danh sách khối",
       "schedules": "Lịch sinh hoạt"
     },
     "grade": {
@@ -85,7 +86,64 @@
   },
   "common": {
     "yes": "Có",
-    "no": "Không"
+    "no": "Không",
+    "catechistPicker": {
+      "placeholder": "Tìm giáo lý viên...",
+      "searchPlaceholder": "Nhập tên để tìm kiếm",
+      "loadError": "Không tải được danh sách giáo lý viên",
+      "minChars": "Nhập tối thiểu 2 kí tự để tìm kiếm",
+      "noResults": "Không tìm thấy giáo lý viên"
+    }
+  },
+  "studyYearGrades": {
+    "columns": {
+      "code": "Mã khối",
+      "name": "Tên khối"
+    },
+    "actions": {
+      "edit": "Chỉnh sửa",
+      "delete": "Xóa",
+      "deleteConfirmTitle": "Xóa khối",
+      "deleteConfirmDescription": "Bạn có chắc chắn muốn xóa khối này? Hành động này không thể hoàn tác.",
+      "deleteSuccess": "Đã xóa khối thành công",
+      "deleteFailed": "Không thể xóa khối",
+      "comingSoon": "Chức năng sắp ra mắt."
+    },
+    "addGrade": "Thêm khối mới",
+    "add": {
+      "title": "Thêm khối mới",
+      "code": "Mã khối",
+      "codePlaceholder": "Nhập mã khối",
+      "name": "Tên khối",
+      "namePlaceholder": "Nhập tên khối",
+      "leader": "Trưởng khối",
+      "vice": "Phó khối",
+      "secretary": "Thư ký",
+      "treasurer": "Thủ quỹ",
+      "prefixMissing": "Không xác định được năm học hiện tại",
+      "editTitle": "Chỉnh sửa khối",
+      "create": "Thêm",
+      "update": "Cập nhật",
+      "cancel": "Hủy",
+      "createSuccess": "Đã thêm khối thành công",
+      "createFailed": "Không thể thêm khối",
+      "updateSuccess": "Đã cập nhật khối thành công",
+      "updateFailed": "Không thể cập nhật khối",
+      "loadError": "Không tải được thông tin khối",
+      "validation": {
+        "codeRequired": "Vui lòng nhập mã khối",
+        "codeMax": "Mã khối không được vượt quá {max} ký tự",
+        "nameRequired": "Vui lòng nhập tên khối",
+        "nameMax": "Tên khối không được vượt quá {max} ký tự"
+      }
+    },
+    "loadError": "Không tải được danh sách khối",
+    "retry": "Thử lại",
+    "loading": "Đang tải danh sách khối...",
+    "empty": {
+      "title": "Chưa có khối",
+      "description": "Chưa có khối nào trong năm học hiện tại."
+    }
   },
   "studyYearSchedules": {
     "loadError": "Không tải được lịch sinh hoạt",

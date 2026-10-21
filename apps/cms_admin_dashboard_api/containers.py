@@ -1,9 +1,11 @@
 from cms_common.models import CmsAdminDashboardSettings
 from cms_common.services import (
+    CatechistService,
     ProfileService,
     StudyYearService,
     ScheduleActivityTypeService,
     GeneralScheduleService,
+    GradeService,
 )
 from cms_integrations.logto import (
     JwtVerificationService,
@@ -13,6 +15,7 @@ from cms_integrations.logto import (
 from cms_locale import LocaleConfig, LocaleService
 from dependency_injector import containers, providers
 from handlers.callback_handler import CallbackHandler
+from handlers.app_state_handler import AppStateHandler
 from handlers.check_handler import CheckHandler
 from handlers.health_check_handler import HealthCheckHandler
 from handlers.login_handler import LoginHandler
@@ -23,6 +26,12 @@ from handlers.list_schedule_activity_types_handler import (
     ListScheduleActivityTypesHandler,
 )
 from handlers.list_general_schedules_handler import ListGeneralSchedulesHandler
+from handlers.list_grades_handler import ListGradesHandler
+from handlers.create_grade_handler import CreateGradeHandler
+from handlers.get_grade_handler import GetGradeHandler
+from handlers.update_grade_handler import UpdateGradeHandler
+from handlers.delete_grade_handler import DeleteGradeHandler
+from handlers.list_catechists_handler import ListCatechistsHandler
 from handlers.delete_general_schedule_handler import DeleteGeneralScheduleHandler
 from handlers.get_general_schedule_handler import GetGeneralScheduleHandler
 from handlers.upsert_general_schedule_handler import UpsertGeneralScheduleHandler
@@ -113,6 +122,10 @@ class ApplicationContainer(containers.DeclarativeContainer):
 
     general_schedule_service = providers.Singleton(GeneralScheduleService)
 
+    grade_service = providers.Singleton(GradeService)
+
+    catechist_service = providers.Singleton(CatechistService)
+
     upsert_general_schedule_handler = providers.Singleton(
         UpsertGeneralScheduleHandler,
         general_schedule_service=general_schedule_service,
@@ -158,6 +171,54 @@ class ApplicationContainer(containers.DeclarativeContainer):
         session_factory=session_factory,
     )
 
+    list_grades_handler = providers.Singleton(
+        ListGradesHandler,
+        grade_service=grade_service,
+        study_year_service=study_year_service,
+        session_factory=session_factory,
+    )
+
+    create_grade_handler = providers.Singleton(
+        CreateGradeHandler,
+        grade_service=grade_service,
+        study_year_service=study_year_service,
+        catechist_service=catechist_service,
+        session_factory=session_factory,
+    )
+
+    list_catechists_handler = providers.Singleton(
+        ListCatechistsHandler,
+        catechist_service=catechist_service,
+        session_factory=session_factory,
+    )
+
+    get_grade_handler = providers.Singleton(
+        GetGradeHandler,
+        grade_service=grade_service,
+        study_year_service=study_year_service,
+        catechist_service=catechist_service,
+        session_factory=session_factory,
+    )
+
+    update_grade_handler = providers.Singleton(
+        UpdateGradeHandler,
+        grade_service=grade_service,
+        catechist_service=catechist_service,
+        session_factory=session_factory,
+    )
+
+    delete_grade_handler = providers.Singleton(
+        DeleteGradeHandler,
+        grade_service=grade_service,
+        session_factory=session_factory,
+    )
+
+    app_state_handler = providers.Singleton(
+        AppStateHandler,
+        study_year_service=study_year_service,
+        session_factory=session_factory,
+    )
+
     login_handler = providers.Singleton(
         LoginHandler,
         auth_service=auth_service,
@@ -185,6 +246,9 @@ class ApplicationContainer(containers.DeclarativeContainer):
             "controllers.study_year_controller",
             "controllers.schedule_activity_type_controller",
             "controllers.general_schedule_controller",
+            "controllers.grade_controller",
+            "controllers.catechist_controller",
+            "controllers.app_state_controller",
             "dependencies.auth_dependency",
             "dependencies.locale_dependency",
         ],

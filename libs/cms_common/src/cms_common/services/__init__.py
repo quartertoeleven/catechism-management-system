@@ -3,6 +3,8 @@ from cms_common.services.general_schedule_service import GeneralScheduleService
 from cms_common.services.general_schedule_service_interface import (
     GeneralScheduleServiceInterface,
 )
+from cms_common.services.grade_service import GradeService
+from cms_common.services.grade_service_interface import GradeServiceInterface
 from cms_common.services.profile_service import ProfileService
 from cms_common.services.schedule_activity_type_service import (
     ScheduleActivityTypeService,
@@ -17,6 +19,8 @@ __all__ = [
     "CatechistService",
     "GeneralScheduleService",
     "GeneralScheduleServiceInterface",
+    "GradeService",
+    "GradeServiceInterface",
     "ProfileService",
     "ScheduleActivityTypeService",
     "ScheduleActivityTypeServiceInterface",

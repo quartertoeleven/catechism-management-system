@@ -20,7 +20,7 @@ from dependencies.locale_dependency import get_locale_translator
 router = APIRouter(prefix="/general-schedules", tags=["general-schedules"])
 
 
-@router.get("/")
+@router.get("")
 @inject
 async def list_general_schedules(
     study_year_id: UUID | None = Query(default=None),
@@ -59,7 +59,7 @@ async def delete_general_schedule(
     return await handler(schedule_id, translator)
 
 
-@router.post("/")
+@router.post("")
 @inject
 async def upsert_general_schedule(
     body: UpsertGeneralScheduleRequest,

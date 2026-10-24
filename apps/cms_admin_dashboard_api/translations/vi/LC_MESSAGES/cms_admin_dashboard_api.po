@@ -47,5 +47,8 @@ msgstr "Không tìm thấy giáo lý viên"
 msgid "error.grade_not_found"
 msgstr "Không tìm thấy khối"
 
+msgid "error.grade_schedule_not_found"
+msgstr "Không tìm thấy lịch sinh hoạt khối"
+
 msgid "error.grade_in_use"
 msgstr "Khối đang được sử dụng, không thể xóa"

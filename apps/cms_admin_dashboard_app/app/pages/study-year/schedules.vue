@@ -369,7 +369,7 @@ const columns: TableColumn<ScheduleRow>[] = [
     </template>
 
     <template #body>
-      <div class="flex flex-wrap items-center justify-between gap-1.5">
+      <div class="flex shrink-0 flex-wrap items-center justify-between gap-1.5">
         <UInput
           v-model="search"
           class="max-w-sm"
@@ -390,7 +390,7 @@ const columns: TableColumn<ScheduleRow>[] = [
 
       <div
         v-if="loadStatus === 'error'"
-        class="flex items-center gap-2 text-sm text-error"
+        class="flex shrink-0 items-center gap-2 text-sm text-error"
       >
         <span>{{ t('studyYearSchedules.loadError') }}</span>
         <UButton
@@ -426,14 +426,17 @@ const columns: TableColumn<ScheduleRow>[] = [
       <UTable
         v-else
         ref="table"
+        sticky="header"
+        class="min-h-0 flex-1"
         :data="filteredSchedules"
         :columns="columns"
         :grouping="['monthKey']"
         :grouping-options="groupingOptions"
         :expanded-options="{ autoResetExpanded: false }"
         :ui="{
-          base: 'table-fixed border-separate border-spacing-0',
-          thead: '[&>tr]:bg-elevated/50 [&>tr]:after:content-none',
+          root: 'my-0',
+          base: 'table-fixed border-separate border-spacing-0 h-full',
+          thead: '[&>tr]:bg-elevated/50 [&>tr]:after:content-none [&>tr>th]:bg-elevated',
           tbody: '[&>tr]:last:[&>td]:border-b-0',
           th: 'py-2 first:rounded-l-lg last:rounded-r-lg border-y border-default first:border-l last:border-r text-sm',
           td: ' border-b border-default empty:p-0 empty:border-0 text-sm',
@@ -507,13 +510,13 @@ const columns: TableColumn<ScheduleRow>[] = [
             <div
               v-for="activity in row.original.activities"
               :key="activity.id"
-              class="flex h-6 items-center gap-2"
+              class="flex min-h-6 items-center gap-2"
             >
               <span
                 class="h-2 w-2 shrink-0 rounded-full"
                 :style="{ backgroundColor: activity.color }"
               />
-              <span class="min-w-0 truncate">{{ activity.activityTypeName }} - {{ activity.name }}</span>
+              <span class="min-w-0 break-words whitespace-normal">{{ activity.activityTypeName }} - {{ activity.name }}</span>
             </div>
           </div>
         </template>

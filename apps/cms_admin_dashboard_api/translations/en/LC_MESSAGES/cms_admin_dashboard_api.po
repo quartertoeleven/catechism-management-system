@@ -47,5 +47,8 @@ msgstr "Catechist not found"
 msgid "error.grade_not_found"
 msgstr "Grade not found"
 
+msgid "error.grade_schedule_not_found"
+msgstr "Grade schedule not found"
+
 msgid "error.grade_in_use"
 msgstr "Grade is in use and cannot be deleted"

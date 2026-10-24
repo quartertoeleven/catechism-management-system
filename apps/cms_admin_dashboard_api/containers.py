@@ -5,6 +5,7 @@ from cms_common.services import (
     StudyYearService,
     ScheduleActivityTypeService,
     GeneralScheduleService,
+    GradeScheduleService,
     GradeService,
 )
 from cms_integrations.logto import (
@@ -33,8 +34,13 @@ from handlers.update_grade_handler import UpdateGradeHandler
 from handlers.delete_grade_handler import DeleteGradeHandler
 from handlers.list_catechists_handler import ListCatechistsHandler
 from handlers.delete_general_schedule_handler import DeleteGeneralScheduleHandler
+from handlers.delete_grade_schedule_handler import DeleteGradeScheduleHandler
 from handlers.get_general_schedule_handler import GetGeneralScheduleHandler
+from handlers.get_grade_schedule_handler import GetGradeScheduleHandler
+from handlers.list_grade_schedules_handler import ListGradeSchedulesHandler
+from handlers.sync_grade_schedule_handler import SyncGradeScheduleHandler
 from handlers.upsert_general_schedule_handler import UpsertGeneralScheduleHandler
+from handlers.upsert_grade_schedule_handler import UpsertGradeScheduleHandler
 from handlers.profile_handler import ProfileHandler
 from services.auth_service import AuthService
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
@@ -124,7 +130,45 @@ class ApplicationContainer(containers.DeclarativeContainer):
 
     grade_service = providers.Singleton(GradeService)
 
+    grade_schedule_service = providers.Singleton(GradeScheduleService)
+
     catechist_service = providers.Singleton(CatechistService)
+
+    list_grade_schedules_handler = providers.Singleton(
+        ListGradeSchedulesHandler,
+        grade_schedule_service=grade_schedule_service,
+        grade_service=grade_service,
+        session_factory=session_factory,
+    )
+
+    get_grade_schedule_handler = providers.Singleton(
+        GetGradeScheduleHandler,
+        grade_schedule_service=grade_schedule_service,
+        session_factory=session_factory,
+    )
+
+    delete_grade_schedule_handler = providers.Singleton(
+        DeleteGradeScheduleHandler,
+        grade_schedule_service=grade_schedule_service,
+        session_factory=session_factory,
+    )
+
+    upsert_grade_schedule_handler = providers.Singleton(
+        UpsertGradeScheduleHandler,
+        grade_schedule_service=grade_schedule_service,
+        grade_service=grade_service,
+        general_schedule_service=general_schedule_service,
+        schedule_activity_type_service=schedule_activity_type_service,
+        session_factory=session_factory,
+    )
+
+    sync_grade_schedule_handler = providers.Singleton(
+        SyncGradeScheduleHandler,
+        grade_schedule_service=grade_schedule_service,
+        grade_service=grade_service,
+        general_schedule_service=general_schedule_service,
+        session_factory=session_factory,
+    )
 
     upsert_general_schedule_handler = providers.Singleton(
         UpsertGeneralScheduleHandler,
@@ -246,6 +290,7 @@ class ApplicationContainer(containers.DeclarativeContainer):
             "controllers.study_year_controller",
             "controllers.schedule_activity_type_controller",
             "controllers.general_schedule_controller",
+            "controllers.grade_schedule_controller",
             "controllers.grade_controller",
             "controllers.catechist_controller",
             "controllers.app_state_controller",

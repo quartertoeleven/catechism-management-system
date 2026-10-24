@@ -89,3 +89,30 @@ export interface ScheduleRow {
   date: string
   activities: ScheduleActivity[]
 }
+
+export interface GradeScheduleActivity {
+  /** Grade schedule id (`study_year.grade_schedules.id`) */
+  id: string
+  /** Linked general schedule id (`study_year.general_schedules.id`), if any */
+  generalScheduleId: string | null
+  /** Color indicator of the schedule activity type (e.g. `#10b981`) */
+  color: string
+  /** Display name of the schedule activity type */
+  activityTypeName: string
+  name: string
+  /** `yyyy-MM-ddTHH:mm` */
+  startAt: string
+  /** `yyyy-MM-ddTHH:mm` */
+  endAt?: string
+  /** Whether attendance is taken for this activity (backend: `is_attendence_check`) */
+  isAttendenceCheck: boolean
+}
+
+export interface GradeScheduleRow {
+  /** `yyyy-MM` — used for month grouping */
+  monthKey: string
+  dayName: string
+  /** `dd-MM-yyyy` */
+  date: string
+  activities: GradeScheduleActivity[]
+}

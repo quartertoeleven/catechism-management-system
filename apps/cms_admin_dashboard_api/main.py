@@ -6,6 +6,7 @@ from controllers.schedule_activity_type_controller import (
     router as schedule_activity_type_router,
 )
 from controllers.general_schedule_controller import router as general_schedule_router
+from controllers.grade_schedule_controller import router as grade_schedule_router
 from controllers.grade_controller import router as grade_router
 from controllers.catechist_controller import router as catechist_router
 from controllers.app_state_controller import router as app_state_router
@@ -44,6 +45,7 @@ def create_app() -> FastAPI:
     application.include_router(study_year_router, prefix="/dashboard-api")
     application.include_router(schedule_activity_type_router, prefix="/dashboard-api")
     application.include_router(general_schedule_router, prefix="/dashboard-api")
+    application.include_router(grade_schedule_router, prefix="/dashboard-api")
     application.include_router(grade_router, prefix="/dashboard-api")
     application.include_router(catechist_router, prefix="/dashboard-api")
     application.include_router(app_state_router, prefix="/dashboard-api")

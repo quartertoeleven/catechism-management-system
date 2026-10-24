@@ -206,5 +206,99 @@
       "time": "Thời gian",
       "attendance": "Điểm danh"
     }
+  },
+  "gradeSchedules": {
+    "loadError": "Không tải được lịch sinh hoạt khối",
+    "retry": "Thử lại",
+    "noGradeSelected": "Vui lòng chọn khối để xem lịch sinh hoạt",
+    "empty": "Chưa có lịch sinh hoạt nào cho khối này",
+    "actions": {
+      "edit": "Chỉnh sửa",
+      "duplicate": "Sao chép",
+      "delete": "Xóa"
+    },
+    "selector": {
+      "label": "Khối đang chọn:",
+      "placeholder": "Chọn khối",
+      "loadError": "Không tải được danh sách khối",
+      "retry": "Thử lại"
+    },
+    "addDay": {
+      "title": "Thêm ngày sinh hoạt",
+      "editTitle": "Sửa ngày sinh hoạt",
+      "duplicateTitle": "Sao chép ngày sinh hoạt",
+      "duplicateSuffix": "(bản sao)",
+      "generalSchedule": "Nạp từ lịch chung",
+      "generalSchedulePlaceholder": "Chọn hoạt động từ lịch chung (không bắt buộc)",
+      "generalScheduleLoadError": "Không tải được lịch sinh hoạt chung",
+      "activityType": "Loại hoạt động",
+      "activityTypePlaceholder": "Chọn loại hoạt động",
+      "activityTypeLoadError": "Không tải được danh sách loại hoạt động",
+      "retry": "Thử lại",
+      "name": "Tên hoạt động",
+      "namePlaceholder": "Nhập tên hoạt động",
+      "attendance": "Điểm danh",
+      "date": "Ngày",
+      "datePlaceholder": "dd/mm/yyyy",
+      "startTime": "Giờ bắt đầu",
+      "endTime": "Giờ kết thúc",
+      "create": "Tạo",
+      "update": "Cập nhật",
+      "cancel": "Hủy",
+      "createSuccess": "Đã thêm ngày sinh hoạt thành công",
+      "createFailed": "Không thể thêm ngày sinh hoạt",
+      "updateSuccess": "Đã cập nhật ngày sinh hoạt thành công",
+      "updateFailed": "Không thể cập nhật ngày sinh hoạt",
+      "validation": {
+        "activityTypeRequired": "Vui lòng chọn loại hoạt động",
+        "nameRequired": "Vui lòng nhập tên hoạt động",
+        "nameMax": "Tên hoạt động không được vượt quá 100 ký tự",
+        "dateRequired": "Vui lòng chọn ngày",
+        "startTimeRequired": "Vui lòng chọn giờ bắt đầu",
+        "endTimeAfterStartTime": "Giờ kết thúc phải sau giờ bắt đầu"
+      }
+    },
+    "activityTime": {
+      "from": "Từ {time}"
+    },
+    "dayNames": {
+      "sunday": "Chúa Nhật"
+    },
+    "deleteDay": {
+      "title": "Xóa ngày sinh hoạt",
+      "confirmText": "Bạn có chắc chắn muốn xóa sinh hoạt này không? Hành động này không thể hoàn tác.",
+      "confirm": "Xóa",
+      "deleteSuccess": "Đã xóa sinh hoạt thành công",
+      "deleteFailed": "Không thể xóa sinh hoạt"
+    },
+    "columns": {
+      "time": "Thời gian",
+      "attendance": "Điểm danh"
+    },
+    "sync": {
+      "title": "Đồng bộ với lịch sinh hoạt chung",
+      "menuItem": "Đồng bộ với lịch sinh hoạt chung",
+      "dateRange": "Khoảng ngày",
+      "dateRangeAll": "Tất cả",
+      "clearRange": "Xóa lọc ngày",
+      "activityTypes": "Loại hoạt động",
+      "activityTypesPlaceholder": "Chọn loại hoạt động",
+      "activityTypesLoadError": "Không tải được danh sách loại hoạt động",
+      "retry": "Thử lại",
+      "syncFields": "Thông tin đồng bộ",
+      "fields": {
+        "date": "Ngày",
+        "name": "Tên hoạt động",
+        "startTime": "Giờ bắt đầu",
+        "endTime": "Giờ kết thúc"
+      },
+      "note": "Hoạt động chưa liên kết với lịch chung sẽ không bị thay đổi.",
+      "submit": "Đồng bộ",
+      "success": "Đồng bộ thành công: {created} mới, {updated} cập nhật",
+      "failed": "Không thể đồng bộ",
+      "validation": {
+        "activityTypesRequired": "Vui lòng chọn ít nhất một loại hoạt động"
+      }
+    }
   }
 }

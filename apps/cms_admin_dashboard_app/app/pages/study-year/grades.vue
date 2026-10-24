@@ -77,12 +77,13 @@ const columns: TableColumn<GradeListItem>[] = [
     header: () => h(UButton, {
       color: 'neutral',
       variant: 'ghost',
-      label: t('studyYearGrades.columns.code')
+      label: t('studyYearGrades.columns.code'),
+      class: '-mx-2.5'
     }),
     meta: {
       class: {
-        th: 'w-48',
-        td: 'w-48'
+        th: 'w-[calc(50%-3.5rem)]',
+        td: 'w-[calc(50%-3.5rem)]'
       }
     }
   },
@@ -91,11 +92,13 @@ const columns: TableColumn<GradeListItem>[] = [
     header: () => h(UButton, {
       color: 'neutral',
       variant: 'ghost',
-      label: t('studyYearGrades.columns.name')
+      label: t('studyYearGrades.columns.name'),
+      class: '-mx-2.5'
     }),
     meta: {
       class: {
-        td: 'w-full'
+        th: 'w-[calc(50%-3.5rem)]',
+        td: 'w-[calc(50%-3.5rem)]'
       }
     }
   },
@@ -164,8 +167,8 @@ const columns: TableColumn<GradeListItem>[] = [
           :key="n"
           class="flex items-center gap-4"
         >
-          <USkeleton class="h-12 w-48 shrink-0" />
-          <USkeleton class="h-12 w-full grow" />
+          <USkeleton class="h-12 grow basis-0" />
+          <USkeleton class="h-12 grow basis-0" />
           <USkeleton class="h-12 w-28 shrink-0" />
         </div>
       </div>

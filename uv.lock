@@ -1,0 +1,65 @@
+version = 1
+revision = 5
+requires-python = ">=3.15"
+
+[manifest]
+members = [
+    "admin-dashboard-api",
+    "application",
+    "catechism-management-system",
+    "domain",
+    "infrastructure",
+]
+
+[[package]]
+name = "admin-dashboard-api"
+version = "0.1.0"
+source = { editable = "apps/admin_dashboard_api" }
+dependencies = [
+    { name = "application" },
+    { name = "domain" },
+    { name = "infrastructure" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "application", editable = "libs/application" },
+    { name = "domain", editable = "libs/domain" },
+    { name = "infrastructure", editable = "libs/infrastructure" },
+]
+
+[[package]]
+name = "application"
+version = "0.1.0"
+source = { editable = "libs/application" }
+dependencies = [
+    { name = "domain" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "domain", editable = "libs/domain" }]
+
+[[package]]
+name = "catechism-management-system"
+version = "0.1.0"
+source = { virtual = "." }
+
+[[package]]
+name = "domain"
+version = "0.1.0"
+source = { editable = "libs/domain" }
+
+[[package]]
+name = "infrastructure"
+version = "0.1.0"
+source = { editable = "libs/infrastructure" }
+dependencies = [
+    { name = "application" },
+    { name = "domain" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "application", editable = "libs/application" },
+    { name = "domain", editable = "libs/domain" },
+]

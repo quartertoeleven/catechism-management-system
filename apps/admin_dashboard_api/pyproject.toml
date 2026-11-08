@@ -1,0 +1,22 @@
+[project]
+name = "admin-dashboard-api"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Quarter To Eleven", email = "quartertoeleven2024@outlook.com" }
+]
+requires-python = ">=3.15"
+dependencies = ["domain", "application", "infrastructure"]
+
+[project.scripts]
+admin-dashboard-api = "admin_dashboard_api:main"
+
+[tool.uv.sources]
+domain = { workspace = true }
+application = { workspace = true }
+infrastructure = { workspace = true }
+
+[build-system]
+requires = ["uv_build>=0.13.7,<0.14.0"]
+build-backend = "uv_build"

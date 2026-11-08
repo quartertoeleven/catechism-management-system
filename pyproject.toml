@@ -1,0 +1,13 @@
+[project]
+name = "catechism-management-system"
+version = "0.1.0"
+requires-python = ">=3.15"
+dependencies = []
+
+[tool.uv.workspace]
+members = [
+    "apps/admin_dashboard_api",
+    "libs/application",
+    "libs/infrastructure",
+    "libs/domain",
+]

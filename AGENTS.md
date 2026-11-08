@@ -39,7 +39,7 @@ The project is laid out as a monorepo - managed using `uv` and follows the Domai
 ## For Python
 
 - Use **PEP 8** as the style guide for Python code (utilize `ruff` whenever possible).
-- Always consider the dependency injection pattern when implementing code in Applications, unless being told otherwise.
+- Only consider the dependency injection pattern whenever make sense
 - Do not hard-code strings / values; extract them to constants.
 - Always use type hints.
 

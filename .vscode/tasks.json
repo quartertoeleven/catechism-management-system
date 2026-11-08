@@ -1,0 +1,73 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Local Deployment - Docker compose up",
+      "type": "shell",
+      "command": "docker",
+      "args": [
+        "compose",
+        "-f",
+        "deploy/local/docker-compose.yml",
+        "up",
+        "-d",
+        "--wait"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      "label": "Local Deployment - Docker compose down",
+      "type": "shell",
+      "command": "docker",
+      "args": [
+        "compose",
+        "-f",
+        "deploy/local/docker-compose.yml",
+        "down"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      "label": "Local Deployment - Docker compose down (including volumes)",
+      "detail": "Destructive: also deletes the cms_db_data volume and all local database data.",
+      "type": "shell",
+      "command": "docker",
+      "args": [
+        "compose",
+        "-f",
+        "deploy/local/docker-compose.yml",
+        "down",
+        "-v"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    }
+  ]
+}

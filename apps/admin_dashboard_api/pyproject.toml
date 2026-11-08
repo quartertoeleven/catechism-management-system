@@ -7,10 +7,7 @@ authors = [
     { name = "Quarter To Eleven", email = "quartertoeleven2024@outlook.com" }
 ]
 requires-python = ">=3.15"
-dependencies = ["domain", "application", "infrastructure"]
-
-[project.scripts]
-admin-dashboard-api = "admin_dashboard_api:main"
+dependencies = ["domain", "application", "infrastructure", "fastapi[standard]>=0.162.2"]
 
 [tool.uv.sources]
 domain = { workspace = true }

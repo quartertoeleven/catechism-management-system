@@ -1,2 +1,1 @@
-def main() -> None:
-    print("Hello from admin-dashboard-api!")
+"""Admin dashboard REST API application."""

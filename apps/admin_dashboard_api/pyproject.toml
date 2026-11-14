@@ -7,7 +7,14 @@ authors = [
     { name = "Quarter To Eleven", email = "quartertoeleven2024@outlook.com" }
 ]
 requires-python = ">=3.15"
-dependencies = ["domain", "application", "infrastructure", "fastapi[standard]>=0.162.2"]
+dependencies = [
+    "domain",
+    "application",
+    "infrastructure",
+    "fastapi[standard]>=0.162.2",
+    "dishka>=1.10.1",
+    "python-cqrs>=5.6.0",
+]
 
 [tool.uv.sources]
 domain = { workspace = true }

@@ -146,6 +146,25 @@
         "CMS Admin Dashboard - Dev - Start Frontend"
       ],
       "problemMatcher": []
+    },
+    {
+      "label": "Ruff - Format all",
+      "type": "shell",
+      "command": "uvx ruff format .",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "args": [
+            "-lic"
+          ]
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
     }
   ]
 }

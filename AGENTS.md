@@ -24,7 +24,8 @@ The project is laid out as a monorepo - managed using `uv` and follows the Domai
     - Each frontend project will specify its stack (UI framework, libraries, etc.) in its separate `AGENTS.md` file.
 - **Database**:
     - PostgreSQL 18
-    - SQLAlchemy 2.0 and Alembic 1.18 are utilized for database operation (migration creation, upgrade, downgrade,…).
+    - SQLAlchemy 2.x as the ORM
+    - Alembic 1.18 are utilized for database operation (migration creation, upgrade, downgrade,…).
 - **Others**:
     - `uv` for packages and project management.
     - `ruff` as the Python linter and code formatter.
@@ -51,5 +52,5 @@ The project is laid out as a monorepo - managed using `uv` and follows the Domai
 - **YOU MUST NOT** install any new packages / libraries automatically. Whenever there is a need to installing new libraries / packages, tell the user to do that manually.
 - **YOU MUST NOT** stage or commit anything automatically. The user will always do that manually. If the user specifically asks for that, refuse them immediately.
 - **DO NOT ASSUME**. If anything is unclear, make those into open questions/risks and ask the user for more details.
-- **ALWAYS WARN AND PROMPT USERS** if they suggestion something that breaks DDD and Clean Architecture
+- **ALWAYS WARN AND PROMPT DEVELOPERS** if they suggest something that breaks DDD and Clean Architecture
 - **ALWAYS FORMAT THE PYTHON SCRIPT** with `ruff` after modifying the code.

@@ -68,6 +68,84 @@
         "panel": "shared",
         "clear": true
       }
+    },
+    {
+      "label": "CMS Admin Dashboard - Generate OpenAPI Client",
+      "type": "shell",
+      "command": "uv run python generate_openapi_spec.py && pnpx @hey-api/openapi-ts@next -c @hey-api/client-nuxt -i openapi.json -o ../admin_dashboard/app/generated-client && rm openapi.json",
+      "options": {
+        "cwd": "${workspaceFolder}/apps/admin_dashboard_api",
+        "shell": {
+          "args": [
+            "-lic"
+          ]
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "group": "cms-admin-dashboard",
+        "clear": true
+      }
+    },
+    {
+      "label": "CMS Admin Dashboard - Dev - Start API",
+      "type": "shell",
+      "command": "uv",
+      "args": [
+        "run",
+        "--package",
+        "admin-dashboard-api",
+        "fastapi",
+        "dev",
+        "apps/admin_dashboard_api/src/admin_dashboard_api/main.py"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "args": [
+            "-lic"
+          ]
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "group": "cms-admin-dashboard",
+        "clear": true
+      }
+    },
+    {
+      "label": "CMS Admin Dashboard - Dev - Start Frontend",
+      "dependsOn": "CMS Admin Dashboard - Generate OpenAPI Client",
+      "type": "shell",
+      "command": "pnpm",
+      "args": [
+        "run",
+        "dev",
+        "--host",
+        "0.0.0.0"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/apps/admin_dashboard",
+        "shell": {
+          "args": [
+            "-lic"
+          ]
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "group": "cms-admin-dashboard",
+        "clear": true
+      }
+    },
+    {
+      "label": "CMS Admin Dashboard - Dev - Start Fullstack",
+      "detail": "Runs the backend API and the frontend.",
+      "dependsOn": [
+        "CMS Admin Dashboard - Dev - Start API",
+        "CMS Admin Dashboard - Dev - Start Frontend"
+      ],
+      "problemMatcher": []
     }
   ]
 }

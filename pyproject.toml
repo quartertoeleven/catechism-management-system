@@ -10,7 +10,13 @@ dependencies = [
 [tool.uv.workspace]
 members = [
     "apps/admin_dashboard_api",
+    "apps/cli",
     "libs/application",
     "libs/infrastructure",
     "libs/domain",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.17.6",
 ]

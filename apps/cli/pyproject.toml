@@ -1,0 +1,26 @@
+[project]
+name = "cms-cli"
+version = "0.1.0"
+description = "Command line interface for the Catechism Management System"
+readme = "README.md"
+authors = [
+    { name = "Quarter To Eleven", email = "quartertoeleven2024@outlook.com" }
+]
+requires-python = ">=3.15"
+dependencies = [
+    "infrastructure",
+    "typer>=0.28.0",
+]
+
+[project.scripts]
+cms-cli = "cli.main:app"
+
+[tool.uv.sources]
+infrastructure = { workspace = true }
+
+[tool.uv.build-backend]
+module-name = "cli"
+
+[build-system]
+requires = ["uv_build>=0.13.7,<0.14.0"]
+build-backend = "uv_build"

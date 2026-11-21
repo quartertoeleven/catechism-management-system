@@ -18,7 +18,8 @@ The project is laid out as a monorepo - managed using `uv` and follows the Domai
 **Frameworks**:
 - **Backend**:
     - FastAPI for REST APIs.
-    - `dependency-injector` for DI pattern implementation.
+    - `dishka` for handling dependency injection.
+    - `python-cqrs` for MediatR like structure with Command and Query handlers.
 - **Frontend**:
     - Vue3 for the base framework.
     - Each frontend project will specify its stack (UI framework, libraries, etc.) in its separate `AGENTS.md` file.
@@ -41,7 +42,8 @@ The project is laid out as a monorepo - managed using `uv` and follows the Domai
 
 - Use **PEP 8** as the style guide for Python code (utilize `ruff` whenever possible).
 - Only consider the dependency injection pattern whenever make sense
-- Do not hard-code strings / values; extract them to constants.
+- Do not hard-code strings / values; extract them to constants. Except for the following
+    - FastAPI controller endpoints
 - Always use type hints.
 
 ## For frontend

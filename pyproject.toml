@@ -2,7 +2,10 @@
 name = "catechism-management-system"
 version = "0.1.0"
 requires-python = ">=3.15"
-dependencies = []
+dependencies = [
+    "dishka>=1.10.1",
+    "python-cqrs[dishka]>=5.6.0",
+]
 
 [tool.uv.workspace]
 members = [

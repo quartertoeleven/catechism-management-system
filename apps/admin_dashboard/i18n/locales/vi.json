@@ -1,0 +1,18 @@
+{
+  "login": {
+    "title": "Trang quản trị",
+    "subheader": {
+      "line1": "Hệ thống Quản Lý Giáo Lý",
+      "line2": "Thiếu Nhi Tam Hà"
+    },
+    "signIn": "Đăng nhập",
+    "illustrationAlt": "Hình minh hoạ đăng nhập",
+    "footer": {
+      "organization": "Quarter To Eleven",
+      "developedBy": "Phát triển bởi",
+      "copyright": "Bản quyền 2026 bởi",
+      "releasedUnder": "Phát hành dưới",
+      "license": "Giấy Phép MIT"
+    }
+  }
+}

@@ -262,6 +262,44 @@
       }
     },
     {
+      "label": "Database - Seed - List seeders",
+      "type": "shell",
+      "command": "uv run cms-cli seed list",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "args": [
+            "-lic"
+          ]
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      "label": "Database - Seed - Run seeders",
+      "type": "shell",
+      "command": "uv run cms-cli seed run",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "args": [
+            "-lic"
+          ]
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
       "label": "Ruff - Format all",
       "type": "shell",
       "command": "uvx ruff format .",

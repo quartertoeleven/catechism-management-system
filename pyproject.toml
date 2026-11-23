@@ -19,4 +19,10 @@ members = [
 [dependency-groups]
 dev = [
     "ruff>=0.17.6",
+    "admin-dashboard-api",
+    "cms-cli",
 ]
+
+[tool.uv.sources]
+admin-dashboard-api = { workspace = true }
+cms-cli = { workspace = true }

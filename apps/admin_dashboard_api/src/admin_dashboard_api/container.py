@@ -2,6 +2,7 @@
 
 from application.cqrs import ApplicationProvider, RequestMediatorProvider
 from dishka import AsyncContainer, make_async_container
+from infrastructure.security.provider import SecurityProvider
 
 
 def create_container() -> AsyncContainer:
@@ -9,4 +10,5 @@ def create_container() -> AsyncContainer:
     return make_async_container(
         ApplicationProvider(),
         RequestMediatorProvider(),
+        SecurityProvider(),
     )

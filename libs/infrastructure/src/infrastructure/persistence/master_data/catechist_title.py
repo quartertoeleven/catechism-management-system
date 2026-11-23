@@ -28,8 +28,6 @@ class CatechistTitle(Uuid7PrimaryKeyMixin, AuditMixin, Base):
     code: Mapped[str] = mapped_column(
         String(CODE_MAX_LENGTH), nullable=False, unique=True
     )
-    name: Mapped[str] = mapped_column(
-        String(NAME_MAX_LENGTH), nullable=False, unique=True
-    )
+    name: Mapped[str] = mapped_column(String(NAME_MAX_LENGTH), nullable=False)
 
     catechists: Mapped[list[Catechist]] = relationship(back_populates="title")

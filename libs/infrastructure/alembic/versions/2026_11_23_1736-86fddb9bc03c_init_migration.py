@@ -1,8 +1,8 @@
 """Init migration
 
-Revision ID: a57df98698b7
+Revision ID: 86fddb9bc03c
 Revises: 
-Create Date: 2026-11-21 23:05:43.284389
+Create Date: 2026-11-23 17:36:15.622779
 
 """
 from collections.abc import Sequence
@@ -12,7 +12,7 @@ from alembic import op
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'a57df98698b7'
+revision: str = '86fddb9bc03c'
 down_revision: str | Sequence[str] | None = None
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
@@ -30,7 +30,6 @@ def upgrade() -> None:
     sa.Column('updated_by', sa.Text(), nullable=True),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_catechist_titles')),
     sa.UniqueConstraint('code', name=op.f('uq_catechist_titles_code')),
-    sa.UniqueConstraint('name', name=op.f('uq_catechist_titles_name')),
     schema='master_data'
     )
     op.create_table('catechists',

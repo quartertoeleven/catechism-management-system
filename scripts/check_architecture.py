@@ -14,6 +14,7 @@ LAYERS: dict[str, set[str]] = {
     "application": {"domain"},
     "infrastructure": {"domain", "application"},
     "admin_dashboard_api": {"domain", "application", "infrastructure"},
+    "cli": {"domain", "application", "infrastructure"},
 }
 
 SOURCES: dict[str, Path] = {
@@ -21,6 +22,7 @@ SOURCES: dict[str, Path] = {
     "application": ROOT / "libs/application/src/application",
     "infrastructure": ROOT / "libs/infrastructure/src/infrastructure",
     "admin_dashboard_api": ROOT / "apps/admin_dashboard_api/src/admin_dashboard_api",
+    "cli": ROOT / "apps/cli/src/cli",
 }
 
 

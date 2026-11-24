@@ -3,14 +3,21 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/eslint',
     '@nuxt/ui',
-    '@vueuse/nuxt'
+    '@vueuse/nuxt',
+    '@nuxtjs/i18n'
   ],
+
+  ssr: false,
 
   devtools: {
     enabled: true
   },
 
   css: ['~/assets/css/main.css'],
+
+  runtimeConfig: {
+    bffBaseUrl: 'http://127.0.0.1:8000'
+  },
 
   routeRules: {
     '/api/**': {
@@ -27,5 +34,12 @@ export default defineNuxtConfig({
         braceStyle: '1tbs'
       }
     }
+  },
+
+  i18n: {
+    defaultLocale: 'vi',
+    locales: [
+      { code: 'vi', name: 'Tiếng Việt', language: 'vi-VN', file: 'vi.json' }
+    ]
   }
 })

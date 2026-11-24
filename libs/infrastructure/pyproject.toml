@@ -7,7 +7,18 @@ authors = [
     { name = "Quarter To Eleven", email = "quartertoeleven2024@outlook.com" }
 ]
 requires-python = ">=3.15"
-dependencies = ["domain", "application"]
+dependencies = [
+    "domain",
+    "application",
+    "sqlalchemy[asyncio]>=2.0",
+    "alembic>=1.18",
+    "pydantic-settings>=2.16.2",
+    "asyncpg>=0.32.0",
+    "authlib>=1.6.0",
+    "cryptography>=45.0.0",
+    "httpx2>=2.16.0",
+    "joserfc>=1.8.0",
+]
 
 [tool.uv.sources]
 domain = { workspace = true }

@@ -148,6 +148,158 @@
       "problemMatcher": []
     },
     {
+      "label": "Database - Alembic - Generate migration",
+      "type": "shell",
+      "command": "raw=\"${input:alembicRevisionMessage}\"; stripped=\"$(printf '%s' \"$raw\" | tr -d '[:space:]')\"; if [ -z \"$stripped\" ]; then echo \"ERROR: Migration message (-m) is required. Aborting.\"; exit 1; fi; uv run cms-cli db revision --autogenerate -m \"$raw\"",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "args": [
+            "-lic"
+          ]
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      "label": "Database - Alembic - Run upgrade",
+      "type": "shell",
+      "command": "raw=\"${input:alembicUpgradeTarget}\"; if [ -z \"$(printf '%s' \"$raw\" | tr -d '[:space:]')\" ]; then target=\"head\"; else target=\"$raw\"; fi; uv run cms-cli db upgrade \"$target\"",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "args": [
+            "-lic"
+          ]
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      "label": "Database - Alembic - Run downgrade",
+      "type": "shell",
+      "command": "raw=\"${input:alembicDowngradeTarget}\"; if [ -z \"$(printf '%s' \"$raw\" | tr -d '[:space:]')\" ]; then target=\"-1\"; else target=\"$raw\"; fi; uv run cms-cli db downgrade \"$target\" --yes",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "args": [
+            "-lic"
+          ]
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      "label": "Database - Alembic - Check for pending migrations",
+      "type": "shell",
+      "command": "uv run cms-cli db check",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "args": [
+            "-lic"
+          ]
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      "label": "Database - Alembic - Show current revision",
+      "type": "shell",
+      "command": "uv run cms-cli db current",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "args": [
+            "-lic"
+          ]
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      "label": "Database - Alembic - Show history",
+      "type": "shell",
+      "command": "uv run cms-cli db history",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "args": [
+            "-lic"
+          ]
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      "label": "Database - Seed - List seeders",
+      "type": "shell",
+      "command": "uv run cms-cli seed list",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "args": [
+            "-lic"
+          ]
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      "label": "Database - Seed - Run seeders",
+      "type": "shell",
+      "command": "uv run cms-cli seed run",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "args": [
+            "-lic"
+          ]
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
       "label": "Ruff - Format all",
       "type": "shell",
       "command": "uvx ruff format .",
@@ -165,6 +317,25 @@
         "panel": "shared",
         "clear": true
       }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "alembicRevisionMessage",
+      "type": "promptString",
+      "description": "Alembic revision message (required)"
+    },
+    {
+      "id": "alembicUpgradeTarget",
+      "type": "promptString",
+      "description": "Upgrade target revision (leave empty for head)",
+      "default": ""
+    },
+    {
+      "id": "alembicDowngradeTarget",
+      "type": "promptString",
+      "description": "Downgrade target revision (leave empty for -1)",
+      "default": ""
     }
   ]
 }

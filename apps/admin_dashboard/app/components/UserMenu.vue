@@ -7,17 +7,27 @@ defineProps<{
 
 const colorMode = useColorMode()
 const appConfig = useAppConfig()
+const { t } = useI18n()
+const { user: sessionUser, signOut } = useAuth()
 
 const colors = ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose']
 const neutrals = ['slate', 'gray', 'zinc', 'neutral', 'stone', 'taupe', 'mauve', 'mist', 'olive']
 
-const user = ref({
-  name: 'Benjamin Canac',
-  avatar: {
-    src: 'https://github.com/benjamincanac.png',
-    alt: 'Benjamin Canac'
+const user = computed(() => {
+  const profile = sessionUser.value
+  const name = profile?.name || profile?.email || t('auth.userFallback')
+
+  return {
+    name,
+    avatar: profile?.picture
+      ? { src: profile.picture, alt: name }
+      : undefined
   }
 })
+
+function onSignOut() {
+  signOut()
+}
 
 const items = computed<DropdownMenuItem[][]>(() => ([[{
   type: 'label',
@@ -154,8 +164,9 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
   to: 'https://vercel.com/new/clone?repository-name=dashboard&repository-url=https%3A%2F%2Fgithub.com%2Fnuxt-ui-templates%2Fdashboard&demo-image=https%3A%2F%2Fui.nuxt.com%2Fassets%2Ftemplates%2Fnuxt%2Fdashboard-dark.png&demo-url=https%3A%2F%2Fdashboard-template.nuxt.dev%2F&demo-title=Nuxt%20Dashboard%20Template&demo-description=A%20dashboard%20template%20with%20multi-column%20layout%20for%20building%20sophisticated%20admin%20interfaces.',
   target: '_blank'
 }], [{
-  label: 'Log out',
-  icon: 'i-lucide-log-out'
+  label: t('auth.signOut'),
+  icon: 'i-lucide-log-out',
+  onSelect: onSignOut
 }]]))
 </script>
 

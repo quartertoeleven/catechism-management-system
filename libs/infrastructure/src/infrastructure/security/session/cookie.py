@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import json
 import uuid
+import zlib
 from datetime import UTC, datetime
-from typing import Any, cast
+from typing import Any, Final, cast
 
 from application.common.auth.models import (
     FlowState,
@@ -14,6 +15,9 @@ from application.common.auth.models import (
     UserProfile,
 )
 from cryptography.fernet import InvalidToken, MultiFernet
+
+COMPRESSED_MARKER: Final[bytes] = b"z1:"
+COMPRESSION_LEVEL: Final[int] = 9
 
 
 class EncryptedCookieSessionStore:
@@ -73,16 +77,20 @@ class EncryptedCookieFlowStore:
 
 
 def _encrypt(fernet: MultiFernet, payload: dict[str, Any]) -> str:
-    serialized = json.dumps(payload, separators=(",", ":"))
-    return fernet.encrypt(serialized.encode()).decode()
+    serialized = json.dumps(payload, separators=(",", ":")).encode()
+    compressed = zlib.compress(serialized, COMPRESSION_LEVEL)
+    return fernet.encrypt(COMPRESSED_MARKER + compressed).decode()
 
 
 def _decrypt(fernet: MultiFernet, raw: str | None) -> dict[str, Any] | None:
     if not raw:
         return None
     try:
-        payload = json.loads(fernet.decrypt(raw.encode()).decode())
-    except InvalidToken, ValueError:
+        data = fernet.decrypt(raw.encode())
+        if data.startswith(COMPRESSED_MARKER):
+            data = zlib.decompress(data[len(COMPRESSED_MARKER) :])
+        payload = json.loads(data.decode())
+    except InvalidToken, ValueError, zlib.error:
         return None
     if not isinstance(payload, dict):
         return None

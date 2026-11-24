@@ -6,7 +6,9 @@ import uuid
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 
-from application.common.auth.constants import ACCESS_TOKEN_LEEWAY_SECONDS
+from application.common.auth.constants import (
+    ACCESS_TOKEN_REFRESH_WINDOW_SECONDS,
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -18,12 +20,24 @@ class TokenSet:
     id_token: str | None
     expires_at: datetime
 
-    def is_expired(self) -> bool:
-        """Return whether the access token is expired or about to expire."""
+    def needs_refresh(self) -> bool:
+        """Return whether the access token should be refreshed proactively."""
         threshold = datetime.now(tz=UTC) + timedelta(
-            seconds=ACCESS_TOKEN_LEEWAY_SECONDS
+            seconds=ACCESS_TOKEN_REFRESH_WINDOW_SECONDS
         )
         return self.expires_at <= threshold
+
+    def is_expired(self) -> bool:
+        """Return whether the access token is actually expired."""
+        return self.expires_at <= datetime.now(tz=UTC)
+
+
+@dataclass(frozen=True, slots=True)
+class CodeExchangeResult:
+    """Tokens and identity claims obtained from an authorization code."""
+
+    tokens: TokenSet
+    catechist_id: str | None = None
 
 
 @dataclass(frozen=True, slots=True)

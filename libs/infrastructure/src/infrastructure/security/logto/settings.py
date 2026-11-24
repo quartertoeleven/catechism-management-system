@@ -7,6 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from infrastructure.persistence.settings import ENV_FILE
 from infrastructure.security.constants import (
+    DEFAULT_FLOW_COOKIE_NAME,
     DEFAULT_LOGTO_SCOPES,
     DEFAULT_SESSION_COOKIE_NAME,
     DEFAULT_SESSION_MAX_AGE_SECONDS,
@@ -23,6 +24,7 @@ SESSION_ENCRYPTION_KEY_ENV: Final[str] = "SESSION_ENCRYPTION_KEY"
 SESSION_COOKIE_NAME_ENV: Final[str] = "SESSION_COOKIE_NAME"
 SESSION_COOKIE_SECURE_ENV: Final[str] = "SESSION_COOKIE_SECURE"
 SESSION_MAX_AGE_SECONDS_ENV: Final[str] = "SESSION_MAX_AGE_SECONDS"
+FLOW_COOKIE_NAME_ENV: Final[str] = "AUTH_FLOW_COOKIE_NAME"
 
 
 class LogtoSettings(BaseSettings):
@@ -57,6 +59,10 @@ class LogtoSettings(BaseSettings):
     session_max_age_seconds: int = Field(
         default=DEFAULT_SESSION_MAX_AGE_SECONDS,
         validation_alias=SESSION_MAX_AGE_SECONDS_ENV,
+    )
+    flow_cookie_name: str = Field(
+        default=DEFAULT_FLOW_COOKIE_NAME,
+        validation_alias=FLOW_COOKIE_NAME_ENV,
     )
 
     @property

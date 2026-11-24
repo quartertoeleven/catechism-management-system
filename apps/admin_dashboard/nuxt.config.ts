@@ -7,11 +7,17 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n'
   ],
 
+  ssr: false,
+
   devtools: {
     enabled: true
   },
 
   css: ['~/assets/css/main.css'],
+
+  runtimeConfig: {
+    bffBaseUrl: 'http://127.0.0.1:8000'
+  },
 
   routeRules: {
     '/api/**': {

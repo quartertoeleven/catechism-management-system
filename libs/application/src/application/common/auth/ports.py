@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Protocol
 
 from application.common.auth.models import (
+    CodeExchangeResult,
     FlowState,
     Session,
     TokenSet,
@@ -23,8 +24,8 @@ class IdentityProvider(Protocol):
 
     async def exchange_code(
         self, *, code: str, code_verifier: str, nonce: str
-    ) -> TokenSet:
-        """Exchange an authorization code for tokens."""
+    ) -> CodeExchangeResult:
+        """Exchange an authorization code for tokens and identity claims."""
         ...
 
     async def refresh(self, *, refresh_token: str) -> TokenSet:

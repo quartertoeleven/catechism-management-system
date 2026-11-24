@@ -1,4 +1,4 @@
-"""Enumerations for the directory domain."""
+"""Gender enumeration."""
 
 from enum import StrEnum
 

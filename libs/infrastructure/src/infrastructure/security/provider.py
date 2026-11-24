@@ -11,6 +11,7 @@ from application.common.auth.ports import (
 from application.common.auth.service import AuthenticationService
 from cryptography.fernet import Fernet, MultiFernet
 from dishka import Provider, Scope, provide
+from domain.directory.repositories import CatechistRepository
 
 from infrastructure.security.constants import (
     ENCRYPTION_KEY_SEPARATOR,
@@ -88,6 +89,7 @@ class SecurityProvider(Provider):
     def authentication_service(
         self,
         provider: IdentityProvider,
+        catechists: CatechistRepository,
     ) -> AuthenticationService:
         """Provide the authentication service."""
-        return AuthenticationService(provider)
+        return AuthenticationService(provider, catechists)

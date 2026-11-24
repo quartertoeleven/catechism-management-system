@@ -8,7 +8,11 @@ from urllib.parse import urlencode
 
 import httpx2
 from application.common.auth.errors import AuthenticationError
-from application.common.auth.models import TokenSet, UserProfile
+from application.common.auth.models import (
+    CodeExchangeResult,
+    TokenSet,
+    UserProfile,
+)
 from authlib.integrations.httpx_client import AsyncOAuth2Client
 from authlib.oauth2.rfc7636 import create_s256_code_challenge
 from joserfc import jwt
@@ -17,6 +21,10 @@ from joserfc.jwk import KeySet
 from joserfc.jwt import JWTClaimsRegistry
 
 from infrastructure.security.constants import (
+    AUTHORIZATION_PROMPT_CONSENT,
+    AUTHORIZATION_PROMPT_PARAM,
+    CATECHIST_ID_CLAIM,
+    CUSTOM_DATA_CLAIM,
     ID_TOKEN_LEEWAY_SECONDS,
     PKCE_CODE_CHALLENGE_METHOD,
 )
@@ -54,13 +62,14 @@ class LogtoIdentityProvider:
             "nonce": nonce,
             "code_challenge": create_s256_code_challenge(code_verifier),
             "code_challenge_method": PKCE_CODE_CHALLENGE_METHOD,
+            AUTHORIZATION_PROMPT_PARAM: AUTHORIZATION_PROMPT_CONSENT,
         }
         return f"{metadata.authorization_endpoint}?{urlencode(params)}"
 
     async def exchange_code(
         self, *, code: str, code_verifier: str, nonce: str
-    ) -> TokenSet:
-        """Exchange an authorization code for tokens."""
+    ) -> CodeExchangeResult:
+        """Exchange an authorization code for tokens and identity claims."""
         metadata = await self._discovery.metadata()
         client = self._oauth_client()
         try:
@@ -74,12 +83,15 @@ class LogtoIdentityProvider:
         finally:
             await client.aclose()
 
-        await self._verify_id_token(
+        claims = await self._verify_id_token(
             token.get("id_token"),
             nonce=nonce,
             metadata=metadata,
         )
-        return _to_token_set(token)
+        return CodeExchangeResult(
+            tokens=_to_token_set(token),
+            catechist_id=_catechist_id(claims),
+        )
 
     async def refresh(self, *, refresh_token: str) -> TokenSet:
         """Exchange a refresh token for a new token set."""
@@ -144,7 +156,7 @@ class LogtoIdentityProvider:
         *,
         nonce: str,
         metadata: OidcMetadata,
-    ) -> None:
+    ) -> dict[str, Any]:
         if not id_token:
             raise AuthenticationError("Missing ID token")
 
@@ -168,6 +180,16 @@ class LogtoIdentityProvider:
             registry.validate(token.claims)
         except (JoseError, ValueError) as exc:
             raise AuthenticationError("Invalid ID token") from exc
+
+        return dict(token.claims)
+
+
+def _catechist_id(claims: dict[str, Any]) -> str | None:
+    custom_data = claims.get(CUSTOM_DATA_CLAIM)
+    if not isinstance(custom_data, dict):
+        return None
+    value = custom_data.get(CATECHIST_ID_CLAIM)
+    return value if isinstance(value, str) else None
 
 
 def _to_token_set(token: dict[str, Any]) -> TokenSet:

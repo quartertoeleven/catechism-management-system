@@ -14,6 +14,8 @@ class Uuid7PrimaryKeyMixin:
         Uuid(as_uuid=True),
         primary_key=True,
         default=uuid.uuid7,
+        server_default=func.uuidv7(),
+        sort_order=-10,
     )
 
 

@@ -2,9 +2,44 @@
 definePageMeta({ layout: 'auth' })
 
 const { t } = useI18n()
+const route = useRoute()
+const router = useRouter()
+const toast = useToast()
+const { signIn } = useAuth()
+
+const CATECHIST_NOT_LINKED = 'catechist_not_linked'
+const KNOWN_ERRORS = ['invalid_flow', 'missing_code', 'authentication_failed']
 
 // Served from `public/`, so it stays a runtime URL instead of a bundler import.
 const loginBackground = '/images/login-bg.jpg'
+
+const returnTo = computed(() => safeReturnTo(route.query.return_to))
+
+const errorMessage = computed(() => {
+  const error = route.query.error
+  if (typeof error !== 'string' || !error || error === CATECHIST_NOT_LINKED) {
+    return undefined
+  }
+  const key = KNOWN_ERRORS.includes(error) ? error : 'unknown'
+  return t(`auth.errors.${key}`)
+})
+
+onMounted(() => {
+  if (route.query.error !== CATECHIST_NOT_LINKED) {
+    return
+  }
+
+  toast.add({
+    title: t('auth.errors.catechist_not_linked.title'),
+    description: t('auth.errors.catechist_not_linked.description'),
+    color: 'error',
+    icon: 'i-lucide-circle-alert'
+  })
+
+  const query = { ...route.query }
+  delete query.error
+  router.replace({ query })
+})
 
 useSeoMeta({
   title: () => t('login.title')
@@ -17,7 +52,7 @@ useHead({
 })
 
 function onLoginButtonClick() {
-  alert(t('login.signIn'))
+  signIn(returnTo.value)
 }
 </script>
 
@@ -51,6 +86,15 @@ function onLoginButtonClick() {
           <p class="mt-2 text-muted">
             {{ t('login.subheader.line1') }}<br>{{ t('login.subheader.line2') }}
           </p>
+
+          <UAlert
+            v-if="errorMessage"
+            :title="errorMessage"
+            color="error"
+            variant="subtle"
+            icon="i-lucide-circle-alert"
+            class="mt-6 text-left"
+          />
 
           <UButton
             :label="t('login.signIn')"

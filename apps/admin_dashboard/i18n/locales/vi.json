@@ -14,5 +14,19 @@
       "releasedUnder": "Phát hành dưới",
       "license": "Giấy Phép MIT"
     }
+  },
+  "auth": {
+    "signOut": "Đăng xuất",
+    "userFallback": "Người dùng",
+    "errors": {
+      "invalid_flow": "Phiên đăng nhập đã hết hạn. Vui lòng thử đăng nhập lại.",
+      "missing_code": "Logto không trả về mã uỷ quyền. Vui lòng thử lại.",
+      "authentication_failed": "Đăng nhập thất bại. Vui lòng thử lại.",
+      "catechist_not_linked": {
+        "title": "Không thể đăng nhập",
+        "description": "Tài khoản của bạn chưa được liên kết với giáo lý viên nào. Vui lòng liên hệ quản trị viên kèm theo ID đăng nhập để được hỗ trợ."
+      },
+      "unknown": "Đã có lỗi xảy ra trong quá trình đăng nhập."
+    }
   }
 }
